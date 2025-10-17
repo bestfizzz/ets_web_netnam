@@ -35,7 +35,7 @@ const defaultBlocks: Record<string, any> = {
   footer: { _type: "footer", text: "" },
   searchBar: { _type: "searchBar", placeholder: "Search..." },
   shareButtons: { _type: "shareButtons", buttons: [""] },
-  logoBlock: { _type: "logoBlock", startLogo: "", endLogo: "" },
+  logoBlock: { _type: "logoBlock", leftLogo: "", rightLogo: "" },
   searchHeader: { _type: "searchHeader" },
   imageSection: { _type: "imageSection" },
   imageGrid: { _type: "imageGrid" },
@@ -266,13 +266,13 @@ export const PageCustomize = forwardRef(({
           </div>
 
           {/* Settings */}
-          <div className="p-3 border-b border-gray-200 flex flex-col gap-3">
+          <div className="p-3 pt-0 border-b border-gray-200 flex flex-col gap-3">
             <Collapsible defaultOpen>
-              <CollapsibleTrigger className="group flex justify-between items-center text-md font-medium text-gray-700 hover:text-gray-900">
+              <CollapsibleTrigger className="group flex justify-between w-full items-center text-md font-medium text-gray-700 hover:text-gray-900">
                 <span>Settings</span>
-                <ChevronRight className="w-4 h-4 group-data-[state=open]:rotate-90" />
+                <ChevronRight className="w-4 h-4 group-data-[state=open]:rotate-90" strokeWidth={3}/>
               </CollapsibleTrigger>
-              <CollapsibleContent className="mt-4 pt-2 flex flex-col gap-3 border-t-1">
+              <CollapsibleContent className="mt-3 pt-2 flex flex-col gap-3 border-t-1">
                 {/* Theme Color */}
                 <Controller
                   name="settings.themeColor"
@@ -502,27 +502,27 @@ export const PageCustomize = forwardRef(({
                                 <div className="space-y-4 border rounded-lg p-4 bg-gray-50">
                                   <h3 className="font-medium text-gray-800">Logo Block</h3>
                                   <div>
-                                    <Label className="text-sm">Start Logo URL</Label>
+                                    <Label className="text-sm">Left Logo URL</Label>
                                     <Input
-                                      value={block.startLogo}
+                                      value={block.leftLogo}
                                       placeholder="https://example.com/logo1.png"
-                                      className={!block.startLogo ? "border-red-500" : ""}
+                                      className={!block.leftLogo ? "border-red-500" : ""}
                                       onChange={(e) => {
                                         const copy = [...field.value]
-                                        copy[idx].startLogo = e.target.value
+                                        copy[idx].leftLogo = e.target.value
                                         setValue("content", copy)
                                       }}
                                     />
                                   </div>
                                   <div>
-                                    <Label className="text-sm">End Logo URL</Label>
+                                    <Label className="text-sm">Right Logo URL</Label>
                                     <Input
-                                      value={block.endLogo}
+                                      value={block.rightLogo}
                                       placeholder="https://example.com/logo2.png"
-                                      className={!block.endLogo ? "border-red-500" : ""}
+                                      className={!block.rightLogo ? "border-red-500" : ""}
                                       onChange={(e) => {
                                         const copy = [...field.value]
-                                        copy[idx].endLogo = e.target.value
+                                        copy[idx].rightLogo = e.target.value
                                         setValue("content", copy)
                                       }}
                                     />

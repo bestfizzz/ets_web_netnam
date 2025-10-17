@@ -54,7 +54,7 @@ const components = {
       </div>
     ),
     footer: ({ value }) => (
-      <footer className="bg-gray-800 text-white py-4 mt-8">
+      <footer className="bg-gray-800 text-white py-4 mt-auto">
         <div className="container mx-auto px-4 text-center">
           <p className="text-sm md:text-base">{value.text}</p>
         </div>
@@ -63,19 +63,22 @@ const components = {
     logoBlock: ({ value }) => (
       <div className="bg-gray-800 text-white py-4">
         <div className="container mx-auto px-4 flex items-center justify-between">
-          {/* Left logo */}
-          <img
-            src={value.leftLogo}
-            alt="Left Logo"
-            className="h-8 w-auto object-contain"
-          />
+          {value.leftLogo ? (
+            <img
+              src={value.leftLogo}
+              alt="Left Logo"
+              className="h-8 w-auto object-contain"
+            />
+          ) : null}
 
-          {/* Right logo */}
-          <img
-            src={value.rightLogo}
-            alt="Right Logo"
-            className="h-8 w-auto object-contain"
-          />
+          {value.rightLogo ? (
+            <img
+              src={value.rightLogo}
+              alt="Right Logo"
+              className="h-8 w-auto object-contain"
+            />
+          ) : null}
+
         </div>
       </div>
     ),
@@ -99,21 +102,21 @@ export default function TemplateGenerator({
   content,
   pageName,
   settings,
-  preview= false,
+  preview = false,
   uuid = ""
 }) {
   const Wrapper =
     pageName === "search"
       ? SearchPageWrapper
       : pageName === "share"
-      ? SharePageWrapper
-      : React.Fragment
+        ? SharePageWrapper
+        : React.Fragment
 
   return (
     <GalleryProvider galleryPageSize={settings.pageSize}>
       <Wrapper uuid={uuid} settings={settings} preview={preview}>
-          {settings.customCSS && <style dangerouslySetInnerHTML={{ __html: settings.customCSS }} />}
-          <PortableText value={content} components={components} />
+        {settings.customCSS && <style dangerouslySetInnerHTML={{ __html: settings.customCSS }} />}
+        <PortableText value={content} components={components} />
       </Wrapper>
     </GalleryProvider>
   )

@@ -1,6 +1,10 @@
 {
-  "themeColor": "#2563eb",
-  "customCSS": "",
+  "settings": {
+    "themeColor": "#48dbaa",
+    "customCSS": "",
+    "pageTitle": "",
+    "pageLogo": ""
+  },
   "content": [
     {
       "_type": "block",
@@ -28,7 +32,11 @@
     },
     {
       "_type": "shareButtons",
-      "buttons": ["Facebook", "Twitter", "LinkedIn"]
+      "buttons": [
+        "Facebook",
+        "Twitter",
+        "LinkedIn"
+      ]
     },
     {
       "_type": "footer",

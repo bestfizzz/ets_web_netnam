@@ -127,7 +127,7 @@ export default function CustomizeAddPage() {
             onClick={() => pageCustomizeRef.current?.handleSubmit(handleSave)()}
             disabled={onRequest}
           >
-            {onRequest ? "Saving..." : "Save Changes"}
+            {onRequest ? "Creating Page..." : "Save Page"}
           </Button>
         </div>
 
