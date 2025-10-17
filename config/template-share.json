@@ -1,0 +1,58 @@
+{
+  "customCSS": "",
+  "themeColor": "#3490dc",
+  "content": [
+    {
+      "_type": "block",
+      "style": "h1",
+      "children": [
+        {
+          "_type": "span",
+          "text": "Share With Friends defualt 1",
+          "marks": []
+        }
+      ],
+      "markDefs": []
+    },
+    {
+      "_type": "block",
+      "style": "normal",
+      "children": [
+        {
+          "_type": "span",
+          "text": "Spread the word and let others know!",
+          "marks": []
+        }
+      ],
+      "markDefs": []
+    },
+    {
+      "_type": "shareButtons",
+      "buttons": [
+        "Facebook",
+        "Twitter",
+        "LinkedIn",
+        "Email"
+      ]
+    },
+    {
+      "_type": "feature",
+      "title": "Easy Sharing",
+      "description": "Quickly share content with just one click."
+    },
+    {
+      "_type": "feature",
+      "title": "Custom Messages",
+      "description": "Add a personal note to your shared links."
+    },
+    {
+      "_type": "feature",
+      "title": "Track Engagement",
+      "description": "See how many people engage with your shares."
+    },
+    {
+      "_type": "footer",
+      "text": "© 2025 Share Page. All rights reserved."
+    }
+  ]
+}

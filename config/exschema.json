@@ -1,0 +1,55 @@
+{
+    "pageType": "search",
+    "id": "srch_b47d92aa",
+    "name": "Modern",
+    "data": {
+        "settings": {
+            "themeColor": "#48dbaa",
+            "customCSS": "",
+            "pageTitle":"",
+            "pageLogo":""
+        },
+        "content": [
+            {
+                "_type": "GallerySection"
+            },
+            {
+                "_type": "block",
+                "style": "h1",
+                "children": [
+                    {
+                        "_type": "span",
+                        "text": "Welcome to Search Moderndasdadadas"
+                    }
+                ]
+            },
+            {
+                "_type": "searchBar",
+                "placeholder": "Search here..."
+            },
+            {
+                "_type": "feature",
+                "title": "Fast and Reliable",
+                "description": "Get results instantly with our optimized search engine."
+            },
+            {
+                "_type": "feature",
+                "title": "Easy to Use",
+                "description": "Designed with simplicity and usability in mind."
+            },
+            {
+                "_type": "shareButtons",
+                "buttons": [
+                    "Facebook",
+                    "Twitter",
+                    "LinkedIn"
+                ]
+            },
+            {
+                "_type": "footer",
+                "text": "© 2025 Your Company. All rights reserved."
+            }
+        ],
+        "name": "Modern"
+    }
+}

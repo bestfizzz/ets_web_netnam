@@ -1,0 +1,38 @@
+{
+  "themeColor": "#2563eb",
+  "customCSS": "",
+  "content": [
+    {
+      "_type": "block",
+      "style": "h1",
+      "children": [
+        {
+          "_type": "span",
+          "text": "Welcome to Search Default 2"
+        }
+      ]
+    },
+    {
+      "_type": "searchBar",
+      "placeholder": "Search here..."
+    },
+    {
+      "_type": "feature",
+      "title": "Fast and Reliable",
+      "description": "Get results instantly with our optimized search engine."
+    },
+    {
+      "_type": "feature",
+      "title": "Easy to Use",
+      "description": "Designed with simplicity and usability in mind."
+    },
+    {
+      "_type": "shareButtons",
+      "buttons": ["Facebook", "Twitter", "LinkedIn"]
+    },
+    {
+      "_type": "footer",
+      "text": "© 2025 Your Company. All rights reserved."
+    }
+  ]
+}
