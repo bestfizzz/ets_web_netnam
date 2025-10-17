@@ -23,6 +23,10 @@ export default function SharePageWrapper({ children, uuid, settings, preview = f
     progress,
     setProgress,
     setNoResults,
+    selectMode,
+    setSelectMode,
+    selectedMap,
+    setSelectedMap,
     fancyRef
   } = useGalleryContext()
 
@@ -31,10 +35,6 @@ export default function SharePageWrapper({ children, uuid, settings, preview = f
   const [accessCode, setAccessCode] = useState("")
   const [authorized, setAuthorized] = useState(false)
   const [valid, setValid] = useState<boolean | null>(null)
-
-  // Selection
-  const [selectMode, setSelectMode] = useState(false)
-  const [selectedMap, setSelectedMap] = useState<Record<string, Omit<AssetMeta, "id">>>({})
 
   useEffect(() => {
     if (!preview) return
