@@ -35,18 +35,6 @@ const components = {
         </button>
       </div>
     ),
-    shareButtons: ({ value }) => (
-      <div className="flex flex-wrap justify-center gap-4 mb-6">
-        {value.buttons?.map((btn, idx) => (
-          <button
-            key={idx}
-            className="px-4 py-2 bg-white text-blue-600 font-semibold rounded shadow hover:bg-gray-100"
-          >
-            {btn}
-          </button>
-        ))}
-      </div>
-    ),
     feature: ({ value }) => (
       <div className="bg-white/30 backdrop-blur-sm p-4 rounded shadow text-center mb-4">
         <h4 className="text-white font-semibold text-lg">{value.title}</h4>
@@ -82,18 +70,6 @@ const components = {
         </div>
       </div>
     ),
-    searchHeader: () => <SearchHeader />,
-    imageSection: () => <ImageSection />,
-    imageGrid: () => <ImageGrid />,
-    searchDrawer: () => <SearchSelectionDrawer />,
-    SearchPageWrapper: ({ value }) => (
-      <SearchPageWrapper>
-        {value.children && (
-          <PortableText value={value.children} components={components} />
-        )}
-      </SearchPageWrapper>
-    ),
-
     GallerySection: () => <GallerySection />,
   },
 }

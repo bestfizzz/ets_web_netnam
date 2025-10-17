@@ -26,7 +26,7 @@ export async function middleware(req: NextRequest) {
 
   // 🔥 CRITICAL: Don't run middleware on API auth routes at all
   // Let them set cookies without interference
-  if (pathname.startsWith("/api/auth/") || pathname.startsWith("/api/customize/get-template") || pathname.startsWith("/searchTest/")|| pathname.startsWith("/search/") || pathname.startsWith("/share/")) {
+  if (pathname.startsWith("/api/auth/") || pathname.startsWith("/api/customize/get-template") || pathname.startsWith("/search/") || pathname.startsWith("/share/")) {
     return NextResponse.next();
   }
 
@@ -46,6 +46,10 @@ export async function middleware(req: NextRequest) {
   // Protect all other pages
   if (!isValid) {
     return NextResponse.redirect(new URL("/login", req.url));
+  }
+
+  if (pathname==='/admin'){
+    return NextResponse.redirect(new URL("/admin/url", req.url));
   }
 
   return NextResponse.next();

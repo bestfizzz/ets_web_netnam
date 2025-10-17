@@ -5,6 +5,7 @@ import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { ChevronDown, ChevronRight, GripVertical as IconGripVertical, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { toTitle } from "@/lib/utils"
 
 interface DraggableBlockProps {
   id: string
@@ -30,9 +31,6 @@ export const DraggableBlock = ({
   const blockLabels: Record<string, string> = {
     block: "Text Block",
     feature: "Feature Card",
-    footer: "Footer",
-    searchBar: "Search Bar",
-    shareButtons: "Share Buttons"
   }
 
   const styleLabels: Record<string, string> = {
@@ -59,7 +57,7 @@ export const DraggableBlock = ({
           onClick={() => toggleCollapse(idx)}
           className="text-left font-semibold text-sm ml-1 flex-1 cursor-pointer"
         >
-          {blockLabels[block._type] || block._type}
+          {blockLabels[block._type] || toTitle(block._type)}
           {block._type === "block" && block.style
             ? ` — ${styleLabels[block.style] || block.style}`
             : ""}
@@ -82,7 +80,7 @@ export const DraggableBlock = ({
 
           {/* Remove button */}
           <div className="flex justify-end">
-            <Button variant="destructive" size="sm" onClick={() => removeBlock(idx)}>
+            <Button variant="destructive" size="sm" onClick={() => removeBlock(idx)} disabled={block._type=='GallerySection'}>
               <Trash2 className="w-4 h-4 mr-1" />
               Remove
             </Button>

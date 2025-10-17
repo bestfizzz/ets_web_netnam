@@ -121,11 +121,7 @@ export function URLTable({ tableData, error }: URLTableProps) {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
-    const [data, setData] = React.useState<URL[]>(() => tableData)
-
-    React.useEffect(() => {
-        setData(tableData)
-    }, [tableData])
+    const data = tableData
 
     const table = useReactTable({
         data,
@@ -151,9 +147,7 @@ export function URLTable({ tableData, error }: URLTableProps) {
         },
     })
 
-    React.useEffect(() => {
-        if (error) toast.error("Failed to fetch URLs")
-    }, [error])
+    if (error) toast.error("Failed to fetch URLs")
 
     const pageCount = table.getPageCount()
     const currentPage = table.getState().pagination.pageIndex + 1

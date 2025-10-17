@@ -103,7 +103,6 @@ export default function SharePageWrapper({ children, uuid, settings, preview = f
     } finally {
       setTimeout(() => setShowFullLoading(false), 400)
       setLoading(false)
-      setProgress(0)
     }
   }
 

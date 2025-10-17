@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react"
 import { useForm, Controller } from "react-hook-form"
+import CodeMirror from "@uiw/react-codemirror"
+import { css } from "@codemirror/lang-css"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -28,17 +30,15 @@ import {
 import { Button } from "@/components/ui/button"
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible"
 import { Pencil, Check, ChevronRight } from "lucide-react"
+import { DynamicBlockEditor } from "@/components/customize/dynamic-block-editor"
+import { nSpaceTrimmer } from "@/lib/utils"
 
 const defaultBlocks: Record<string, any> = {
   block: { _type: "block", style: "normal", children: [{ _type: "span", text: "" }], markDefs: [] },
   feature: { _type: "feature", title: "", description: "" },
   footer: { _type: "footer", text: "" },
   searchBar: { _type: "searchBar", placeholder: "Search..." },
-  shareButtons: { _type: "shareButtons", buttons: [""] },
   logoBlock: { _type: "logoBlock", leftLogo: "", rightLogo: "" },
-  searchHeader: { _type: "searchHeader" },
-  imageSection: { _type: "imageSection" },
-  imageGrid: { _type: "imageGrid" },
   GallerySection: { _type: "GallerySection" },
 }
 
@@ -270,7 +270,7 @@ export const PageCustomize = forwardRef(({
             <Collapsible defaultOpen>
               <CollapsibleTrigger className="group flex justify-between w-full items-center text-md font-medium text-gray-700 hover:text-gray-900">
                 <span>Settings</span>
-                <ChevronRight className="w-4 h-4 group-data-[state=open]:rotate-90" strokeWidth={3}/>
+                <ChevronRight className="w-4 h-4 group-data-[state=open]:rotate-90" strokeWidth={3} />
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-3 pt-2 flex flex-col gap-3 border-t-1">
                 {/* Theme Color */}
@@ -349,7 +349,7 @@ export const PageCustomize = forwardRef(({
                   rules={{
                     required: "Page size is required",
                     min: { value: 1, message: "Minimum is 1" },
-                    max: { value:60, message: "Maximum is 60"}
+                    max: { value: 60, message: "Maximum is 60" }
                   }}
                   render={({ field, fieldState }) => (
                     <div className="flex flex-col gap-1">
@@ -371,18 +371,30 @@ export const PageCustomize = forwardRef(({
                 {/* Custom CSS */}
                 <Controller
                   name="settings.customCSS"
-                  defaultValue=""
                   control={control}
-                  render={({ field }) => (
-                    <div className="flex flex-col gap-1">
-                      <Label className="text-sm">Custom CSS</Label>
-                      <textarea
-                        {...field}
-                        placeholder="Write your custom CSS here..."
-                        className="w-full h-32 border rounded-md px-2 py-2 text-sm font-mono resize-y"
-                      />
-                    </div>
-                  )}
+                  defaultValue=""
+                  render={({ field }) => {
+                    
+                    const handleChange = (value: string) => {
+                      const trimmed = nSpaceTrimmer(value)
+                      if (trimmed !== nSpaceTrimmer(field.value)) {
+                        field.onChange(trimmed)
+                      }
+                    }
+
+                    return (
+                      <div className="flex flex-col gap-1">
+                        <Label className="text-sm font-medium">Custom CSS</Label>
+                        <CodeMirror
+                          value={nSpaceTrimmer(field.value)}
+                          height="200px"
+                          extensions={[css()]}
+                          onChange={handleChange}
+                          className="rounded-md border border-zinc-200 dark:border-zinc-700 overflow-hidden"
+                        />
+                      </div>
+                    )
+                  }}
                 />
               </CollapsibleContent>
             </Collapsible>
@@ -416,119 +428,12 @@ export const PageCustomize = forwardRef(({
                               toggleCollapse={toggleCollapse}
                               removeBlock={removeBlock}
                             >
-                              {/* Block-specific validation */}
-                              {block._type === "block" &&
-                                block.children?.map((child: any, cIdx: number) => (
-                                  <Input
-                                    key={cIdx}
-                                    value={child.text}
-                                    placeholder={block.style === "h1" ? "Heading text" : "Paragraph text"}
-                                    onChange={e => {
-                                      const copy = [...field.value]
-                                      copy[idx].children[cIdx].text = e.target.value
-                                      setValue("content", copy)
-                                    }}
-                                  />
-                                ))}
-                              {block._type === "feature" && (
-                                <>
-                                  <div>
-                                    <Label className="text-xs">Title</Label>
-                                    <Input
-                                      value={block.title}
-                                      placeholder="Feature Title"
-                                      className={!block.title ? "border-red-500" : ""}
-                                      onChange={e => {
-                                        const copy = [...field.value]
-                                        copy[idx].title = e.target.value
-                                        setValue("content", copy)
-                                      }}
-                                    />
-                                  </div>
-                                  <div>
-                                    <Label className="text-xs">Description</Label>
-                                    <Input
-                                      value={block.description}
-                                      placeholder="Feature Description"
-                                      className={!block.description ? "border-red-500" : ""}
-                                      onChange={e => {
-                                        const copy = [...field.value]
-                                        copy[idx].description = e.target.value
-                                        setValue("content", copy)
-                                      }}
-                                    />
-                                  </div>
-                                </>
-                              )}
-                              {block._type === "footer" && (
-                                <Input
-                                  value={block.text}
-                                  placeholder="Footer Text"
-                                  className={!block.text ? "border-red-500" : ""}
-                                  onChange={e => {
-                                    const copy = [...field.value]
-                                    copy[idx].text = e.target.value
-                                    setValue("content", copy)
-                                  }}
-                                />
-                              )}
-                              {block._type === "searchBar" && (
-                                <Input
-                                  value={block.placeholder}
-                                  placeholder="Search Placeholder"
-                                  className={!block.placeholder ? "border-red-500" : ""}
-                                  onChange={e => {
-                                    const copy = [...field.value]
-                                    copy[idx].placeholder = e.target.value
-                                    setValue("content", copy)
-                                  }}
-                                />
-                              )}
-                              {block._type === "shareButtons" &&
-                                block.buttons?.map((btn: string, bIdx: number) => (
-                                  <Input
-                                    key={bIdx}
-                                    value={btn}
-                                    placeholder="Button Label"
-                                    className={!btn ? "border-red-500" : ""}
-                                    onChange={e => {
-                                      const copy = [...field.value]
-                                      copy[idx].buttons[bIdx] = e.target.value
-                                      setValue("content", copy)
-                                    }}
-                                  />
-                                ))}
-                              {block._type === "logoBlock" && (
-                                <div className="space-y-4 border rounded-lg p-4 bg-gray-50">
-                                  <h3 className="font-medium text-gray-800">Logo Block</h3>
-                                  <div>
-                                    <Label className="text-sm">Left Logo URL</Label>
-                                    <Input
-                                      value={block.leftLogo}
-                                      placeholder="https://example.com/logo1.png"
-                                      className={!block.leftLogo ? "border-red-500" : ""}
-                                      onChange={(e) => {
-                                        const copy = [...field.value]
-                                        copy[idx].leftLogo = e.target.value
-                                        setValue("content", copy)
-                                      }}
-                                    />
-                                  </div>
-                                  <div>
-                                    <Label className="text-sm">Right Logo URL</Label>
-                                    <Input
-                                      value={block.rightLogo}
-                                      placeholder="https://example.com/logo2.png"
-                                      className={!block.rightLogo ? "border-red-500" : ""}
-                                      onChange={(e) => {
-                                        const copy = [...field.value]
-                                        copy[idx].rightLogo = e.target.value
-                                        setValue("content", copy)
-                                      }}
-                                    />
-                                  </div>
-                                </div>
-                              )}
+                              <DynamicBlockEditor
+                                block={block}
+                                idx={idx}
+                                setValue={setValue}
+                                fieldValue={field.value}
+                              />
                             </DraggableBlock>
                           ))}
                         </div>

@@ -119,3 +119,14 @@ export const scrollToGallery = () => {
     window.scrollTo({ top: y, behavior: "smooth" })
   })
 }
+
+export const toTitle = (str: string) => {
+  return str
+    .replace(/([A-Z])/g, " $1") // insert space before capitals
+    .replace(/^./, s => s.toUpperCase()); // capitalize first letter
+}
+
+export const nSpaceTrimmer = (str: string) => {
+  const cleaned = str.replace(/\n{3,}/g, "\n\n")
+  return cleaned.trim()
+}

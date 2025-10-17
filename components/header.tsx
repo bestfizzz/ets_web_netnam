@@ -42,7 +42,7 @@ export function Header() {
             {pathSegments.length > 0 && (
               <React.Fragment key="home">
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/">
+                  <BreadcrumbLink href="/admin/url">
                     <Home className="h-4 w-4" />
                   </BreadcrumbLink>
                 </BreadcrumbItem>

@@ -19,7 +19,7 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog"
-
+import { capitalizeFirstLetter } from "@/lib/utils"
 export default function EditPage() {
   const params = useParams()
   const router = useRouter()
@@ -58,6 +58,7 @@ export default function EditPage() {
         } else {
           setPageData(data)
           setDesignName(data.name)
+          toast.info(`Loaded ${capitalizeFirstLetter(data.pageType)} template "${data.name}"`)
         }
       } catch {
         setNotFoundState(true)

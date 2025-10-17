@@ -6,11 +6,9 @@ import { AddShareProfileModal } from "@/components/share/share-form-modal"
 import { toast } from "sonner"
 
 export default function ProfilesClient({ data, error }: any) {
-  React.useEffect(() => {
-    if (error) {
-      toast.error("Failed to fetch profiles")
-    }
-  }, [error])
+  if (error) {
+    toast.error("Failed to fetch profiles")
+  }
 
   const noProfiles =
     !error &&
