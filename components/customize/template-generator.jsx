@@ -1,11 +1,7 @@
 "use client"
 
 import { PortableText } from "@portabletext/react"
-import SearchHeader from "@/components/pages/search/search-header"
-import ImageGrid from "@/components/pages/image-grid"
-import SearchSelectionDrawer from "@/components/pages/search/search-selection-drawer"
 import SearchPageWrapper from "@/components/pages/search/search-page-wrapper"
-import ImageSection from "@/components/pages/image-section"
 import GallerySection from "@/components/pages/gallery-section"
 import { GalleryProvider } from "@/hooks/gallery-context"
 import SharePageWrapper from "@/components/pages/share/share-page-wrapper"
@@ -87,9 +83,8 @@ export default function TemplateGenerator({
       : pageName === "share"
         ? SharePageWrapper
         : React.Fragment
-
   return (
-    <GalleryProvider galleryPageSize={settings.pageSize}>
+    <GalleryProvider gallerySettings={settings}>
       <Wrapper uuid={uuid} settings={settings} preview={preview}>
         {settings.customCSS && <style dangerouslySetInnerHTML={{ __html: settings.customCSS }} />}
         <PortableText value={content} components={components} />

@@ -1,14 +1,14 @@
-// app/api/url-manager/route.ts
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(req: NextRequest) {
   try {
     const session = req.cookies.get("accessToken")?.value
+    console.log("Session cookie:", session) // Debug log
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/url-manager`, {
+    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/share/guests`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${session}`,
@@ -31,7 +31,8 @@ export async function POST(req: NextRequest) {
     }
 
     const { data } = await req.json()
-    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/url-manager`, {
+console.log("Request body:", data) // Debug log
+    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/share/guests`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

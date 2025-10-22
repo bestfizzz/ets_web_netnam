@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react"
+import { createContext, useContext, useState, useEffect, ReactNode, use } from "react"
 import { useFancybox } from "@/hooks/use-fancybox"
 import { performDownload } from "@/lib/utils"
 
@@ -9,7 +9,16 @@ export type AssetMeta = {
   thumb: string
   preview: string
   download: string
+  filename: string
 }
+
+type GallerySettings = {
+  themeColor: string
+  pageTitle: string
+  pageSize: number
+  privateGallery: boolean
+}
+
 
 type GalleryContextType = {
   valid: boolean | null
@@ -30,6 +39,8 @@ type GalleryContextType = {
   setProgress: (progress: number) => void
   noResults: boolean
   setNoResults: (noResults: boolean) => void
+  privateGallery: boolean
+  setPrivateGallery: (privateGallery: boolean) => void
 
   // Pagination
   page: number
@@ -39,6 +50,8 @@ type GalleryContextType = {
   totalPages: number
   pageSize: number
   setPageSize: (pageSize: number) => void
+  nextPage: number | null
+  setNextPage: (nextPage: number | null) => void
   // Selection Mode
   selectMode: boolean
   setSelectMode: (mode: boolean) => void
@@ -48,13 +61,18 @@ type GalleryContextType = {
   previewThumbnails: string[]
 
   // Mode (all/person)
-  mode: "all" | "person"
-  setMode: (mode: "all" | "person") => void
+  mode: "all" | "person" | "keyword"
+  setMode: (mode: "all" | "person" | "keyword") => void
   personId: string | null
   setPersonId: (id: string | null) => void
 
   // Fancybox ref
   fancyRef: React.RefObject<HTMLElement | null>
+
+  // Template Settings
+  // Template Settings
+  settings: GallerySettings
+  setSettings: (settings: GallerySettings) => void
 }
 
 // Create the context with a default value of undefined
@@ -68,21 +86,29 @@ export function useGalleryContext() {
   return context
 }
 
-export function GalleryProvider({ children, galleryPageSize = 60 }: { children: ReactNode, galleryPageSize?: number }) {
+export function GalleryProvider({ children, gallerySettings }: { children: ReactNode, gallerySettings?: GallerySettings }) {
   const [valid, setValid] = useState<boolean | null>(null)
   const [query, setQuery] = useState("")
   const [images, setImages] = useState<AssetMeta[]>([])
   const [loading, setLoading] = useState(false)
-  const [showFullLoading, setShowFullLoading] = useState(true)
+  const [showFullLoading, setShowFullLoading] = useState(gallerySettings?.privateGallery !== true)
   const [progress, setProgress] = useState(0)
   const [selectMode, setSelectMode] = useState(false)
   const [selectedMap, setSelectedMap] = useState<Record<string, Omit<AssetMeta, "id">>>({})
   const [noResults, setNoResults] = useState(false)
   const [page, setPage] = useState(1)
+  const [nextPage, setNextPage] = useState<number | null>(null)
   const [total, setTotal] = useState(0)
   const [pageSize, setPageSize] = useState(60)
-  const [mode, setMode] = useState<"all" | "person">("all")
+  const [mode, setMode] = useState<"all" | "person" | "keyword">("all")
   const [personId, setPersonId] = useState<string | null>(null)
+  const [privateGallery, setPrivateGallery] = useState(!!gallerySettings?.privateGallery)
+  const [settings, setSettings] = useState<GallerySettings>({
+    themeColor: "#ffffff",
+    pageTitle: "Gallery",
+    pageSize: 60,
+    privateGallery: false,
+  })
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
   const fancyRef = useFancybox(images, performDownload, selectMode)
@@ -96,10 +122,19 @@ export function GalleryProvider({ children, galleryPageSize = 60 }: { children: 
   }, [])
 
   useEffect(() => {
-    if (galleryPageSize) {
-      setPageSize(galleryPageSize)
+    if (gallerySettings) {
+      setSettings(gallerySettings)
     }
-  }, [galleryPageSize])
+    if (gallerySettings?.pageSize) {
+      setPageSize(gallerySettings.pageSize)
+    }
+  }, [gallerySettings])
+
+  useEffect(() => {
+    if (typeof gallerySettings?.privateGallery === "boolean") {
+      setPrivateGallery(gallerySettings.privateGallery)
+    }
+  }, [gallerySettings?.privateGallery])
 
   const value: GalleryContextType = {
     valid,
@@ -134,6 +169,12 @@ export function GalleryProvider({ children, galleryPageSize = 60 }: { children: 
     personId,
     setPersonId,
     fancyRef,
+    settings,
+    setSettings,
+    privateGallery,
+    setPrivateGallery,
+    nextPage,
+    setNextPage
   }
 
   return <GalleryContext.Provider value={value}>{children}</GalleryContext.Provider>

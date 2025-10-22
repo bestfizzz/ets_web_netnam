@@ -4,7 +4,7 @@ import SearchHeader from "@/components/pages/search/search-header"
 import SearchSelectionDrawer from "@/components/pages/search/search-selection-drawer"
 import { Progress } from "@/components/ui/progress"
 import { toast } from "sonner"
-import { getPersonAssets, getAllAssets, getPersonAssetStats } from "@/lib/api"
+import { getPersonAssets, getAllAssets, getPersonAssetStats, getAssetsByKeyword } from "@/lib/api"
 import type { AssetMeta } from "@/hooks/gallery-context"
 import { scrollToGallery } from "@/lib/utils"
 
@@ -14,12 +14,15 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
     valid,
     setValid,
     mode,
+    privateGallery,
     personId,
+    query,
     setImages,
     page,
     setPage,
     setTotal,
     pageSize,
+    setNextPage,
     setLoading,
     showFullLoading,
     setShowFullLoading,
@@ -35,13 +38,15 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
       id: `placeholder-${i}`,
       thumb: `/placeholder/400.svg`,
       preview: `/placeholder/1200.svg`,
-      download: `/placeholder/1200.svg`
+      download: `/placeholder/1200.svg`,
+      filename: `placeholder.svg`
     }))
 
     setImages(placeholderAssets)
     setTotal(placeholderAssets.length)
   }, [preview, setImages, setTotal])
 
+  // This to be moved to serverside
   useEffect(() => {
     if (!uuid || preview) return
     setValid(null)
@@ -59,7 +64,7 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
 
   // Fetch assets when mode or personId changes
   useEffect(() => {
-    if (!uuid || !valid || preview) return
+    if (!uuid || !valid || preview || (mode==='all' && privateGallery===true)) return
 
     const load = async () => {
       setShowFullLoading(true)
@@ -74,14 +79,17 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
     }
 
     load()
-  }, [mode, personId, valid, uuid])
+  }, [mode, personId, query, valid, uuid])
 
   // Separate effect for page number change
   useEffect(() => {
-    if (!uuid || !valid || preview) return
-    setImages([])
+    if (!uuid || !valid || preview || (mode==='all' && privateGallery===true)) return
+    
 
-    scrollToGallery()
+    if (mode != 'keyword') {
+      setImages([])
+      scrollToGallery()
+    }
 
     fetchAssets(page)
   }, [page])
@@ -101,6 +109,9 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
         totalAssets = stats.assets ?? 0
         setProgress(70)
         data = await getPersonAssets(uuid, personId, pageNum, pageSize)
+      } else if (mode === "keyword" && query) {
+        setProgress(60)
+        data = await getAssetsByKeyword(uuid, query, pageNum, pageSize)
       } else {
         setProgress(50)
         data = await getAllAssets(uuid, pageNum, pageSize)
@@ -108,7 +119,7 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
       }
 
       const items = data.assets?.items ?? []
-      setTotal(totalAssets)
+      const nextPage = data.assets?.nextPage ?? null
       setProgress(90)
 
       const mapped: AssetMeta[] = items.map((item: any) => ({
@@ -116,9 +127,15 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
         thumb: `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/thumbnail/${uuid}?assetId=${item.id}&size=thumbnail`,
         preview: `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/thumbnail/${uuid}?assetId=${item.id}&size=preview`,
         download: `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/image/${uuid}?assetId=${item.id}`,
+        filename: `${settings.pageTitle}_${item.id}`
       }))
-
-      setImages(mapped)
+      if (mode === 'keyword') {
+        setImages(prev => [...prev, ...mapped])
+      } else {
+        setTotal(totalAssets)
+        setImages(mapped)
+      }
+      setNextPage(nextPage) 
       setProgress(100)
     } catch (err) {
       console.error("Error fetching assets:", err)
@@ -146,7 +163,7 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
 
       {children}
 
-      <SearchSelectionDrawer />
+      <SearchSelectionDrawer uuid={uuid} />
 
       {showFullLoading && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm">

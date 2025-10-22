@@ -25,7 +25,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { UrlForm, UrlFormData } from "./url-form"
 import { URL } from "@/components/url/url-table"
-import { Profile } from "../share/share-profile-table"
+import { Profile } from "../share/share-detail-table"
 import { toast } from "sonner"
 
 // ---------------- EDIT MODAL ----------------

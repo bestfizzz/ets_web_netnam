@@ -5,6 +5,7 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   SortingState,
@@ -39,131 +40,156 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
-import { EditShareProfileModal,DeleteShareProfileModal } from "@/components/share/share-form-modal"
-
+import {
+  EditShareDetailModal,
+  DeleteShareDetailModal,
+  PlatformOption
+} from "@/components/share/share-form-modal"
+import { DeletePlatformModal, EditPlatformModal } from "./share-platform-modal"
 
 // ------------------ Types ------------------
-export type Profile = {
-  id: string
-  contact: string
-  accessCode: string
+export type Detail = {
+  id: number
+  name: string
+  platform: PlatformOption
+  settings?: Record<string, any>
+  createdAt?: string
+  updatedAt?: string
 }
 
 // ------------------ Columns ------------------
-export const profileColumns = (socialPlatform: "facebook" | "twitter" | "linkedin"): ColumnDef<Profile>[] => [
+export const detailColumns: ColumnDef<Detail>[] = [
   { accessorKey: "id", header: "ID" },
   {
-    accessorKey: "contact",
+    accessorKey: "name",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Contact <ArrowUpDown />
+        Name
+        <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
   },
-  { accessorKey: "accessCode", header: "Access Code" },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const profile = row.original
-      const [editOpen, setEditOpen] = React.useState(false)
-      const [deleteOpen, setDeleteOpen] = React.useState(false)
-
-      return (
-        <>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(profile.id)}
-              >
-                Copy Profile ID
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setEditOpen(true)}>
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setDeleteOpen(true)}>
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {/* Edit Modal */}
-          <EditShareProfileModal
-            profile={profile}
-            socialPlatform={socialPlatform}   // ✅ pass platform here
-            open={editOpen}
-            onOpenChange={setEditOpen}
-          />
-
-          {/* Delete Modal */}
-          <DeleteShareProfileModal
-            profile={profile}
-            socialPlatform={socialPlatform}   // ✅ pass platform here
-            open={deleteOpen}
-            onOpenChange={setDeleteOpen}
-          />
-        </>
-      )
+      const detail = row.original
+      return <RowActions detail={detail} />
     },
   },
 ]
 
+// ------------------ Row Actions ------------------
+function RowActions({ detail }: { detail: Detail }) {
+  const [editOpen, setEditOpen] = React.useState(false)
+  const [deleteOpen, setDeleteOpen] = React.useState(false)
+
+  // Find the platform for this detail
+  const platform = detail.platform
+
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem
+            onClick={() => navigator.clipboard.writeText(detail.id.toString())}
+          >
+            Copy Detail ID
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => setEditOpen(true)}>Edit</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setDeleteOpen(true)}>Delete</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {platform && (
+        <EditShareDetailModal
+          detail={detail}
+          open={editOpen}
+          onOpenChange={setEditOpen}
+          platform={platform}
+        />
+      )}
+
+      <DeleteShareDetailModal
+        detail={detail}
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        platform={platform}
+      />
+
+    </>
+  )
+}
 
 // ------------------ Reusable Table ------------------
-export function ProfileTable({
-  title,
+export function ShareDetailTable({
+  platform,
   data,
-  socialPlatform
 }: {
-  title: string
-  socialPlatform: "facebook" | "twitter" | "linkedin"
-  data: Profile[]
+  platform: PlatformOption
+  data: Detail[]
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
-
+  const [filterValue, setFilterValue] = React.useState("")
+  const title = `${platform.name} Details`
   const table = useReactTable({
     data,
-    columns: profileColumns(socialPlatform),
+    columns: detailColumns,
     onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
-    state: { sorting, columnVisibility, rowSelection },
+    state: { sorting, columnVisibility, rowSelection, globalFilter: filterValue },
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     initialState: {
-      pagination: { pageSize: 5 }, // default 5
+      pagination: { pageIndex: 0, pageSize: 5 },
+    },
+    globalFilterFn: (row, columnId, filterValue) => {
+      const raw = row.getValue(columnId)
+      if (raw == null) return false
+      return raw.toString().toLowerCase().includes(String(filterValue ?? "").toLowerCase())
     },
   })
 
+  // Set default page size
+  React.useEffect(() => {
+    table.setPageSize(5)
+  }, [table])
+
   return (
     <div className="w-full border rounded-lg p-4 space-y-4">
-      <h2 className="text-lg font-semibold">{title}</h2>
-
-      {/* Filter */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold">{title}</h2>
+        <div className=" flex gap-3">
+        <EditPlatformModal id={platform.id} name={platform.name} />
+        <DeletePlatformModal id={platform.id} name={platform.name} />
+        </div>
+      </div>
+      {/* Filter + Columns */}
       <div className="flex items-center gap-2">
         <Input
-          placeholder="Filter contact..."
-          value={(table.getColumn("contact")?.getFilterValue() as string) ?? ""}
-          onChange={(e) =>
-            table.getColumn("contact")?.setFilterValue(e.target.value)
-          }
+          placeholder="Filter by name..."
+          value={filterValue}
+          onChange={(e) => setFilterValue(e.target.value)}
           className="max-w-sm"
         />
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -172,7 +198,7 @@ export function ProfileTable({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             {table
-              .getAllColumns()
+              .getAllLeafColumns()
               .filter((col) => col.getCanHide())
               .map((col) => (
                 <DropdownMenuCheckboxItem
@@ -198,15 +224,13 @@ export function ProfileTable({
                   <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
-                      : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
+                      : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
@@ -220,7 +244,7 @@ export function ProfileTable({
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={profileColumns.length} className="h-24 text-center">
+                <TableCell colSpan={detailColumns.length} className="h-6 text-center">
                   No results.
                 </TableCell>
               </TableRow>
@@ -268,8 +292,6 @@ export function ProfileTable({
           </Button>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
-
-

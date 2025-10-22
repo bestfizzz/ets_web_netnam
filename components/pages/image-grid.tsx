@@ -7,7 +7,7 @@ import { useGalleryContext } from "@/hooks/gallery-context"
 import type { AssetMeta } from "@/hooks/gallery-context"
 
 export default function ImageGrid() {
-  const { images, loading, selectMode, selectedMap, setSelectedMap } = useGalleryContext()
+  const { images, settings, loading, selectMode, selectedMap, setSelectedMap } = useGalleryContext()
 
   const toggleSelect = (asset: AssetMeta) => {
     setSelectedMap((prev) => {
@@ -17,12 +17,13 @@ export default function ImageGrid() {
         thumb: asset.thumb,
         preview: asset.preview,
         download: asset.download,
+        filename: asset.filename
       }
       return next
     })
   }
-
-  if (loading) return <SkeletonLoading />
+  
+  if (loading && images.length === 0) return <SkeletonLoading />
 
   return (
     <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 w-full mt-4">
@@ -41,7 +42,7 @@ export default function ImageGrid() {
                 href={img.preview}
                 {...(selectMode ? {} : { "data-fancybox": "gallery" })}
                 data-download-src={img.download}
-                data-download-filename={`Image_${img.id}.jpg`}
+                data-download-filename={`${img.filename}.jpg`}
                 onClick={(e) => {
                   if (selectMode) {
                     e.preventDefault()

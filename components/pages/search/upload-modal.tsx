@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogPortal
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -15,13 +16,13 @@ import { DialogDescription } from "@radix-ui/react-dialog"
 
 interface UploadModalProps {
   open: boolean
+  query: string
   onClose: () => void
   onUpload: (file: File) => Promise<void>
-  query: string
-  setQuery: (query: string) => void
+  onSearchText: (text: string) => void
 }
 
-export function UploadModal({ open, onClose, onUpload, query, setQuery }: UploadModalProps) {
+export function UploadModal({ open, query, onClose, onUpload, onSearchText }: UploadModalProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [capturedBlob, setCapturedBlob] = useState<Blob | null>(null)
   const [loading, setLoading] = useState(false)
@@ -29,6 +30,7 @@ export function UploadModal({ open, onClose, onUpload, query, setQuery }: Upload
   const [videoRatio, setVideoRatio] = useState(4 / 3)
   const [stream, setStream] = useState<MediaStream | null>(null)
   const [activeTab, setActiveTab] = useState<"upload" | "search">("upload")
+  const [searchText, setSearchText] = useState(query ?? "")
 
   // Start camera when modal opens and upload tab is active
   useEffect(() => {
@@ -55,12 +57,12 @@ export function UploadModal({ open, onClose, onUpload, query, setQuery }: Upload
           video: { facingMode: { ideal: "environment" } },
           audio: false,
         })
-        
+
         if (!isMounted) {
           s.getTracks().forEach((track) => track.stop())
           return
         }
-        
+
         setStream(s)
         if (videoRef.current) {
           videoRef.current.srcObject = s
@@ -141,151 +143,161 @@ export function UploadModal({ open, onClose, onUpload, query, setQuery }: Upload
   }
 
   return (
+
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-lg">
-        <DialogHeader>
-          <DialogTitle>Search & Upload</DialogTitle>
-          <DialogDescription className="mt-2 text-sm text-gray-500">
-            Search by text or upload an image to find similar photos.
-          </DialogDescription>
-        </DialogHeader>
+      <DialogPortal >
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Search & Upload</DialogTitle>
+            <DialogDescription className="mt-2 text-sm text-gray-500">
+              Search by text or upload an image to find similar photos.
+            </DialogDescription>
+          </DialogHeader>
 
-        {/* Tabs */}
-        <div className="flex gap-2 border-b">
-          <button
-            onClick={() => setActiveTab("search")}
-            className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors border-b-2 ${
-              activeTab === "search"
+          {/* Tabs */}
+          <div className="flex gap-2 border-b">
+            <button
+              onClick={() => setActiveTab("search")}
+              className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors border-b-2 ${activeTab === "search"
                 ? "border-indigo-600 text-indigo-600"
                 : "border-transparent text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            <Search className="w-4 h-4" />
-            Search by Text
-          </button>
-          <button
-            onClick={() => setActiveTab("upload")}
-            className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors border-b-2 ${
-              activeTab === "upload"
+                }`}
+            >
+              <Search className="w-4 h-4" />
+              Search by Text
+            </button>
+            <button
+              onClick={() => setActiveTab("upload")}
+              className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors border-b-2 ${activeTab === "upload"
                 ? "border-indigo-600 text-indigo-600"
                 : "border-transparent text-gray-500 hover:text-gray-700"
-            }`}
-          >
-            <Upload className="w-4 h-4" />
-            Upload Image
-          </button>
-        </div>
+                }`}
+            >
+              <Upload className="w-4 h-4" />
+              Upload Image
+            </button>
+          </div>
 
-        <div className="flex flex-col gap-6 pt-2">
-          {/* Search Tab */}
-          {activeTab === "search" && (
-            <div className="flex flex-col gap-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">
-                  Search by keywords
-                </label>
-                <Input
-                  placeholder="e.g., beach sunset, family portrait..."
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  className="w-full"
-                />
-              </div>
-              <Button
-                onClick={handleClose}
-                className="w-full bg-indigo-600 text-white hover:bg-indigo-700"
-              >
-                <Search className="w-4 h-4 mr-2" />
-                Search Images
-              </Button>
-            </div>
-          )}
-
-          {/* Upload Tab */}
-          {activeTab === "upload" && (
-            <>
-              {!capturedBlob && (
-                <>
-                  <div
-                    className="relative w-full rounded-md border overflow-hidden bg-gray-100 flex items-center justify-center"
-                    style={{ paddingTop: `${100 / videoRatio}%` }}
-                  >
-                    {!streamReady && (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
-                        <Camera className="w-14 h-14 mb-2" />
-                        <span className="text-sm">Camera loading...</span>
-                      </div>
-                    )}
-                    <video
-                      ref={videoRef}
-                      autoPlay
-                      playsInline
-                      className={`absolute top-0 left-0 w-full h-full object-cover ${
-                        !streamReady ? "hidden" : ""
-                      }`}
-                    />
-                  </div>
-
-                  <div className="flex justify-center gap-4">
-                    <Button
-                      onClick={capturePhoto}
-                      className="flex items-center gap-2 bg-indigo-600 text-white px-5 py-3 rounded-lg hover:bg-indigo-700 active:scale-95 transition"
-                    >
-                      <Camera className="w-5 h-5" />
-                      Capture Photo
-                    </Button>
-
-                    <label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleFileSelect}
-                      />
-                      <Button
-                        className="flex items-center gap-2 bg-gray-200 text-gray-800 px-5 py-3 rounded-lg hover:bg-gray-300 active:scale-95 transition"
-                        asChild
-                      >
-                        <span className="flex items-center gap-2">
-                          <Upload className="w-5 h-5" />
-                          Select File
-                        </span>
-                      </Button>
-                    </label>
-                  </div>
-                </>
-              )}
-
-              {capturedBlob && (
-                <div className="flex flex-col gap-4 items-center">
-                  <img
-                    src={URL.createObjectURL(capturedBlob)}
-                    alt="Preview"
-                    className="max-h-64 w-full object-contain rounded-md border"
+          {/* 👇 Force both tab contents to take same space */}
+          <div className="relative min-h-[420px] flex flex-col gap-6 pt-4 transition-all duration-300">
+            {/* Search Tab */}
+            {activeTab === "search" && (
+              <div className="absolute inset-0 flex flex-col gap-4 animate-fadeIn">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    Search by keywords
+                  </label>
+                  <Input
+                    placeholder="e.g., beach sunset, family portrait..."
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    className="w-full"
                   />
-                  <div className="flex gap-4">
-                    <Button
-                      variant="outline"
-                      className="flex items-center gap-2 px-5 py-3 rounded-lg hover:bg-gray-100 transition"
-                      onClick={() => setCapturedBlob(null)}
-                    >
-                      <Trash2 className="w-5 h-5" />
-                      Delete
-                    </Button>
-                    <Button
-                      disabled={loading}
-                      onClick={handleSubmit}
-                      className="flex items-center gap-2 bg-green-600 text-white px-5 py-3 rounded-lg hover:bg-green-700 active:scale-95 transition"
-                    >
-                      {loading ? "Uploading..." : "Upload"}
-                    </Button>
-                  </div>
                 </div>
-              )}
-            </>
-          )}
-        </div>
-      </DialogContent>
+                <Button
+                  onClick={() => {
+                    onSearchText(searchText)  // ✅ call parent handler
+                    handleClose()
+                  }}
+                  className="w-full bg-indigo-600 text-white hover:bg-indigo-700"
+                >
+                  <Search className="w-4 h-4 mr-2" />
+                  Search Images
+                </Button>
+              </div>
+            )}
+
+            {/* Upload Tab */}
+            {activeTab === "upload" && (
+              <div className="absolute inset-0 flex flex-col gap-6 animate-fadeIn">
+                {!capturedBlob ? (
+                  <>
+                    <div
+                      className="relative w-full rounded-md border overflow-hidden bg-gray-100 flex items-center justify-center"
+                      style={{ paddingTop: `${100 / videoRatio}%` }}
+                    >
+                      {!streamReady && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
+                          <Camera className="w-14 h-14 mb-2" />
+                          <span className="text-sm">Camera loading...</span>
+                        </div>
+                      )}
+                      <video
+                        ref={videoRef}
+                        autoPlay
+                        playsInline
+                        className={`absolute top-0 left-0 w-full h-full object-cover ${!streamReady ? "hidden" : ""
+                          }`}
+                      />
+                    </div>
+
+                    <div className="flex justify-center gap-4">
+                      <Button
+                        onClick={capturePhoto}
+                        className="flex items-center gap-2 bg-indigo-600 text-white px-5 py-3 rounded-lg hover:bg-indigo-700 active:scale-95 transition"
+                      >
+                        <Camera className="w-5 h-5" />
+                        Capture Photo
+                      </Button>
+
+                      <label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={handleFileSelect}
+                        />
+                        <Button
+                          className="flex items-center gap-2 bg-gray-200 text-gray-800 px-5 py-3 rounded-lg hover:bg-gray-300 active:scale-95 transition"
+                          asChild
+                        >
+                          <span className="flex items-center gap-2">
+                            <Upload className="w-5 h-5" />
+                            Select File
+                          </span>
+                        </Button>
+                      </label>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex flex-col gap-4 items-center">
+                    <div
+                      className="relative w-full rounded-md border overflow-hidden bg-black flex items-center justify-center"
+                      style={{ paddingTop: `${100 / videoRatio}%` }}
+                    >
+                      <img
+                        src={URL.createObjectURL(capturedBlob)}
+                        alt="Captured preview"
+                        className="absolute top-0 left-0 w-full h-full object-cover"
+                      />
+                    </div>
+
+                    <div className="flex gap-4">
+                      <Button
+                        variant="outline"
+                        className="flex items-center gap-2 px-5 py-3 rounded-lg hover:bg-gray-100 transition"
+                        onClick={() => setCapturedBlob(null)}
+                      >
+                        <Trash2 className="w-5 h-5" />
+                        Delete
+                      </Button>
+                      <Button
+                        disabled={loading}
+                        onClick={handleSubmit}
+                        className="flex items-center gap-2 bg-green-600 text-white px-5 py-3 rounded-lg hover:bg-green-700 active:scale-95 transition"
+                      >
+                        {loading ? "Uploading..." : "Upload"}
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </DialogPortal>
     </Dialog>
+
+
   )
 }

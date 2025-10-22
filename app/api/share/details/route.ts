@@ -1,51 +1,52 @@
-// app/api/url-manager/route.ts
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(req: NextRequest) {
   try {
-    const session = req.cookies.get("accessToken")?.value
-    if (!session) {
+    const accessToken = req.cookies.get("accessToken")?.value
+    if (!accessToken) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/url-manager`, {
+    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/share/details`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${session}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
+      cache: "no-store",
     })
 
     const data = await backendRes.json()
     return NextResponse.json(data, { status: backendRes.status })
   } catch (err) {
-    console.error("Get URL Managers error:", err)
+    console.error("Get share details error:", err)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const session = req.cookies.get("accessToken")?.value
-    if (!session) {
+    const accessToken = req.cookies.get("accessToken")?.value
+    if (!accessToken) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { data } = await req.json()
-    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/url-manager`, {
+    const body = await req.json()
+
+    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/share/details`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${session}`,
+        Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({name:data.name}), 
+      body: JSON.stringify(body),
     })
 
-    const res = await backendRes.json()
-    return NextResponse.json(res, { status: backendRes.status })
+    const data = await backendRes.json()
+    return NextResponse.json(data, { status: backendRes.status })
   } catch (err) {
-    console.error("Create URL Manager error:", err)
+    console.error("Post share details error:", err)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
-
 

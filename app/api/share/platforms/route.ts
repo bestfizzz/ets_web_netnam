@@ -1,4 +1,3 @@
-// app/api/url-manager/route.ts
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(req: NextRequest) {
@@ -8,7 +7,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/url-manager`, {
+    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/share/platforms`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${session}`,
@@ -31,7 +30,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { data } = await req.json()
-    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/url-manager`, {
+    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/share/platforms`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

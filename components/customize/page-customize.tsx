@@ -28,6 +28,7 @@ import {
   DialogClose
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { Switch } from "@/components/ui/switch"
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible"
 import { Pencil, Check, ChevronRight } from "lucide-react"
 import { DynamicBlockEditor } from "@/components/customize/dynamic-block-editor"
@@ -68,6 +69,7 @@ export const PageCustomize = forwardRef(({
       pageLogo: "",
       pageSize: 10,
       customCSS: "",
+      privateGallery: false,
     },
   };
 
@@ -114,6 +116,7 @@ export const PageCustomize = forwardRef(({
         pageLogo: pageData.data?.settings?.pageLogo ?? "",
         pageSize: pageData.data?.settings?.pageSize ?? 10,
         customCSS: pageData.data?.settings?.customCSS ?? "",
+        privateGallery: pageData.data?.settings?.privateGallery ?? false,
       },
     };
 
@@ -341,6 +344,24 @@ export const PageCustomize = forwardRef(({
                   )}
                 />
 
+                {/* Private Gallery Toggle */}
+                <Controller
+                  name="settings.privateGallery"
+                  control={control}
+                  render={({ field }) => (
+                    <div className="flex items-center justify-between py-2">
+                      <Label className="text-sm">
+                        Private Gallery
+                      </Label>
+                      <Switch
+                        name={field.name}
+                        checked={!!field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </div>
+                  )}
+                />
+
                 {/* Page Size */}
                 <Controller
                   name="settings.pageSize"
@@ -374,7 +395,7 @@ export const PageCustomize = forwardRef(({
                   control={control}
                   defaultValue=""
                   render={({ field }) => {
-                    
+
                     const handleChange = (value: string) => {
                       const trimmed = nSpaceTrimmer(value)
                       if (trimmed !== nSpaceTrimmer(field.value)) {

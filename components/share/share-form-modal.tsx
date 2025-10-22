@@ -8,6 +8,7 @@ import {
   Form, FormField, FormItem, FormLabel, FormControl, FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select"
@@ -18,75 +19,113 @@ import {
 } from "@/components/ui/dialog"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { Profile } from "@/components/share/share-profile-table"
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import type { Detail } from "@/components/share/share-detail-table"
 
-const profileFormSchema = z.object({
-  contact: z.string().min(1, "Contact is required"),
-  accessCode: z.string().min(1, "Access code is required"),
-  socialPlatform: z.enum(["facebook", "twitter", "linkedin"], {
-    required_error: "Select a platform",
-  }),
+// -------------------- SCHEMA --------------------
+const detailFormSchema = z.object({
+  name: z.string().min(1, "Detail name is required"),
+  platform: z.number().int().min(1, "Platform is required"),
+  settings: z.record(z.string(), z.any()).optional(),
 })
 
-type ProfileFormData = z.infer<typeof profileFormSchema>
+type DetailFormData = z.infer<typeof detailFormSchema>
 
-export function AddShareProfileModal() {
+export interface PlatformOption {
+  id: number
+  name: string
+}
+
+// -------------------- ADD MODAL --------------------
+interface AddShareDetailModalProps {
+  platforms: PlatformOption[]
+}
+
+export function AddShareDetailModal({ platforms }: AddShareDetailModalProps) {
   const [open, setOpen] = React.useState(false)
+  const [loading, setLoading] = React.useState(false)
   const router = useRouter()
+  const [settingsText, setSettingsText] = React.useState("{}")
+  const [jsonError, setJsonError] = React.useState<string | null>(null)
 
-  const form = useForm<ProfileFormData>({
-    resolver: zodResolver(profileFormSchema),
+  const form = useForm<DetailFormData>({
+    resolver: zodResolver(detailFormSchema),
     defaultValues: {
-      contact: "",
-      accessCode: "",
-      socialPlatform: "facebook",
+      name: "",
+      platform: 0,
+      settings: {},
     },
   })
 
-  const handleSubmit = async (data: ProfileFormData) => {
-    const res = await fetch("/api/share-platform", {
+  const handleSubmit = async (data: DetailFormData) => {
+    try {
+      const parsedSettings = settingsText.trim()
+        ? JSON.parse(settingsText)
+        : {}
+      data.settings = parsedSettings
+    } catch {
+      toast.error("Invalid JSON in settings")
+      return
+    }
+
+    setLoading(true)
+    const res = await fetch("/api/share/details", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
+    setLoading(false)
 
     if (!res.ok) {
-      toast.error("Failed to add profile")
+      toast.error("Failed to add detail")
       return
     }
 
-    toast.success(`New ${data.socialPlatform} profile added.`)
+    toast.success(`New detail "${data.name}" added.`)
     form.reset()
+    setSettingsText("{}")
     setOpen(false)
+    router.refresh()
+  }
 
-    router.refresh() // 🔄 re-fetches server component data without full reload
+  const handleSettingsChange = (val: string) => {
+    setSettingsText(val)
+    try {
+      JSON.parse(val)
+      setJsonError(null)
+    } catch (err) {
+      setJsonError("Invalid JSON format")
+    }
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Add Profile</Button>
+        <Button disabled={loading}>Add detail</Button>
       </DialogTrigger>
+
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add New Profile</DialogTitle>
+          <DialogTitle>Add New Detail</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
           <form
-            id="profile-form"
+            id="detail-form"
             onSubmit={form.handleSubmit(handleSubmit)}
             className="grid gap-4 py-4"
           >
             <FormField
               control={form.control}
-              name="contact"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Contact</FormLabel>
+                  <FormLabel>Detail Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter contact" {...field} />
+                    <Input placeholder="Enter detail name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -95,33 +134,24 @@ export function AddShareProfileModal() {
 
             <FormField
               control={form.control}
-              name="accessCode"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Access Code</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter access code" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="socialPlatform"
+              name="platform"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Platform</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select
+                      onValueChange={(val) => field.onChange(Number(val))}
+                      value={field.value ? field.value.toString() : ""}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select platform" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="facebook">Facebook</SelectItem>
-                        <SelectItem value="twitter">Twitter</SelectItem>
-                        <SelectItem value="linkedin">LinkedIn</SelectItem>
+                        {platforms.map((p) => (
+                          <SelectItem key={p.id} value={p.id.toString()}>
+                            {p.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -129,15 +159,40 @@ export function AddShareProfileModal() {
                 </FormItem>
               )}
             />
+
+            {/* JSON Settings Textarea */}
+            <FormItem>
+              <FormLabel>Settings (JSON)</FormLabel>
+              <FormControl>
+                <Textarea
+                  value={settingsText}
+                  onChange={(e) => handleSettingsChange(e.target.value)}
+                  placeholder='{"key": "value"}'
+                  className="font-mono text-sm"
+                  rows={5}
+                />
+              </FormControl>
+              {jsonError ? (
+                <p className="text-red-500 text-sm">{jsonError}</p>
+              ) : (
+                <p className="text-muted-foreground text-xs">
+                  Must be valid JSON format.
+                </p>
+              )}
+            </FormItem>
           </form>
         </Form>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>
+          <Button variant="outline" onClick={() => setOpen(false)} disabled={loading}>
             Cancel
           </Button>
-          <Button type="submit" form="profile-form">
-            Add
+          <Button
+            type="submit"
+            form="detail-form"
+            disabled={!!jsonError || loading}
+          >
+            {loading ? "Saving..." : "Add"}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -145,78 +200,108 @@ export function AddShareProfileModal() {
   )
 }
 
-interface ProfileEditModalProps {
-  profile: Profile | null
-  socialPlatform: "facebook" | "twitter" | "linkedin"
+// -------------------- EDIT MODAL --------------------
+interface DetailEditModalProps {
+  detail: Detail | null
   open: boolean
   onOpenChange: (open: boolean) => void
+  platform: PlatformOption
 }
 
-export function EditShareProfileModal({ profile, socialPlatform, open, onOpenChange }: ProfileEditModalProps) {
+export function EditShareDetailModal({
+  detail,
+  open,
+  onOpenChange,
+  platform,
+}: DetailEditModalProps) {
   const router = useRouter()
-  if (!profile || !socialPlatform) return null
-  const form = useForm<ProfileFormData>({
-    resolver: zodResolver(profileFormSchema),
+  const [loading, setLoading] = React.useState(false)
+  const [settingsText, setSettingsText] = React.useState("{}")
+  const [jsonError, setJsonError] = React.useState<string | null>(null)
+
+  const form = useForm<DetailFormData>({
+    resolver: zodResolver(detailFormSchema),
     defaultValues: {
-      contact: profile?.contact ?? "",
-      accessCode: profile?.accessCode ?? "",
-      socialPlatform: socialPlatform,
+      name: detail?.name ?? "",
+      platform: platform.id,
+      settings: detail?.settings ?? {},
     },
   })
 
   React.useEffect(() => {
-    if (profile && socialPlatform) {
+    if (detail) {
       form.reset({
-        contact: profile.contact,
-        accessCode: profile.accessCode,
-        socialPlatform,
+        name: detail.name,
+        platform: platform.id,
+        settings: detail.settings ?? {},
       })
+      setSettingsText(JSON.stringify(detail.settings ?? {}, null, 2))
     }
-  }, [profile, socialPlatform, form])
+  }, [detail, platform, form])
 
-  const handleSubmit = async (data: ProfileFormData) => {
-    if (!profile) return
+  const handleSettingsChange = (val: string) => {
+    setSettingsText(val)
+    try {
+      JSON.parse(val)
+      setJsonError(null)
+    } catch {
+      setJsonError("Invalid JSON format")
+    }
+  }
 
-    const res = await fetch('/api/share-platform', {
+  const handleSubmit = async (data: DetailFormData) => {
+    if (!detail) return
+    try {
+      const parsedSettings = settingsText.trim()
+        ? JSON.parse(settingsText)
+        : {}
+      data.settings = parsedSettings
+    } catch {
+      toast.error("Invalid JSON in settings")
+      return
+    }
+
+    setLoading(true)
+    const res = await fetch(`/api/share/details/${detail.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
+    setLoading(false)
 
     if (!res.ok) {
-      console.error("Failed to update profile:", await res.text())
-      toast.error("Failed to update profile")
+      toast.error("Failed to update detail")
       return
     }
 
-    toast.success(`${data.socialPlatform} profile updated.`)
+    toast.success(`Detail "${data.name}" updated.`)
     onOpenChange(false)
     router.refresh()
   }
 
-  if (!profile) return null
+  if (!detail) return null
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit Profile</DialogTitle>
+          <DialogTitle>Edit Detail</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
           <form
-            id="edit-profile-form"
+            id="edit-detail-form"
             onSubmit={form.handleSubmit(handleSubmit)}
             className="grid gap-4 py-4"
           >
             <FormField
               control={form.control}
-              name="contact"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Contact</FormLabel>
+                  <FormLabel>Detail Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter contact" {...field} />
+                    <Input placeholder="Enter detail name" {...field} disabled={loading} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -225,49 +310,49 @@ export function EditShareProfileModal({ profile, socialPlatform, open, onOpenCha
 
             <FormField
               control={form.control}
-              name="accessCode"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Access Code</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter access code" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="socialPlatform"
+              name="platform"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Platform</FormLabel>
                   <FormControl>
-                    <Select value={field.value} disabled>
+                    <Select value={String(field.value)} disabled>
                       <SelectTrigger>
                         <SelectValue placeholder="Select platform" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="facebook">Facebook</SelectItem>
-                        <SelectItem value="twitter">Twitter</SelectItem>
-                        <SelectItem value="linkedin">LinkedIn</SelectItem>
+                        <SelectItem value={String(platform.id)}>
+                          {platform.name}
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
+
+            <FormItem>
+              <FormLabel>Settings (JSON)</FormLabel>
+              <FormControl>
+                <Textarea
+                  value={settingsText}
+                  onChange={(e) => handleSettingsChange(e.target.value)}
+                  placeholder='{"key": "value"}'
+                  className="font-mono text-sm"
+                  rows={5}
+                  disabled={loading}
+                />
+              </FormControl>
+              {jsonError && <p className="text-red-500 text-sm">{jsonError}</p>}
+            </FormItem>
           </form>
         </Form>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>
             Cancel
           </Button>
-          <Button type="submit" form="edit-profile-form">
-            Save
+          <Button type="submit" form="edit-detail-form" disabled={!!jsonError || loading}>
+            {loading ? "Saving..." : "Save"}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -275,65 +360,63 @@ export function EditShareProfileModal({ profile, socialPlatform, open, onOpenCha
   )
 }
 
-
-interface ProfileDeleteModalProps {
-  profile: Profile | null
-  socialPlatform: "facebook" | "twitter" | "linkedin"
+// -------------------- DELETE MODAL --------------------
+interface DeleteShareDetailModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
+  detail: Detail | null
+  platform: PlatformOption
 }
 
-export function DeleteShareProfileModal({
-  profile,
-  socialPlatform,
+export function DeleteShareDetailModal({
   open,
   onOpenChange,
-}: ProfileDeleteModalProps) {
+  detail,
+  platform,
+}: DeleteShareDetailModalProps) {
   const router = useRouter()
   const [loading, setLoading] = React.useState(false)
+  if (!detail) return null
+
+  const platformName = platform.name
 
   const handleDelete = async () => {
-    if (!profile) return
+    if (!detail?.id) return
     setLoading(true)
-    try {
-      const res = await fetch("/api/share-platform", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: profile.id, socialPlatform }),
-      })
+    const res = await fetch(`/api/share/details/${detail.id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    })
+    setLoading(false)
 
-      if (!res.ok) {
-        toast.error("Error deleting profile")
-        return
-      }
-
-      toast.success(`Profile "${profile.contact}" deleted`)
-      onOpenChange(false)
-      router.refresh()
-    } catch {
-      toast.error("Error deleting profile")
-    } finally {
-      setLoading(false)
+    if (!res.ok) {
+      toast.error("Failed to delete detail")
+      return
     }
+
+    toast.success(`Deleted "${detail.name}" from ${platformName}`)
+    onOpenChange(false)
+    router.refresh()
   }
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>
-            {profile ? `Delete ${profile.contact}?` : "Delete profile?"}
-          </AlertDialogTitle>
+          <AlertDialogTitle>Delete Detail</AlertDialogTitle>
           <AlertDialogDescription>
+            Are you sure you want to delete{" "}
+            <span className="font-medium">{detail.name}</span> from{" "}
+            <span className="font-medium">{platformName}</span>?<br />
             This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            className="bg-red-600 text-white"
             onClick={handleDelete}
-            disabled={loading || !profile}
+            className="bg-red-500 hover:bg-red-600 text-white"
+            disabled={loading}
           >
             {loading ? "Deleting..." : "Delete"}
           </AlertDialogAction>
@@ -342,4 +425,3 @@ export function DeleteShareProfileModal({
     </AlertDialog>
   )
 }
-

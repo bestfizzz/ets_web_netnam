@@ -3,25 +3,19 @@
 import { Button } from "@/components/ui/button"
 import { Download, X, Image, CheckSquare } from "lucide-react"
 import { downloadSelected } from "@/lib/utils"
-import { AssetMeta } from "@/hooks/gallery-context"
+import { AssetMeta,useGalleryContext } from "@/hooks/gallery-context"
 
-export default function ShareSelectionDrawer({
-  selectMode,
-  selectedCount,
-  previewThumbnails,
-  selectedMap,
-  setSelectedMap,
-  setSelectMode,
-  images,
-}: {
-  selectMode: boolean
-  selectedCount: number
-  previewThumbnails: string[]
-  selectedMap: Record<string, any>
-  setSelectedMap: (map: Record<string, any> | ((prev: Record<string, any>) => Record<string, any>)) => void
-  setSelectMode: (mode: boolean) => void
-  images: AssetMeta[]
-}) {
+export default function ShareSelectionDrawer() {
+  const {
+      selectMode,
+      setSelectMode,
+      selectedCount,
+      previewThumbnails,
+      selectedMap,
+      setSelectedMap,
+      images,
+      settings
+    } = useGalleryContext()
   const toggleSelectAllVisible = () => {
     const allSelected = images.every((img: AssetMeta) => Boolean(selectedMap[img.id]))
     setSelectedMap((prev: Record<string, any>) => {
@@ -30,7 +24,7 @@ export default function ShareSelectionDrawer({
         images.forEach((img: AssetMeta) => delete next[img.id])
       } else {
         images.forEach((img: AssetMeta) => {
-          next[img.id] = { thumb: img.thumb, preview: img.preview, download: img.download }
+          next[img.id] = { thumb: img.thumb, preview: img.preview, download: img.download, filename: img.filename }
         })
       }
       return next
@@ -52,7 +46,7 @@ export default function ShareSelectionDrawer({
           <div className="flex-1 min-w-0">
             <div className="text-sm sm:text-base font-semibold text-slate-900 truncate">Selected Images</div>
             <div className="text-xs sm:text-sm text-slate-500 truncate">
-              {selectedCount > 0 
+              {selectedCount > 0
                 ? `Ready to download • ${selectedCount} item${selectedCount > 1 ? "s" : ""}`
                 : "No items selected"}
             </div>
@@ -78,9 +72,9 @@ export default function ShareSelectionDrawer({
             {allPageSelected ? "Deselect Page" : "Select Page"}
           </Button>
 
-          <Button 
-            onClick={() => setSelectedMap({})} 
-            variant="ghost" 
+          <Button
+            onClick={() => setSelectedMap({})}
+            variant="ghost"
             size="sm"
             className="text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-3"
           >
@@ -88,7 +82,7 @@ export default function ShareSelectionDrawer({
           </Button>
 
           <Button
-            onClick={() => downloadSelected(selectedMap)}
+            onClick={() => downloadSelected(selectedMap,settings.pageTitle)}
             size="sm"
             disabled={selectedCount === 0}
             className="flex items-center gap-1 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"

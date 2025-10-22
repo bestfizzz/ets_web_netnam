@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/select"
 import { CheckCircle } from "lucide-react"
 import { URL } from "@/components/url/url-table"
-import { Profile } from "@/components/share/share-profile-table"
+import { Detail } from "@/components/share/share-detail-table"
 
 export const urlFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -41,9 +41,9 @@ export type UrlFormData = z.infer<typeof urlFormSchema>
 type UrlFormProps = {
   url?: URL
   onSubmit: (data: UrlFormData) => void
-  facebookAccounts: Profile[]
-  twitterAccounts: Profile[]
-  linkedinAccounts: Profile[]
+  facebookAccounts: Detail[]
+  twitterAccounts: Detail[]
+  linkedinAccounts: Detail[]
   designs: { pageType: string; id: string; name: string }[]
   formId: string
 }

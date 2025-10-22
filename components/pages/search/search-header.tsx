@@ -10,10 +10,10 @@ import uploadAsset from "@/lib/uploadAsset"
 import { useGalleryContext } from "@/hooks/gallery-context"
 import { scrollToGallery } from "@/lib/utils"
 
-export default function SearchHeader({ themeColor='#ffffff', pageTitle='Search Page', pageLogo }: { themeColor: string, pageTitle: string , pageLogo?: string }) {
+export default function SearchHeader({ themeColor = '#ffffff', pageTitle = 'Search Page', pageLogo }: { themeColor: string, pageTitle: string, pageLogo?: string }) {
   const {
-    query,
     setQuery,
+    query,
     selectMode,
     setSelectMode,
     selectedCount,
@@ -21,11 +21,12 @@ export default function SearchHeader({ themeColor='#ffffff', pageTitle='Search P
     setPersonId,
     setNoResults,
   } = useGalleryContext()
-  const { uuid } = useParams<{ uuid: string }>() || { uuid: "fd1cd598-5b9d-4a59-a483-659dc14a595f" }
+  const { uuid } = useParams<{ uuid: string }>() || {uuid:null}
   const [uploadOpen, setUploadOpen] = useState(false)
 
   const handleUpload = async (file: File, uuid: string) => {
     try {
+      if (!uuid || !file) throw new Error
       toast.info("Uploading photo...")
       const result = await uploadAsset(file, uuid)
 
@@ -55,6 +56,19 @@ export default function SearchHeader({ themeColor='#ffffff', pageTitle='Search P
       toast.error(err?.message || "Upload or person fetch failed.")
       setNoResults(true)
     }
+  }
+
+  // inside SearchHeader component
+  const handleSearchText = (text: string) => {
+    if (!text.trim()) {
+      toast.error("Please enter a search term.")
+      return
+    }
+
+    toast.info(`Searching for "${text}"...`)
+    setQuery(text)
+    setMode("keyword")
+    scrollToGallery()
   }
 
   const toggleSelectMode = () => {
@@ -102,10 +116,10 @@ export default function SearchHeader({ themeColor='#ffffff', pageTitle='Search P
 
             <UploadModal
               open={uploadOpen}
+              query={query}
               onClose={() => setUploadOpen(false)}
               onUpload={(file) => handleUpload(file, uuid)}
-              query={query}
-              setQuery={setQuery}
+              onSearchText={handleSearchText}
             />
           </div>
         </div>

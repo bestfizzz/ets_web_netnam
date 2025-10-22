@@ -1,27 +1,47 @@
 import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
+import { useGalleryContext } from "@/hooks/gallery-context"
 import ImageGrid from "@/components/pages/image-grid"
 import PaginationBar from "@/components/pages/search/pagination-bar"
-import { useGalleryContext } from "@/hooks/gallery-context"
 
 export default function ImageSection() {
-    const { pageSize, page, total } = useGalleryContext()
-    return (
-        <>
-            <Label className="mt-6 text-sm text-muted-foreground">
-                Showing{" "}
-                <span className="font-medium">{pageSize * (page - 1) + 1}</span>–
-                <span className="font-medium">
-                    {Math.min(pageSize * page, total)}
-                </span>{" "}
-                of <span className="font-medium">{total}</span>{" "}
-                {total === 1 ? "image" : "images"} found
-            </Label>
+  const { pageSize, page, total, mode, setPage, loading, nextPage } = useGalleryContext()
 
-            <ImageGrid />
+  const handleLoadMore = () => {
+    setPage(page + 1)
+  }
 
-            <div className="flex justify-center mt-10">
-                <PaginationBar />
-            </div>
-        </>
-    )
+  return (
+    <>
+      {/* ✅ Hide total label if keyword mode */}
+      {mode !== "keyword" && (
+        <Label className="mt-6 text-sm text-muted-foreground">
+          Showing{" "}
+          <span className="font-medium">{pageSize * (page - 1) + 1}</span>–
+          <span className="font-medium">
+            {Math.min(pageSize * page, total)}
+          </span>{" "}
+          of <span className="font-medium">{total}</span>{" "}
+          {total === 1 ? "image" : "images"} found
+        </Label>
+      )}
+
+      <ImageGrid />
+
+      {/* ✅ If keyword mode: show "Load more" instead of pagination */}
+      {mode === "keyword" ? (
+        <div className="flex justify-center mt-10">
+          {nextPage && (
+            <Button onClick={handleLoadMore} disabled={loading}>
+              {loading ? "Loading..." : "Load more"}
+            </Button>
+          )}
+        </div>
+      ) : (
+        <div className="flex justify-center mt-10">
+          <PaginationBar />
+        </div>
+      )}
+    </>
+  )
 }

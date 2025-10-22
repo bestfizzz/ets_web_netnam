@@ -38,7 +38,7 @@ export const performDownload = async (url?: string | null, filename?: string) =>
 }
 
 export const downloadSelected = async (
-  selectedMap: Record<string, { download: string; filename?: string }>
+  selectedMap: Record<string, { download: string; filename?: string }>, pageTitle: string
 ) => {
   const ids = Object.keys(selectedMap)
   if (ids.length === 0) return toast.error("Không có ảnh nào được chọn")
@@ -93,7 +93,7 @@ export const downloadSelected = async (
       compression: "DEFLATE", // ✅ compression enabled
     })
 
-    saveAs(zipBlob, `Selected_Images_${Date.now()}.zip`)
+    saveAs(zipBlob, `${pageTitle}_${Date.now()}.zip` || `Selected_Images_${Date.now()}.zip`)
     toast.success(`✅ Hoàn tất tải ${successCount}/${total} ảnh`, { id: toastId })
   } catch (err) {
     console.error(err)
@@ -129,4 +129,14 @@ export const toTitle = (str: string) => {
 export const nSpaceTrimmer = (str: string) => {
   const cleaned = str.replace(/\n{3,}/g, "\n\n")
   return cleaned.trim()
+}
+
+// ✅ Regex formatter for Vietnam numbers
+export const formatVietnamesePhone = (input: string) => {
+  const digits = input.replace(/\D/g, "")
+  if (digits.startsWith("84")) return digits
+  if (digits.startsWith("0")) return "84" + digits.slice(1)
+  if (digits.startsWith("84")) return digits
+  if (digits.length === 9) return "84" + digits
+  return digits
 }

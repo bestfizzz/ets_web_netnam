@@ -30,8 +30,7 @@ export function PreviewPane({
   const memoizedFormData = React.useMemo(() => ({
     content: formData.content,
     settings: formData.settings
-  }), [formData.content, formData.settings])
-
+  }), [formData.content, formData.settings ])
   return (
     <Card className="shadow-lg flex-1 max-w-full">
       <CardContent className="h-full">

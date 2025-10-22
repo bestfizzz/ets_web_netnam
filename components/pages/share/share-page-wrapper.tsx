@@ -5,14 +5,21 @@ import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { Check, EllipsisVertical } from "lucide-react"
 import ShareSelectionDrawer from "@/components/pages/share/share-selection-drawer"
-import { getAllAssets } from "@/lib/api"
+import { shareAuthentication } from "@/lib/api"
 import { AssetMeta, useGalleryContext } from "@/hooks/gallery-context"
 
-export default function SharePageWrapper({ children, uuid, settings, preview = false }: { children?: React.ReactNode, uuid: string, settings: any, preview?: boolean }) {
-
-  // ✅ Reuse shared context state (instead of duplicating)
+export default function SharePageWrapper({
+  children,
+  uuid,
+  settings,
+  preview = false,
+}: {
+  children?: React.ReactNode
+  uuid: string
+  settings: any
+  preview?: boolean
+}) {
   const {
-    images,
     setImages,
     page,
     setTotal,
@@ -26,16 +33,16 @@ export default function SharePageWrapper({ children, uuid, settings, preview = f
     selectMode,
     setSelectMode,
     selectedMap,
-    setSelectedMap,
-    fancyRef
+    fancyRef,
   } = useGalleryContext()
 
-  // Access + auth states
-  const [contact, setContact] = useState("")
+  const [contactID, setContactID] = useState("")
   const [accessCode, setAccessCode] = useState("")
   const [authorized, setAuthorized] = useState(false)
   const [valid, setValid] = useState<boolean | null>(null)
+  const [assetIds, setAssetIds] = useState<string[]>([]) // ✅ store full list of assetIds
 
+  // ✅ Placeholder mode for preview
   useEffect(() => {
     if (!preview) return
     setAuthorized(true)
@@ -44,7 +51,8 @@ export default function SharePageWrapper({ children, uuid, settings, preview = f
       id: `placeholder-${i}`,
       thumb: `/placeholder/400.svg`,
       preview: `/placeholder/1200.svg`,
-      download: `/placeholder/1200.svg`
+      download: `/placeholder/1200.svg`,
+      filename: `placeholder.svg`,
     }))
 
     setImages(placeholderAssets)
@@ -67,32 +75,34 @@ export default function SharePageWrapper({ children, uuid, settings, preview = f
       })
   }, [uuid])
 
-  // ✅ Load images after authorization and valid URL
+  // ✅ Load paged images locally after authorization
   useEffect(() => {
     if (!authorized || !valid || preview) return
     loadImages(page)
   }, [authorized, valid, page])
 
-  // ✅ Core loader (shared API logic)
+  // ✅ Core loader (paging from assetIds)
   async function loadImages(pageNum: number) {
-    if (!uuid) return
+    if (!uuid || assetIds.length === 0) return
     try {
       setLoading(true)
       setShowFullLoading(true)
       setProgress(20)
 
-      const data = await getAllAssets(uuid, pageNum, pageSize)
-      const totalAssets = data.assets?.total ?? data.assets?.count ?? 0
-      const items = data.assets?.items ?? []
+      const start = (pageNum - 1) * pageSize
+      const end = start + pageSize
+      const currentIds = assetIds.slice(start, end)
+      const totalAssets = assetIds.length
       setTotal(totalAssets)
-      setNoResults(items.length === 0)
+      setNoResults(currentIds.length === 0)
       setProgress(70)
 
-      const mapped: AssetMeta[] = items.map((item: any) => ({
-        id: String(item.id),
-        thumb: `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/thumbnail/${uuid}?assetId=${item.id}&size=thumbnail`,
-        preview: `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/thumbnail/${uuid}?assetId=${item.id}&size=preview`,
-        download: `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/image/${uuid}?assetId=${item.id}`,
+      const mapped: AssetMeta[] = currentIds.map((id) => ({
+        id,
+        thumb: `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/thumbnail/${uuid}?assetId=${id}&size=thumbnail`,
+        preview: `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/thumbnail/${uuid}?assetId=${id}&size=preview`,
+        download: `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/image/${uuid}?assetId=${id}`,
+        filename: `${settings.pageTitle}_${id}`,
       }))
 
       setImages(mapped)
@@ -106,16 +116,35 @@ export default function SharePageWrapper({ children, uuid, settings, preview = f
     }
   }
 
-  const handleAccess = () => {
-    if (!contact.trim()) return toast.error("Please enter your contact")
-    if (accessCode !== "1234") return toast.error("Invalid access code")
-    toast.success("Access granted ✅")
-    setAuthorized(true)
+  // ✅ Authenticate and load full asset list
+  const handleAccess = async () => {
+    if (!contactID.trim() || accessCode === "") {
+      return toast.error("Please enter credentials")
+    }
+
+    try {
+      const data = await shareAuthentication(uuid, contactID, accessCode)
+      if (!data?.assetIds?.length) {
+        return toast.error("No assets found for this access code")
+      }
+
+      setAssetIds(data.assetIds) // ✅ store for local paging
+      setAuthorized(true)
+      toast.success("Access granted ✅")
+
+      // Load first page right away
+      loadImages(1)
+    } catch (err) {
+      console.error("Access failed:", err)
+      toast.error("Access denied ❌")
+    }
   }
 
   const toggleSelectMode = () => {
     setSelectMode((prev) => !prev)
   }
+
+  // === UI States ===
 
   if (valid === false) {
     return (
@@ -137,9 +166,9 @@ export default function SharePageWrapper({ children, uuid, settings, preview = f
             Please enter your contact and access code to continue.
           </p>
           <Input
-            placeholder="Enter contact (email or name)"
-            value={contact}
-            onChange={(e) => setContact(e.target.value)}
+            placeholder="Enter ID"
+            value={contactID}
+            onChange={(e) => setContactID(e.target.value)}
             className="mb-3"
             type="text"
           />
@@ -158,29 +187,35 @@ export default function SharePageWrapper({ children, uuid, settings, preview = f
     )
   }
 
-  // ✅ UI
   const selectedCount = Object.keys(selectedMap).length
-  const totalSelectedImages = Object.values(selectedMap)
-  const previewThumbnails = totalSelectedImages.map((s) => s.thumb).slice(0, 4)
 
   return (
-    <main className="relative flex flex-col min-h-screen" ref={fancyRef} style={{ backgroundColor: settings.themeColor }}>
-      <header className="sticky shadow-sm top-0 z-50" style={{ backgroundColor: settings.themeColor }}>
+    <main
+      className="relative flex flex-col min-h-screen"
+      ref={fancyRef}
+      style={{ backgroundColor: settings.themeColor }}
+    >
+      <header
+        className="sticky shadow-sm top-0 z-50"
+        style={{ backgroundColor: settings.themeColor }}
+      >
         <div className="max-w-7xl mx-auto w-full px-3 sm:px-4">
           <div className="flex items-center justify-between gap-2 sm:gap-3 py-2.5 sm:py-3">
             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-              {settings.pageLogo ?
+              {settings.pageLogo ? (
                 <img
                   src={settings.pageLogo}
                   alt="Logo"
                   className="h-9 sm:h-10 w-9 xs:w-fit object-scale-down xs:object-contain"
                 />
-                :
+              ) : (
                 <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-md bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white font-semibold text-sm sm:text-base">
                   AI
                 </div>
-              }
-              <h1 className="text-base sm:text-lg font-semibold text-slate-800">{settings.pageTitle ? settings.pageTitle : 'Share Page'}</h1>
+              )}
+              <h1 className="text-base sm:text-lg font-semibold text-slate-800">
+                {settings.pageTitle ? settings.pageTitle : "Share Page"}
+              </h1>
             </div>
 
             <div className="hidden md:flex items-center gap-1.5 sm:gap-2">
@@ -189,7 +224,11 @@ export default function SharePageWrapper({ children, uuid, settings, preview = f
                 onClick={toggleSelectMode}
                 className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-3"
               >
-                {selectMode ? <Check className="w-3 h-3 sm:w-4 sm:h-4" /> : <EllipsisVertical className="w-3 h-3 sm:w-4 sm:h-4" />}
+                {selectMode ? (
+                  <Check className="w-3 h-3 sm:w-4 sm:h-4" />
+                ) : (
+                  <EllipsisVertical className="w-3 h-3 sm:w-4 sm:h-4" />
+                )}
                 {selectMode ? `Selected (${selectedCount})` : "Select"}
               </Button>
             </div>
@@ -199,15 +238,7 @@ export default function SharePageWrapper({ children, uuid, settings, preview = f
 
       {children}
 
-      <ShareSelectionDrawer
-        selectMode={selectMode}
-        selectedCount={selectedCount}
-        previewThumbnails={previewThumbnails}
-        selectedMap={selectedMap}
-        setSelectedMap={setSelectedMap}
-        setSelectMode={setSelectMode}
-        images={images}
-      />
+      <ShareSelectionDrawer />
 
       {showFullLoading && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm">
