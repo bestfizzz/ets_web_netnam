@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -13,7 +13,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
@@ -26,60 +26,92 @@ import {
 import { CheckCircle } from "lucide-react"
 import { URL } from "@/components/url/url-table"
 import { Detail } from "@/components/share/share-detail-table"
+import { PlatformOption } from "@/components/share/share-form-modal"
 
-export const urlFormSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  facebook: z.string().optional(),
-  twitter: z.string().optional(),
-  linkedin: z.string().optional(),
-  searchTemplate: z.string().optional(),
-  shareTemplate: z.string().optional(),
-})
+// Create dynamic schema based on available platforms
+const createUrlFormSchema = (platforms: { id: number; name: string }[] = []) => {
+  const schemaFields: Record<string, z.ZodTypeAny> = {
+    name: z.string().min(1, "Name is required"),
+    searchTemplate: z.string().optional(),
+    shareTemplate: z.string().optional(),
+  }
 
-export type UrlFormData = z.infer<typeof urlFormSchema>
+  // Add platform fields dynamically
+  platforms.forEach((platform) => {
+    schemaFields[`platform_${platform.id}`] = z.string().optional()
+  })
+
+  return z.object(schemaFields)
+}
 
 type UrlFormProps = {
   url?: URL
-  onSubmit: (data: UrlFormData) => void
-  facebookAccounts: Detail[]
-  twitterAccounts: Detail[]
-  linkedinAccounts: Detail[]
-  designs: { pageType: string; id: string; name: string }[]
+  onSubmit: (data: Record<string, any>) => void
+  shareDetails?: Detail[]
+  platforms?: PlatformOption[]
+  designs?: { pageType: string; id: string; name: string }[]
   formId: string
 }
 
 export function UrlForm({
   url,
   onSubmit,
-  facebookAccounts,
-  twitterAccounts,
-  linkedinAccounts,
-  designs,
+  shareDetails = [],
+  platforms = [],
+  designs = [],
   formId
 }: UrlFormProps) {
-  const form = useForm<UrlFormData>({
-    resolver: zodResolver(urlFormSchema),
-    defaultValues: {
+  const urlFormSchema = useMemo(() => createUrlFormSchema(platforms), [platforms])
+  console.log(url,shareDetails,platforms)
+  // Group share details by platform
+  const groupedDetails = useMemo(() => {
+    const grouped: Record<number, Detail[]> = {}
+    shareDetails.forEach((detail) => {
+      const platformId = detail.platform?.id
+      if (platformId !== undefined) {
+        if (!grouped[platformId]) {
+          grouped[platformId] = []
+        }
+        grouped[platformId].push(detail)
+      }
+    })
+    return grouped
+  }, [shareDetails])
+
+  // Create default values
+  const getDefaultValues = () => {
+    const defaults: Record<string, any> = {
       name: url?.name ?? "",
-      facebook: url?.facebook ?? "none",
-      twitter: url?.twitter ?? "none",
-      linkedin: url?.linkedin ?? "none",
       searchTemplate: url?.searchTemplate ?? "none",
       shareTemplate: url?.shareTemplate ?? "none",
-    },
+    }
+
+    // ✅ Dynamically map shareDetailIds to their corresponding platforms
+    platforms.forEach((platform) => {
+      const fieldName = `platform_${platform.id}`
+
+      // Find the shareDetail that matches this platform
+      const matchedDetail = url?.shareDetails.find(
+        (d:Detail) =>
+          d.platform.id === platform.id
+      )
+
+      // Set default dropdown value for this platform
+      defaults[fieldName] = matchedDetail ? String(matchedDetail.id) : "none"
+    })
+
+    return defaults
+  }
+
+  const form = useForm({
+    resolver: zodResolver(urlFormSchema),
+    defaultValues: getDefaultValues(),
   })
 
   // Reset form whenever url changes
   useEffect(() => {
-    form.reset({
-      name: url?.name ?? "",
-      facebook: url?.facebook ?? "none",
-      twitter: url?.twitter ?? "none",
-      linkedin: url?.linkedin ?? "none",
-      searchTemplate: url?.searchTemplate ?? "none",
-      shareTemplate: url?.shareTemplate ?? "none",
-    })
-  }, [url]) // ✅ no need to include form
+    form.reset(getDefaultValues())
+  }, [url, platforms])
 
   const selected = form.watch()
 
@@ -88,7 +120,7 @@ export function UrlForm({
       <form
         id={formId}
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid gap-4"
+        className="grid gap-4 w-full"
       >
         {/* Name */}
         <FormField
@@ -105,117 +137,75 @@ export function UrlForm({
           )}
         />
 
-        {/* Socials */}
-        <div className="pt-4 border-t grid gap-4">
-          <FormLabel>Social Credentials</FormLabel>
-          <Tabs defaultValue="facebook" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              {["facebook", "twitter", "linkedin"].map((tab) => (
-                <TabsTrigger
-                  key={tab}
-                  value={tab}
-                  className="flex items-center gap-2"
-                >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                  <CheckCircle
-                    className={`w-5 h-5 ${
-                      selected[tab] && selected[tab] !== "none"
-                        ? "text-green-500"
-                        : "text-gray-400"
-                    }`}
-                  />
-                </TabsTrigger>
-              ))}
-            </TabsList>
+        {/* Social Credentials - Dynamic */}
+        {platforms.length > 0 && (
+          <div className="pt-4 border-t grid gap-4 w-full">
+            <FormLabel>Social Credentials</FormLabel>
+            <Tabs defaultValue={`platform_${platforms[0]?.id}`} className="w-full">
+              <ScrollArea >
+                <div className="relative rounded-sm overflow-x-auto overflow-y-hidden h-13 bg-muted">
+                  <TabsList className="absolute flex flex-row w-full min-w-max ">
+                    {platforms.map((platform) => {
+                      const fieldName = `platform_${platform.id}`
+                      return (
+                        <TabsTrigger
+                          key={platform.id}
+                          value={fieldName}
+                          className="flex items-center gap-2 min-w-[120px]"
+                        >
+                          <span className="truncate">{platform.name}</span>
+                          <CheckCircle
+                            className={`w-4 h-4 flex-shrink-0 ${selected[fieldName] && selected[fieldName] !== "none"
+                              ? "text-green-500"
+                              : "text-gray-400"
+                              }`}
+                          />
+                        </TabsTrigger>
+                      )
+                    })}
+                  </TabsList>
+                </div>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
 
-            {/* Facebook */}
-            <TabsContent value="facebook">
-              <FormField
-                control={form.control}
-                name="facebook"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Facebook Account</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select credential" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="none">None</SelectItem>
-                          {facebookAccounts.map((acc) => (
-                            <SelectItem key={acc.id} value={acc.id}>
-                              {acc.contact}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </TabsContent>
 
-            {/* Twitter */}
-            <TabsContent value="twitter">
-              <FormField
-                control={form.control}
-                name="twitter"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Twitter Account</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select credential" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="none">None</SelectItem>
-                          {twitterAccounts.map((acc) => (
-                            <SelectItem key={acc.id} value={acc.id}>
-                              {acc.contact}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </TabsContent>
+              {platforms.map((platform) => {
+                const fieldName = `platform_${platform.id}`
+                const accounts = groupedDetails[platform.id] || []
 
-            {/* LinkedIn */}
-            <TabsContent value="linkedin">
-              <FormField
-                control={form.control}
-                name="linkedin"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>LinkedIn Account</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select credential" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="none">None</SelectItem>
-                          {linkedinAccounts.map((acc) => (
-                            <SelectItem key={acc.id} value={acc.id}>
-                              {acc.contact}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </TabsContent>
-          </Tabs>
-        </div>
+                return (
+                  <TabsContent key={platform.id} value={fieldName}>
+                    <FormField
+                      control={form.control}
+                      name={fieldName}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{platform.name} Account</FormLabel>
+                          <FormControl>
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select credential" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="none">None</SelectItem>
+                                {accounts.map((acc) => (
+                                  <SelectItem key={acc.id} value={String(acc.id)}>
+                                    {acc.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </TabsContent>
+                )
+              })}
+            </Tabs>
+          </div>
+        )}
 
         {/* Templates */}
         <div className="pt-4 border-t grid gap-4">
@@ -230,12 +220,11 @@ export function UrlForm({
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
                   <CheckCircle
-                    className={`w-5 h-5 ${
-                      selected[`${tab}Template`] &&
+                    className={`w-5 h-5 ${selected[`${tab}Template`] &&
                       selected[`${tab}Template`] !== "none"
-                        ? "text-green-500"
-                        : "text-gray-400"
-                    }`}
+                      ? "text-green-500"
+                      : "text-gray-400"
+                      }`}
                   />
                 </TabsTrigger>
               ))}

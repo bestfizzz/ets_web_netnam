@@ -8,7 +8,6 @@ import {
   Form, FormField, FormItem, FormLabel, FormControl, FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select"
@@ -39,6 +38,74 @@ export interface PlatformOption {
   name: string
 }
 
+// -------------------- KEY-VALUE EDITOR --------------------
+interface KeyValue {
+  key: string
+  value: string
+}
+
+function KeyValueEditor({
+  pairs,
+  onChange,
+  disabled = false,
+}: {
+  pairs: KeyValue[]
+  onChange: (pairs: KeyValue[]) => void
+  disabled?: boolean
+}) {
+  const handleAdd = () => {
+    onChange([...pairs, { key: "", value: "" }])
+  }
+
+  const handleRemove = (index: number) => {
+    onChange(pairs.filter((_, i) => i !== index))
+  }
+
+  const handleUpdate = (index: number, field: "key" | "value", newVal: string) => {
+    const updated = [...pairs]
+    updated[index][field] = newVal
+    onChange(updated)
+  }
+
+  return (
+    <div className="space-y-2">
+      {pairs.map((pair, i) => (
+        <div key={i} className="flex gap-2 items-center">
+          <Input
+            placeholder="Key"
+            value={pair.key}
+            onChange={(e) => handleUpdate(i, "key", e.target.value)}
+            disabled={disabled}
+          />
+          <Input
+            placeholder="Value"
+            value={pair.value}
+            onChange={(e) => handleUpdate(i, "value", e.target.value)}
+            disabled={disabled}
+          />
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => handleRemove(i)}
+            disabled={disabled}
+          >
+            ✕
+          </Button>
+        </div>
+      ))}
+
+      <Button
+        type="button"
+        variant="secondary"
+        onClick={handleAdd}
+        disabled={disabled}
+      >
+        + Add Field
+      </Button>
+    </div>
+  )
+}
+
 // -------------------- ADD MODAL --------------------
 interface AddShareDetailModalProps {
   platforms: PlatformOption[]
@@ -47,9 +114,8 @@ interface AddShareDetailModalProps {
 export function AddShareDetailModal({ platforms }: AddShareDetailModalProps) {
   const [open, setOpen] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
+  const [keyValues, setKeyValues] = React.useState<KeyValue[]>([])
   const router = useRouter()
-  const [settingsText, setSettingsText] = React.useState("{}")
-  const [jsonError, setJsonError] = React.useState<string | null>(null)
 
   const form = useForm<DetailFormData>({
     resolver: zodResolver(detailFormSchema),
@@ -61,43 +127,33 @@ export function AddShareDetailModal({ platforms }: AddShareDetailModalProps) {
   })
 
   const handleSubmit = async (data: DetailFormData) => {
+    const settingsObj = keyValues.reduce((acc, kv) => {
+      if (kv.key.trim() !== "") acc[kv.key] = kv.value
+      return acc
+    }, {} as Record<string, any>)
+    data.settings = settingsObj
+
     try {
-      const parsedSettings = settingsText.trim()
-        ? JSON.parse(settingsText)
-        : {}
-      data.settings = parsedSettings
-    } catch {
-      toast.error("Invalid JSON in settings")
-      return
-    }
+      setLoading(true)
+      const res = await fetch("/api/share/details", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+      setLoading(false)
 
-    setLoading(true)
-    const res = await fetch("/api/share/details", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-    setLoading(false)
+      if (!res.ok) {
+        const msg = await res.text()
+        throw new Error(msg || "Failed to add detail")
+      }
 
-    if (!res.ok) {
-      toast.error("Failed to add detail")
-      return
-    }
-
-    toast.success(`New detail "${data.name}" added.`)
-    form.reset()
-    setSettingsText("{}")
-    setOpen(false)
-    router.refresh()
-  }
-
-  const handleSettingsChange = (val: string) => {
-    setSettingsText(val)
-    try {
-      JSON.parse(val)
-      setJsonError(null)
-    } catch (err) {
-      setJsonError("Invalid JSON format")
+      toast.success(`New detail "${data.name}" added.`)
+      form.reset()
+      setKeyValues([])
+      setOpen(false)
+      router.refresh()
+    } catch (err: any) {
+      toast.error(err.message || "Request failed ❌")
     }
   }
 
@@ -160,25 +216,19 @@ export function AddShareDetailModal({ platforms }: AddShareDetailModalProps) {
               )}
             />
 
-            {/* JSON Settings Textarea */}
+            {/* Key-Value Editor */}
             <FormItem>
-              <FormLabel>Settings (JSON)</FormLabel>
+              <FormLabel>Settings</FormLabel>
               <FormControl>
-                <Textarea
-                  value={settingsText}
-                  onChange={(e) => handleSettingsChange(e.target.value)}
-                  placeholder='{"key": "value"}'
-                  className="font-mono text-sm"
-                  rows={5}
+                <KeyValueEditor
+                  pairs={keyValues}
+                  onChange={setKeyValues}
+                  disabled={loading}
                 />
               </FormControl>
-              {jsonError ? (
-                <p className="text-red-500 text-sm">{jsonError}</p>
-              ) : (
-                <p className="text-muted-foreground text-xs">
-                  Must be valid JSON format.
-                </p>
-              )}
+              <p className="text-muted-foreground text-xs">
+                Add key–value pairs. Empty keys are ignored.
+              </p>
             </FormItem>
           </form>
         </Form>
@@ -187,11 +237,7 @@ export function AddShareDetailModal({ platforms }: AddShareDetailModalProps) {
           <Button variant="outline" onClick={() => setOpen(false)} disabled={loading}>
             Cancel
           </Button>
-          <Button
-            type="submit"
-            form="detail-form"
-            disabled={!!jsonError || loading}
-          >
+          <Button type="submit" form="detail-form" disabled={loading}>
             {loading ? "Saving..." : "Add"}
           </Button>
         </DialogFooter>
@@ -216,8 +262,7 @@ export function EditShareDetailModal({
 }: DetailEditModalProps) {
   const router = useRouter()
   const [loading, setLoading] = React.useState(false)
-  const [settingsText, setSettingsText] = React.useState("{}")
-  const [jsonError, setJsonError] = React.useState<string | null>(null)
+  const [keyValues, setKeyValues] = React.useState<KeyValue[]>([])
 
   const form = useForm<DetailFormData>({
     resolver: zodResolver(detailFormSchema),
@@ -235,48 +280,45 @@ export function EditShareDetailModal({
         platform: platform.id,
         settings: detail.settings ?? {},
       })
-      setSettingsText(JSON.stringify(detail.settings ?? {}, null, 2))
+      if (detail.settings) {
+        const entries = Object.entries(detail.settings).map(([k, v]) => ({
+          key: k,
+          value: String(v),
+        }))
+        setKeyValues(entries)
+      }
     }
   }, [detail, platform, form])
 
-  const handleSettingsChange = (val: string) => {
-    setSettingsText(val)
-    try {
-      JSON.parse(val)
-      setJsonError(null)
-    } catch {
-      setJsonError("Invalid JSON format")
-    }
-  }
-
   const handleSubmit = async (data: DetailFormData) => {
     if (!detail) return
+
+    const settingsObj = keyValues.reduce((acc, kv) => {
+      if (kv.key.trim() !== "") acc[kv.key] = kv.value
+      return acc
+    }, {} as Record<string, any>)
+    data.settings = settingsObj
+
     try {
-      const parsedSettings = settingsText.trim()
-        ? JSON.parse(settingsText)
-        : {}
-      data.settings = parsedSettings
-    } catch {
-      toast.error("Invalid JSON in settings")
-      return
+      setLoading(true)
+      const res = await fetch(`/api/share/details/${detail.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+      setLoading(false)
+
+      if (!res.ok) {
+        const msg = await res.text()
+        throw new Error(msg || "Failed to update detail")
+      }
+
+      toast.success(`Detail "${data.name}" updated.`)
+      onOpenChange(false)
+      router.refresh()
+    } catch (err: any) {
+      toast.error(err.message || "Update failed ❌")
     }
-
-    setLoading(true)
-    const res = await fetch(`/api/share/details/${detail.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-    setLoading(false)
-
-    if (!res.ok) {
-      toast.error("Failed to update detail")
-      return
-    }
-
-    toast.success(`Detail "${data.name}" updated.`)
-    onOpenChange(false)
-    router.refresh()
   }
 
   if (!detail) return null
@@ -330,19 +372,19 @@ export function EditShareDetailModal({
               )}
             />
 
+            {/* Key-Value Editor */}
             <FormItem>
-              <FormLabel>Settings (JSON)</FormLabel>
+              <FormLabel>Settings</FormLabel>
               <FormControl>
-                <Textarea
-                  value={settingsText}
-                  onChange={(e) => handleSettingsChange(e.target.value)}
-                  placeholder='{"key": "value"}'
-                  className="font-mono text-sm"
-                  rows={5}
+                <KeyValueEditor
+                  pairs={keyValues}
+                  onChange={setKeyValues}
                   disabled={loading}
                 />
               </FormControl>
-              {jsonError && <p className="text-red-500 text-sm">{jsonError}</p>}
+              <p className="text-muted-foreground text-xs">
+                Modify key–value pairs below.
+              </p>
             </FormItem>
           </form>
         </Form>
@@ -351,7 +393,7 @@ export function EditShareDetailModal({
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>
             Cancel
           </Button>
-          <Button type="submit" form="edit-detail-form" disabled={!!jsonError || loading}>
+          <Button type="submit" form="edit-detail-form" disabled={loading}>
             {loading ? "Saving..." : "Save"}
           </Button>
         </DialogFooter>
@@ -382,21 +424,25 @@ export function DeleteShareDetailModal({
 
   const handleDelete = async () => {
     if (!detail?.id) return
-    setLoading(true)
-    const res = await fetch(`/api/share/details/${detail.id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    })
-    setLoading(false)
+    try {
+      setLoading(true)
+      const res = await fetch(`/api/share/details/${detail.id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      })
+      setLoading(false)
 
-    if (!res.ok) {
-      toast.error("Failed to delete detail")
-      return
+      if (!res.ok) {
+        const msg = await res.text()
+        throw new Error(msg || "Failed to delete detail")
+      }
+
+      toast.success(`Deleted "${detail.name}" from ${platformName}`)
+      onOpenChange(false)
+      router.refresh()
+    } catch (err: any) {
+      toast.error(err.message || "Delete failed ❌")
     }
-
-    toast.success(`Deleted "${detail.name}" from ${platformName}`)
-    onOpenChange(false)
-    router.refresh()
   }
 
   return (

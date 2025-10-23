@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${session}`,
       },
-      body: JSON.stringify({name:data.name}), 
+      body: JSON.stringify({name:data.name,shareDetailIds:data.shareDetailIds}), 
     })
 
     const res = await backendRes.json()

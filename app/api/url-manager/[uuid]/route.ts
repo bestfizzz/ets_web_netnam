@@ -28,13 +28,12 @@ export async function GET(
   }
 }
 
-// Update URL by ID (not UUID)
 export async function PATCH(
   req: NextRequest,
   context: { params: Promise<{ uuid: string }> }
 ) {
   try {
-    const id = (await context.params).uuid // ✅ await params
+    const uuid = (await context.params).uuid // ✅ await params
     const accessToken = req.cookies.get("accessToken")?.value
     if (!accessToken) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -42,13 +41,13 @@ export async function PATCH(
 
     const {data} = await req.json()
     console.log("PATCH body:", data)
-    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/url-manager/${id}`, {
+    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/url-manager/${uuid}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({name:data.name}),
+      body: JSON.stringify({name:data.name,shareDetailIds:data.shareDetailIds}),
     })
 
     const res = await backendRes.json()
@@ -59,19 +58,19 @@ export async function PATCH(
   }
 }
 
-// Delete URL by ID (not UUID)
+// Delete URL by uuid (not UUID)
 export async function DELETE(
   req: NextRequest,
   context: { params: Promise<{ uuid: string }> }
 ) {
   try {
-    const id = (await context.params).uuid // ✅ await params
+    const uuid = (await context.params).uuid // ✅ await params
     const accessToken = req.cookies.get("accessToken")?.value
     if (!accessToken) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/url-manager/${id}`, {
+    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/url-manager/${uuid}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${accessToken}` },
     })

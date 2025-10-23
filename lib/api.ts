@@ -73,7 +73,7 @@ export async function getAllAssets(uuid: string, page = 1, size = 20) {
   return res.json()
 }
 
-export async function getPersonAssets(uuid: string, personId: string, page = 1, size = 10) {
+export async function getPersonAssets(uuid: string, personId: string, page = 1, size = 10) {  
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/person/${uuid}/page?personId=${personId}&page=${page}&size=${size}`
   )
@@ -135,7 +135,7 @@ export async function createGuestShare( uuid:string,data: {
 }) {
   console.log(data)
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/share/guests/${uuid}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/share/${uuid}`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -144,6 +144,7 @@ export async function createGuestShare( uuid:string,data: {
   )
 
   if (!res.ok) {
+    console.log(res)
     throw new Error(`Failed to create guest share: ${res.status}`)
   }
 

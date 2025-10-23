@@ -6,7 +6,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -23,253 +22,219 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { UrlForm, UrlFormData } from "./url-form"
+import { UrlForm } from "./url-form"
 import { URL } from "@/components/url/url-table"
-import { Profile } from "../share/share-detail-table"
 import { toast } from "sonner"
+import { Detail } from "@/components/share/share-detail-table"
 
-// ---------------- EDIT MODAL ----------------
+// ===== EDIT MODAL =====
 type UrlEditModalProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
   url: URL | null
+  platforms?: { id: number; name: string }[]
+  shareDetails?: Detail[]
 }
 
-export function UrlEditModal({ open, onOpenChange, url }: UrlEditModalProps) {
+export function UrlEditModal({ open, onOpenChange, url, platforms = [], shareDetails = [] }: UrlEditModalProps) {
   const router = useRouter()
-  const [profileList, setProfileList] = React.useState({
-    facebook: [] as Profile[],
-    twitter: [] as Profile[],
-    linkedin: [] as Profile[],
-  })
-  const [designs, setDesigns] = React.useState<{ pageType: string; id: string; name: string }[]>([])
+  const [designs, setDesigns] = React.useState<any[]>([])
   const formId = "url-edit-form"
+
   React.useEffect(() => {
     if (!open) return
-    async function fetchData() {
-      try {
-        const res = await fetch("/api/customize/get-template")
-        const data = await res.json()
-        setDesigns(data.data) // 👈 store designs
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    fetchData()
-  }, [open])
-
-
-  // Fetch social accounts when modal opens
-  React.useEffect(() => {
-    if (!open) return
-    async function fetchData() {
-      try {
-        const res = await fetch("/api/share-platform")
-        const data = await res.json()
-        setProfileList(data)
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    fetchData()
+    fetch("/api/customize/get-template")
+      .then(async (r) => {
+        if (!r.ok) throw new Error(await r.text())
+        const data = await r.json()
+        setDesigns(data.data || [])
+      })
+      .catch((err) => {
+        console.error("Template fetch failed:", err)
+        toast.error("Failed to load templates ❌")
+      })
   }, [open])
 
   if (!url) return null
-  const handleSubmit = async (data: UrlFormData) => {
+
+  const handleSubmit = async (payload: any) => {
     try {
-      console.log("Submitting", data)
-      // await fetch("/api/url", {
-      //   method: "PUT",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ data, uuid: url.uuid}),
-      // })
-      const res = await fetch(`/api/url-manager/${url.id}`, {
+      const shareDetailIds: number[] = []
+      Object.keys(payload).forEach((k) => {
+        if (k.startsWith("platform_")) {
+          const v = payload[k]
+          if (v && v !== "none") {
+            const n = Number(v)
+            if (!Number.isNaN(n)) shareDetailIds.push(n)
+          }
+        }
+      })
+
+      const data: Record<string, any> = {
+        name: payload.name,
+        shareDetailIds,
+      }
+
+      const res = await fetch(`/api/url-manager/${url.uuid}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data }),
+        body: JSON.stringify({data}),
       })
-      if (!res.ok) throw new Error(res.statusText)
+
+      if (!res.ok) {
+        const msg = await res.text()
+        throw new Error(msg || "Update failed")
+      }
+
+      toast.success("Updated ✅")
       onOpenChange(false)
-      router.refresh() // Refresh the page to update the list
-      toast.success("URL updated successfully")
-    } catch (err) {
-      console.error("Failed to update URL:", err)
-      toast.error("Failed to update URL")
+      router.refresh()
+    } catch (err: any) {
+      console.error("Update error:", err)
+      toast.error(err.message || "Update failed ❌")
     }
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit {url.name}</DialogTitle>
-          <DialogDescription>Update details for this URL. Click save when done.</DialogDescription>
         </DialogHeader>
 
         <UrlForm
           url={url}
           onSubmit={handleSubmit}
-          facebookAccounts={profileList.facebook}
-          twitterAccounts={profileList.twitter}
-          linkedinAccounts={profileList.linkedin}
+          platforms={platforms}
+          shareDetails={shareDetails}
           designs={designs}
           formId={formId}
         />
 
         <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DialogClose>
-          <Button type="submit" form={formId}>
-            Save changes
-          </Button>
+          <DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose>
+          <Button type="submit" form={formId}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   )
 }
 
-// ---------------- ADD MODAL ----------------
-export function UrlAddModal() {
+// ===== ADD MODAL =====
+export function UrlAddModal({ platforms = [], shareDetails = [] }: any) {
   const router = useRouter()
-  const [profileList, setProfileList] = React.useState({
-    facebook: [] as Profile[],
-    twitter: [] as Profile[],
-    linkedin: [] as Profile[],
-  })
   const [open, setOpen] = React.useState(false)
-  const [designs, setDesigns] = React.useState<{ pageType: string; id: string; name: string }[]>([])
-
+  const [designs, setDesigns] = React.useState<any[]>([])
   const formId = "url-add-form"
+
   React.useEffect(() => {
     if (!open) return
-    async function fetchData() {
-      try {
-        const res = await fetch("/api/customize/get-template")
-        const data = await res.json()
-        setDesigns(data.data) // 👈 store designs
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    fetchData()
+    fetch("/api/customize/get-template")
+      .then(async (r) => {
+        if (!r.ok) throw new Error(await r.text())
+        const data = await r.json()
+        setDesigns(data.data || [])
+      })
+      .catch((err) => {
+        console.error("Template fetch failed:", err)
+        toast.error("Failed to load templates ❌")
+      })
   }, [open])
 
-  // Fetch social accounts once on mount
-  React.useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await fetch("/api/share-platform")
-        const data = await res.json()
-        setProfileList(data)
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    fetchData()
-  }, [])
-
-  const handleSubmit = async (data: UrlFormData) => {
+  const handleSubmit = async (payload: any) => {
     try {
+      const shareDetailIds: number[] = []
+      Object.keys(payload).forEach((k) => {
+        if (k.startsWith("platform_")) {
+          const v = payload[k]
+          if (v && v !== "none") {
+            const n = Number(v)
+            if (!Number.isNaN(n)) shareDetailIds.push(n)
+          }
+        }
+      })
+
+      const data = {
+        name: payload.name,
+        shareDetailIds,
+      }
+
       const res = await fetch("/api/url-manager", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data }),
       })
-      if (!res.ok) throw new Error(res.statusText)
+
+      if (!res.ok) {
+        const msg = await res.text()
+        throw new Error(msg || "Add failed")
+      }
+
+      toast.success("Added ✅")
       setOpen(false)
-      router.refresh() // Refresh the page to update the list
-      toast.success("URL added successfully")
-    } catch (err) {
-      console.error("Failed to add URL:", err)
-      toast.error("Failed to add URL")
+      router.refresh()
+    } catch (err: any) {
+      console.error("Add error:", err)
+      toast.error(err.message || "Failed ❌")
     }
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="default" className="ml-4">
-          Add URL
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Add new URL</DialogTitle>
-          <DialogDescription>Make changes to your profile here. Click save when done.</DialogDescription>
-        </DialogHeader>
+      <DialogTrigger asChild><Button>Add URL</Button></DialogTrigger>
+      <DialogContent>
+        <DialogHeader><DialogTitle>Create URL</DialogTitle></DialogHeader>
 
         <UrlForm
           onSubmit={handleSubmit}
-          facebookAccounts={profileList.facebook}
-          twitterAccounts={profileList.twitter}
-          linkedinAccounts={profileList.linkedin}
+          platforms={platforms}
+          shareDetails={shareDetails}
           designs={designs}
           formId={formId}
         />
 
         <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DialogClose>
-          <Button type="submit" form={formId}>
-            Add URL
-          </Button>
+          <DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose>
+          <Button type="submit" form={formId}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   )
 }
 
-// ---------------- DELETE MODAL ----------------
-type UrlDeleteModalProps = {
-  url: any
-  open: boolean
-  onOpenChange: (open: boolean) => void
-}
-
-export function UrlDeleteModal({ url, open, onOpenChange }: UrlDeleteModalProps) {
+// ===== DELETE MODAL =====
+export function UrlDeleteModal({ url, open, onOpenChange }: any) {
   const router = useRouter()
-  const [loading, setLoading] = React.useState(false)
-
-  if (!url) return null
 
   const handleDelete = async () => {
-    setLoading(true)
     try {
-      // const res = await fetch("/api/url", {
-      //   method: "DELETE",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ id: url.id }),
-      // })
-      const res = await fetch(`/api/url-manager/${url.id}`, {
-        method: "DELETE",
-      })
-      if (!res.ok) throw new Error("Failed to delete")
-      toast.success(`URL "${url.name}" deleted`)
-      onOpenChange(false) // close after delete
+      const res = await fetch(`/api/url-manager/${url.id}`, { method: "DELETE" })
+      if (!res.ok) {
+        const msg = await res.text()
+        throw new Error(msg || "Delete failed")
+      }
+
+      toast.success(`Deleted "${url.name}"`)
+      onOpenChange(false)
       router.refresh()
-    } catch (err) {
-      toast.error("Error deleting URL")
-    } finally {
-      setLoading(false)
+    } catch (err: any) {
+      console.error("Delete error:", err)
+      toast.error(err.message || "Failed to delete ❌")
     }
   }
+
+  if (!url) return null
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete {url.name}?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone.
-          </AlertDialogDescription>
+          <AlertDialogTitle>Delete?</AlertDialogTitle>
+          <AlertDialogDescription>{url.name}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className="bg-red-600 text-white" onClick={handleDelete} disabled={loading}>
-            Delete
-          </AlertDialogAction>
+          <AlertDialogCancel>No</AlertDialogCancel>
+          <AlertDialogAction onClick={handleDelete} className="bg-red-500 text-white">Delete</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -13,7 +13,7 @@ import {
     useReactTable,
     VisibilityState,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { ChevronDown, MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     Select,
@@ -42,87 +42,98 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { toast } from "sonner"
-import { UrlAddModal, UrlEditModal,UrlDeleteModal } from "@/components/url/url-modals"
+import { UrlAddModal, UrlEditModal, UrlDeleteModal } from "@/components/url/url-modals"
+import { Detail } from "@/components/share/share-detail-table"
 
 export type URL = {
     id: string
     uuid: string
     name: string
-    facebook?: string | 'none'
-    twitter?: string | 'none'
-    linkedin?: string | 'none'
-    searchTemplate?: string | "none",
-    shareTemplate?: string | "none",
+    searchTemplate?: string | "none"
+    shareTemplate?: string | "none"
+    [key: string]: any // For dynamic platform fields
 }
 
 interface URLTableProps {
     tableData: URL[]
     error?: string
+    platforms: { id: number; name: string }[]
+    shareDetails: Detail[]
 }
 
-export const columns: ColumnDef<URL>[] = [
-    {
-        accessorKey: "id",
-        header: "ID",
-    },
-    {
-        accessorKey: "uuid",
-        header: "UUID",
-    },
-    {
-        accessorKey: "name",
-        header: "Name",
-        cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const url = row.original
-            const [editOpen, setEditOpen] = React.useState(false)
-            const [deleteOpen, setDeleteOpen] = React.useState(false)
-
-            return (
-                <>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem
-                                onClick={() => navigator.clipboard.writeText(url.id)}
-                            >
-                                Copy URL ID
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => setEditOpen(true)}>
-                                Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => setDeleteOpen(true)}>
-                                Delete
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-
-                    <UrlEditModal open={editOpen} onOpenChange={setEditOpen} url={url} />
-                    <UrlDeleteModal url={url} open={deleteOpen} onOpenChange={setDeleteOpen} />
-                </>
-            )
-        },
-    },
-]
-
-export function URLTable({ tableData, error }: URLTableProps) {
+export function URLTable({ tableData, error, platforms, shareDetails }: URLTableProps) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
-    const data = tableData
 
+    const columns: ColumnDef<URL>[] = React.useMemo(() => [
+        {
+            accessorKey: "id",
+            header: "ID",
+        },
+        {
+            accessorKey: "uuid",
+            header: "UUID",
+        },
+        {
+            accessorKey: "name",
+            header: "Name",
+            cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
+        },
+        {
+            id: "actions",
+            enableHiding: false,
+            cell: ({ row }) => {
+                const url = row.original
+                const [editOpen, setEditOpen] = React.useState(false)
+                const [deleteOpen, setDeleteOpen] = React.useState(false)
+
+                return (
+                    <>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                    <span className="sr-only">Open menu</span>
+                                    <MoreHorizontal />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                <DropdownMenuItem
+                                    onClick={() => navigator.clipboard.writeText(url.id)}
+                                >
+                                    Copy URL ID
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={() => setEditOpen(true)}>
+                                    Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => setDeleteOpen(true)}>
+                                    Delete
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+
+                        <UrlEditModal 
+                            open={editOpen} 
+                            onOpenChange={setEditOpen} 
+                            url={url}
+                            platforms={platforms}
+                            shareDetails={shareDetails}
+                        />
+                        <UrlDeleteModal 
+                            url={url} 
+                            open={deleteOpen} 
+                            onOpenChange={setDeleteOpen} 
+                        />
+                    </>
+                )
+            },
+        },
+    ], [platforms, shareDetails])
+
+    const data = tableData
     const table = useReactTable({
         data,
         columns,
@@ -187,7 +198,7 @@ export function URLTable({ tableData, error }: URLTableProps) {
                             ))}
                     </DropdownMenuContent>
                 </DropdownMenu>
-                <UrlAddModal />
+                <UrlAddModal platforms={platforms} shareDetails={shareDetails} />
             </div>
             <div className="overflow-hidden rounded-md border">
                 <Table>
