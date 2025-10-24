@@ -45,7 +45,7 @@ import {
   DeleteShareDetailModal,
   PlatformOption
 } from "@/components/share/share-form-modal"
-import { DeletePlatformModal, EditPlatformModal } from "./share-platform-modal"
+import { DeletePlatformModal, EditPlatformModal } from "@/components/share/share-platform-modal"
 
 // ------------------ Types ------------------
 export type Detail = {
@@ -177,8 +177,8 @@ export function ShareDetailTable({
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">{title}</h2>
         <div className=" flex gap-3">
-        <EditPlatformModal id={platform.id} name={platform.name} />
-        <DeletePlatformModal id={platform.id} name={platform.name} />
+          <DeletePlatformModal id={platform.id} name={platform.name} />
+          <EditPlatformModal id={platform.id} name={platform.name} />
         </div>
       </div>
       {/* Filter + Columns */}

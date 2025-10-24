@@ -176,7 +176,7 @@ export function URLTable({ tableData, error, platforms, shareDetails }: URLTable
                 />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto">
+                        <Button variant="outline" className="ml-auto mr-3">
                             Columns <ChevronDown />
                         </Button>
                     </DropdownMenuTrigger>
