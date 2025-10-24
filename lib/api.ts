@@ -133,7 +133,6 @@ export async function createGuestShare( uuid:string,data: {
   contact: string
   assetIds: string[]
 }) {
-  console.log(data)
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/share/${uuid}`,
     {
@@ -144,7 +143,6 @@ export async function createGuestShare( uuid:string,data: {
   )
 
   if (!res.ok) {
-    console.log(res)
     throw new Error(`Failed to create guest share: ${res.status}`)
   }
 

@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server"
 export async function GET(req: NextRequest) {
   try {
     const session = req.cookies.get("accessToken")?.value
-    console.log("Session cookie:", session) // Debug log
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
@@ -31,7 +30,6 @@ export async function POST(req: NextRequest) {
     }
 
     const { data } = await req.json()
-console.log("Request body:", data) // Debug log
     const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/share/guests`, {
       method: "POST",
       headers: {

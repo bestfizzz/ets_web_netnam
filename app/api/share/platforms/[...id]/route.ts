@@ -39,7 +39,6 @@ export async function PUT(
     }
 
     const body = await req.json()
-    console.log(body)
     const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/share/platforms/${id}`, {
       method: "PUT",
       headers: {
@@ -74,7 +73,6 @@ export async function DELETE(
     })
       
     const data = await backendRes.json()
-    console.log(data)
     return NextResponse.json(data, { status: backendRes.status })
   } catch (err) {
     console.error("Delete URL Manager error:", err)

@@ -62,7 +62,6 @@ export function UrlForm({
   formId
 }: UrlFormProps) {
   const urlFormSchema = useMemo(() => createUrlFormSchema(platforms), [platforms])
-  console.log(url,shareDetails,platforms)
   // Group share details by platform
   const groupedDetails = useMemo(() => {
     const grouped: Record<number, Detail[]> = {}
@@ -79,27 +78,41 @@ export function UrlForm({
   }, [shareDetails])
 
   // Create default values
+  // Create default values
   const getDefaultValues = () => {
+    
     const defaults: Record<string, any> = {
       name: url?.name ?? "",
       searchTemplate: url?.searchTemplate ?? "none",
       shareTemplate: url?.shareTemplate ?? "none",
     }
 
-    // ✅ Dynamically map shareDetailIds to their corresponding platforms
+    // Loop through each available platform
     platforms.forEach((platform) => {
       const fieldName = `platform_${platform.id}`
+      let matchedId = "none"
 
-      // Find the shareDetail that matches this platform
-      const matchedDetail = url?.shareDetails.find(
-        (d:Detail) =>
-          d.platform.id === platform.id
-      )
+      if (url?.shareDetails?.length) {
+        
+        // Get the IDs from url.shareDetails
+        const urlDetailIds = url.shareDetails.map((d: any) => Number(d.id))
+        
+        // Find a detail that matches one of the URL's detail IDs AND belongs to this platform
+        const matched = shareDetails.find((detail: Detail) => {
+          const idMatch = urlDetailIds.includes(Number(detail.id))
+          const platformMatch = detail.platform.id === platform.id
 
-      // Set default dropdown value for this platform
-      defaults[fieldName] = matchedDetail ? String(matchedDetail.id) : "none"
+          return idMatch && platformMatch
+        })
+        
+        if (matched) {
+          matchedId = String(matched.id)
+        } 
+      }
+
+      defaults[fieldName] = matchedId
     })
-
+    
     return defaults
   }
 

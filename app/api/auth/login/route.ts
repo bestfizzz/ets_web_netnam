@@ -21,7 +21,6 @@ export async function POST(req: Request) {
     }
 
     const { accessToken, expires } = data
-    console.log(data)
     // 🔹 JWT session cookie (for middleware / navigation auth check)
     const secret = new TextEncoder().encode(process.env.JWT_SECRET!)
     const sessionToken = await new SignJWT({ user: email })

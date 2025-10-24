@@ -7,7 +7,6 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   let isValid = false;
-  console.log("🔵 Middleware session:", { session });
   
   if (session) {
     try {
@@ -21,8 +20,6 @@ export async function middleware(req: NextRequest) {
       }
     }
   }
-
-  console.log("🔵 Middleware check:", { hasSession: !!session, isValid, pathname });
 
   // 🔥 CRITICAL: Don't run middleware on API auth routes at all
   // Let them set cookies without interference

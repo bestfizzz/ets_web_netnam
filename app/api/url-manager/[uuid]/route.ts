@@ -40,7 +40,6 @@ export async function PATCH(
     }
 
     const {data} = await req.json()
-    console.log("PATCH body:", data)
     const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/url-manager/${uuid}`, {
       method: "PATCH",
       headers: {

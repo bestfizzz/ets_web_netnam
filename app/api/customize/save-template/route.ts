@@ -38,7 +38,6 @@ export async function PUT(req: Request) {
     if (!id) {
       return NextResponse.json({ error: "Template ID is required" }, { status: 400 })
     }
-    console.log(data)
     const dataSchema = {
       settings: data.settings,
       content: data.content

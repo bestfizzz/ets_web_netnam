@@ -77,7 +77,6 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
         toast.success("Guest share created successfully!")
       }
 
-      console.log("Guest share response:", res)
     } catch (err) {
       console.error("Share error:", err)
       toast.dismiss()
