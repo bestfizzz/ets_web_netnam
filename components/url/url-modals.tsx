@@ -208,7 +208,7 @@ export function UrlDeleteModal({ url, open, onOpenChange }: any) {
 
   const handleDelete = async () => {
     try {
-      const res = await fetch(`/api/url-manager/${url.id}`, { method: "DELETE" })
+      const res = await fetch(`/api/url-manager/${url.uuid}`, { method: "DELETE" })
       if (!res.ok) {
         const msg = await res.text()
         throw new Error(msg || "Delete failed")

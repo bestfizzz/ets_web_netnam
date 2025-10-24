@@ -57,7 +57,6 @@ export async function PATCH(
   }
 }
 
-// Delete URL by uuid (not UUID)
 export async function DELETE(
   req: NextRequest,
   context: { params: Promise<{ uuid: string }> }
