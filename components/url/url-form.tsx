@@ -25,8 +25,7 @@ import {
 } from "@/components/ui/select"
 import { CheckCircle } from "lucide-react"
 import { URL } from "@/components/url/url-table"
-import { Detail } from "@/components/share/share-detail-table"
-import { PlatformOption } from "@/components/share/share-form-modal"
+import { ShareDetail,SharePlatform } from "@/lib/types/types"
 
 // Create dynamic schema based on available platforms
 const createUrlFormSchema = (platforms: { id: number; name: string }[] = []) => {
@@ -47,8 +46,8 @@ const createUrlFormSchema = (platforms: { id: number; name: string }[] = []) => 
 type UrlFormProps = {
   url?: URL
   onSubmit: (data: Record<string, any>) => void
-  shareDetails?: Detail[]
-  platforms?: PlatformOption[]
+  shareDetails?: ShareDetail[]
+  platforms?: SharePlatform[]
   designs?: { pageType: string; id: string; name: string }[]
   formId: string
 }
@@ -64,7 +63,7 @@ export function UrlForm({
   const urlFormSchema = useMemo(() => createUrlFormSchema(platforms), [platforms])
   // Group share details by platform
   const groupedDetails = useMemo(() => {
-    const grouped: Record<number, Detail[]> = {}
+    const grouped: Record<number, ShareDetail[]> = {}
     shareDetails.forEach((detail) => {
       const platformId = detail.platform?.id
       if (platformId !== undefined) {
@@ -98,7 +97,7 @@ export function UrlForm({
         const urlDetailIds = url.shareDetails.map((d: any) => Number(d.id))
         
         // Find a detail that matches one of the URL's detail IDs AND belongs to this platform
-        const matched = shareDetails.find((detail: Detail) => {
+        const matched = shareDetails.find((detail: ShareDetail) => {
           const idMatch = urlDetailIds.includes(Number(detail.id))
           const platformMatch = detail.platform.id === platform.id
 

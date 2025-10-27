@@ -4,7 +4,7 @@ import SearchHeader from "@/components/pages/search/search-header"
 import SearchSelectionDrawer from "@/components/pages/search/search-selection-drawer"
 import { Progress } from "@/components/ui/progress"
 import { toast } from "sonner"
-import { getPersonAssets, getAllAssets, getPersonAssetStats, getAssetsByKeyword } from "@/lib/api"
+import { getPersonAssets, getAllAssets, getPersonAssetStats, getAssetsByKeyword } from "@/lib/api/assets"
 import type { AssetMeta } from "@/hooks/gallery-context"
 import { scrollToGallery } from "@/lib/utils"
 
@@ -46,25 +46,9 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
     setTotal(placeholderAssets.length)
   }, [preview, setImages, setTotal])
 
-  // This to be moved to serverside
-  useEffect(() => {
-    if (!uuid || preview) return
-    setValid(null)
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/check-url/${uuid}`)
-      .then(async (res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
-        const data = await res.json()
-        setValid(data.active ?? false)
-      })
-      .catch((err) => {
-        console.error("Check URL failed:", err)
-        setValid(false)
-      })
-  }, [uuid])
-
   // Fetch assets when mode or personId changes
   useEffect(() => {
-    if (!uuid || !valid || preview || (mode==='all' && privateGallery===true)) return
+    if (!uuid || preview || (mode==='all' && privateGallery===true)) return
 
     const load = async () => {
       setShowFullLoading(true)
@@ -79,11 +63,11 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
     }
 
     load()
-  }, [mode, personId, query, valid, uuid])
+  }, [mode, personId, query, uuid])
 
   // Separate effect for page number change
   useEffect(() => {
-    if (!uuid || !valid || preview || (mode==='all' && privateGallery===true)) return
+    if (!uuid || preview || (mode==='all' && privateGallery===true)) return
     
 
     if (mode != 'keyword') {
@@ -144,17 +128,6 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
       setTimeout(() => setProgress(0), 400)
       setLoading(false)
     }
-  }
-
-  if (valid === false) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen text-center px-6">
-        <h1 className="text-2xl font-bold">Not Found</h1>
-        <p className="mt-2 text-gray-500">
-          The requested gallery does not exist or has been deactivated.
-        </p>
-      </div>
-    )
   }
 
   return (

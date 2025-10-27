@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button"
 import { UrlForm } from "./url-form"
 import { URL } from "@/components/url/url-table"
 import { toast } from "sonner"
-import { Detail } from "@/components/share/share-detail-table"
+import { ShareDetail } from "@/lib/types/types"
 
 // ===== EDIT MODAL =====
 type UrlEditModalProps = {
@@ -33,7 +33,7 @@ type UrlEditModalProps = {
   onOpenChange: (open: boolean) => void
   url: URL | null
   platforms?: { id: number; name: string }[]
-  shareDetails?: Detail[]
+  shareDetails?: ShareDetail[]
 }
 
 export function UrlEditModal({ open, onOpenChange, url, platforms = [], shareDetails = [] }: UrlEditModalProps) {

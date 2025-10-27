@@ -1,28 +1,24 @@
 import { NextRequest, NextResponse } from "next/server"
+import {
+  getSharePlatform,
+  updateSharePlatform,
+  deleteSharePlatform,
+} from "@/lib/api/share-platform"
 
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await context.params 
-    const accessToken = req.cookies.get("accessToken")?.value
-    if (!accessToken) {
+    const { id } = await context.params
+    const token = req.cookies.get("accessToken")?.value
+    if (!token)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
 
-    const backendRes = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/share/platforms/${id}`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    )
-
-    const data = await backendRes.json()
-    return NextResponse.json(data, { status: backendRes.status })
+    const res = await getSharePlatform(Number(id), token)
+    return NextResponse.json(res, { status: 200 })
   } catch (err) {
-    console.error("Get URL Manager detail error:", err)
+    console.error("Get Share Platform error:", err)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
@@ -32,26 +28,16 @@ export async function PUT(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = (await context.params).id // ✅ await params
-    const accessToken = req.cookies.get("accessToken")?.value
-    if (!accessToken) {
+    const { id } = await context.params
+    const token = req.cookies.get("accessToken")?.value
+    if (!token)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
 
     const body = await req.json()
-    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/share/platforms/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(body),
-    })
-
-    const res = await backendRes.json()
-    return NextResponse.json(res, { status: backendRes.status })
+    const res = await updateSharePlatform(Number(id), body, token)
+    return NextResponse.json(res, { status: 200 })
   } catch (err) {
-    console.error("Update URL Manager error:", err)
+    console.error("Update Share Platform error:", err)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
@@ -61,21 +47,15 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = (await context.params).id // ✅ await params
-    const accessToken = req.cookies.get("accessToken")?.value
-    if (!accessToken) {
+    const { id } = await context.params
+    const token = req.cookies.get("accessToken")?.value
+    if (!token)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
 
-    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/share/platforms/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-      
-    const data = await backendRes.json()
-    return NextResponse.json(data, { status: backendRes.status })
+    const res = await deleteSharePlatform(Number(id), token)
+    return NextResponse.json(res, { status: 204 })
   } catch (err) {
-    console.error("Delete URL Manager error:", err)
+    console.error("Delete Share Platform error:", err)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }

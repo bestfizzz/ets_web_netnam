@@ -8,7 +8,7 @@ import { Download, X, ImageIcon, Share2, CheckSquare, SquareX } from "lucide-rea
 import { downloadSelected, formatVietnamesePhone } from "@/lib/utils"
 import { useGalleryContext } from "@/hooks/gallery-context"
 import { toast } from "sonner"
-import { createGuestShare } from "@/lib/api"
+import { createGuestShare } from "@/lib/api/share-actions"
 
 export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
   const {

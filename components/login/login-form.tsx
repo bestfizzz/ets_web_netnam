@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 import { Mail, Lock } from "lucide-react"
+import { loginClient } from "@/lib/client/auth"
 
 export function LoginForm({
   className,
@@ -34,22 +35,10 @@ export function LoginForm({
     const password = formData.get("password")?.toString() || ""
 
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ email, password }),
-      })
-
-      let data: any = {}
-      try {
-        data = await res.json()
-      } catch {
-        // ignore if body isn't JSON
-      }
+      const res = await loginClient({ email, password })
 
       if (!res.ok) {
-        const message = data?.message || "Login failed"
+        const message = res.message || "Login failed"
         setError(message)
         toast.error(message)
         return

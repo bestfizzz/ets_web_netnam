@@ -13,7 +13,7 @@ import {
     useReactTable,
     VisibilityState,
 } from "@tanstack/react-table"
-import { ChevronDown, MoreHorizontal } from "lucide-react"
+import { ChevronDown, MoreHorizontal, Eye } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
     Select,
@@ -43,7 +43,7 @@ import {
 } from "@/components/ui/table"
 import { toast } from "sonner"
 import { UrlAddModal, UrlEditModal, UrlDeleteModal } from "@/components/url/url-modals"
-import { Detail } from "@/components/share/share-detail-table"
+import { ShareDetail } from "@/lib/types/types"
 
 export type URL = {
     id: string
@@ -58,7 +58,7 @@ interface URLTableProps {
     tableData: URL[]
     error?: string
     platforms: { id: number; name: string }[]
-    shareDetails: Detail[]
+    shareDetails: ShareDetail[]
 }
 
 export function URLTable({ tableData, error, platforms, shareDetails }: URLTableProps) {
@@ -89,6 +89,11 @@ export function URLTable({ tableData, error, platforms, shareDetails }: URLTable
                 const [editOpen, setEditOpen] = React.useState(false)
                 const [deleteOpen, setDeleteOpen] = React.useState(false)
 
+                const handleShow = () => {
+                    // Open a new tab with focus
+                    window.open(`/search/${url.uuid}`, "_blank")?.focus()
+                }
+
                 return (
                     <>
                         <DropdownMenu>
@@ -100,32 +105,31 @@ export function URLTable({ tableData, error, platforms, shareDetails }: URLTable
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuItem
-                                    onClick={() => navigator.clipboard.writeText(url.id)}
-                                >
-                                    Copy URL ID
+                                <DropdownMenuItem onClick={handleShow}>
+                                    <Eye className="mr-2 h-4 w-4" /> View URL
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={() => setEditOpen(true)}>
                                     Edit
                                 </DropdownMenuItem>
+                                <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={() => setDeleteOpen(true)}>
                                     Delete
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
 
-                        <UrlEditModal 
-                            open={editOpen} 
-                            onOpenChange={setEditOpen} 
+                        <UrlEditModal
+                            open={editOpen}
+                            onOpenChange={setEditOpen}
                             url={url}
                             platforms={platforms}
                             shareDetails={shareDetails}
                         />
-                        <UrlDeleteModal 
-                            url={url} 
-                            open={deleteOpen} 
-                            onOpenChange={setDeleteOpen} 
+                        <UrlDeleteModal
+                            url={url}
+                            open={deleteOpen}
+                            onOpenChange={setDeleteOpen}
                         />
                     </>
                 )

@@ -1,8 +1,7 @@
 import AdminLayout from "@/components/layout-admin"
 import { URLTable, URL } from "@/components/url/url-table"
 import { cookies } from "next/headers"
-import { Detail } from "@/components/share/share-detail-table"
-import { PlatformOption } from "@/components/share/share-form-modal"
+import { ShareDetail,SharePlatform } from "@/lib/types/types"
 // ✅ Fetch Wrapper
 async function fetchBackend(url: string) {
   try {
@@ -33,8 +32,8 @@ async function fetchBackend(url: string) {
 export default async function Page() {
   const [urls, platforms, shareDetails] = await Promise.all([
     fetchBackend("/api/url-manager") as Promise<URL[]>,
-    fetchBackend("/api/share/platforms") as Promise<PlatformOption[]>,
-    fetchBackend("/api/share/details") as Promise<Detail[]>,
+    fetchBackend("/api/share/platforms") as Promise<SharePlatform[]>,
+    fetchBackend("/api/share/details") as Promise<ShareDetail[]>,
   ])
 
   return (

@@ -42,23 +42,13 @@ import {
 import { Input } from "@/components/ui/input"
 import {
   EditShareDetailModal,
-  DeleteShareDetailModal,
-  PlatformOption
+  DeleteShareDetailModal
 } from "@/components/share/share-form-modal"
 import { DeletePlatformModal, EditPlatformModal } from "@/components/share/share-platform-modal"
-
-// ------------------ Types ------------------
-export type Detail = {
-  id: number
-  name: string
-  platform: PlatformOption
-  settings?: Record<string, any>
-  createdAt?: string
-  updatedAt?: string
-}
+import { ShareDetail,SharePlatform } from "@/lib/types/types"
 
 // ------------------ Columns ------------------
-export const detailColumns: ColumnDef<Detail>[] = [
+export const detailColumns: ColumnDef<ShareDetail>[] = [
   { accessorKey: "id", header: "ID" },
   {
     accessorKey: "name",
@@ -83,7 +73,7 @@ export const detailColumns: ColumnDef<Detail>[] = [
 ]
 
 // ------------------ Row Actions ------------------
-function RowActions({ detail }: { detail: Detail }) {
+function RowActions({ detail }: { detail: ShareDetail }) {
   const [editOpen, setEditOpen] = React.useState(false)
   const [deleteOpen, setDeleteOpen] = React.useState(false)
 
@@ -104,7 +94,7 @@ function RowActions({ detail }: { detail: Detail }) {
           <DropdownMenuItem
             onClick={() => navigator.clipboard.writeText(detail.id.toString())}
           >
-            Copy Detail ID
+            Copy ShareDetail ID
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setEditOpen(true)}>Edit</DropdownMenuItem>
@@ -137,8 +127,8 @@ export function ShareDetailTable({
   platform,
   data,
 }: {
-  platform: PlatformOption
-  data: Detail[]
+  platform: SharePlatform
+  data: ShareDetail[]
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnVisibility, setColumnVisibility] =

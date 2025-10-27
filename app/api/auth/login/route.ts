@@ -1,27 +1,24 @@
-// app/api/auth/login/route.ts
 import { NextResponse } from "next/server"
 import { SignJWT } from "jose"
+import { loginUser } from "@/lib/api/auth"
+import { AuthSigninSchema } from "@/lib/types/types"
 
 export async function POST(req: Request) {
   try {
-    const { email, password } = await req.json()
+    // 🔹 Validate input using zod
+    const json = await req.json()
+    const parsed = AuthSigninSchema.safeParse(json)
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/signin`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    })
-
-    const data = await res.json()
-    if (!res.ok) {
-      return NextResponse.json(
-        { statusCode: res.status, message: data.message || "Auth failed" },
-        { status: res.status }
-      )
+    if (!parsed.success) {
+      return NextResponse.json({ message: "Invalid email or password" }, { status: 400 })
     }
 
-    const { accessToken, expires } = data
-    // 🔹 JWT session cookie (for middleware / navigation auth check)
+    const { email, password } = parsed.data
+
+    // 🔹 Call backend via shared http client
+    const { accessToken, expires } = await loginUser({ email, password })
+
+    // 🔹 Sign a short-lived session JWT
     const secret = new TextEncoder().encode(process.env.JWT_SECRET!)
     const sessionToken = await new SignJWT({ user: email })
       .setProtectedHeader({ alg: "HS256" })
@@ -29,27 +26,19 @@ export async function POST(req: Request) {
       .setExpirationTime("1d")
       .sign(secret)
 
-    const response = NextResponse.json({ ok: true })
-
-    // Store short JWT
-    response.cookies.set("session", sessionToken, {
+    const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: "strict" as const,
       path: "/",
       expires: new Date(expires * 1000),
-    })
+    }
 
-    // Store raw access token for API proxying
-    response.cookies.set("accessToken", accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      expires: new Date(expires * 1000),
-    })
+    const res = NextResponse.json({ ok: true, expires })
+    res.cookies.set("session", sessionToken, cookieOptions)
+    res.cookies.set("accessToken", accessToken, cookieOptions)
 
-    return response
+    return res
   } catch (err) {
     console.error("Login error:", err)
     return NextResponse.json({ message: "Internal Server Error" }, { status: 500 })

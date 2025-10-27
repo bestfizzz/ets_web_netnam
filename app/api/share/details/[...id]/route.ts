@@ -1,28 +1,24 @@
 import { NextRequest, NextResponse } from "next/server"
+import {
+  getShareDetail,
+  updateShareDetail,
+  deleteShareDetail,
+} from "@/lib/api/share-detail"
 
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
+  const token = req.cookies.get("accessToken")?.value
+  if (!token) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+
+  const id = Number((await context.params).id)
+
   try {
-    const { id } = await context.params 
-    const accessToken = req.cookies.get("accessToken")?.value
-    if (!accessToken) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
-    const backendRes = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/share/details/${id}`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    )
-
-    const data = await backendRes.json()
-    return NextResponse.json(data, { status: backendRes.status })
+    const data = await getShareDetail(id, token)
+    return NextResponse.json(data)
   } catch (err) {
-    console.error("Get URL Manager detail error:", err)
+    console.error("Get share detail error:", err)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
@@ -31,27 +27,17 @@ export async function PUT(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
+  const token = req.cookies.get("accessToken")?.value
+  if (!token) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+
+  const id = Number((await context.params).id)
+  const body = await req.json()
+
   try {
-    const id = (await context.params).id // ✅ await params
-    const accessToken = req.cookies.get("accessToken")?.value
-    if (!accessToken) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
-    const body = await req.json()
-    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/share/details/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(body),
-    })
-
-    const res = await backendRes.json()
-    return NextResponse.json(res, { status: backendRes.status })
+    const data = await updateShareDetail(id, body, token)
+    return NextResponse.json(data)
   } catch (err) {
-    console.error("Update URL Manager error:", err)
+    console.error("Update share detail error:", err)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
@@ -60,22 +46,16 @@ export async function DELETE(
   req: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
+  const token = req.cookies.get("accessToken")?.value
+  if (!token) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+
+  const id = Number((await context.params).id)
+
   try {
-    const id = (await context.params).id // ✅ await params
-    const accessToken = req.cookies.get("accessToken")?.value
-    if (!accessToken) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
-    const backendRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/share/details/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-
-    const data = await backendRes.json()
-    return NextResponse.json(data, { status: backendRes.status })
+    const data = await deleteShareDetail(id, token)
+    return NextResponse.json(data)
   } catch (err) {
-    console.error("Delete URL Manager error:", err)
+    console.error("Delete share detail error:", err)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }

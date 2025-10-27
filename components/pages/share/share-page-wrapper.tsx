@@ -5,14 +5,14 @@ import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { Check, EllipsisVertical } from "lucide-react"
 import ShareSelectionDrawer from "@/components/pages/share/share-selection-drawer"
-import { shareAuthentication } from "@/lib/api"
+import { shareAuthentication } from "@/lib/api/share-actions"
 import { AssetMeta, useGalleryContext } from "@/hooks/gallery-context"
 
 export default function SharePageWrapper({
   children,
   uuid,
   settings,
-  preview = false,
+  preview = false,  
 }: {
   children?: React.ReactNode
   uuid: string
@@ -39,7 +39,6 @@ export default function SharePageWrapper({
   const [contactID, setContactID] = useState("")
   const [accessCode, setAccessCode] = useState("")
   const [authorized, setAuthorized] = useState(false)
-  const [valid, setValid] = useState<boolean | null>(null)
   const [assetIds, setAssetIds] = useState<string[]>([]) // ✅ store full list of assetIds
 
   // ✅ Placeholder mode for preview
@@ -59,27 +58,11 @@ export default function SharePageWrapper({
     setTotal(placeholderAssets.length)
   }, [preview, setImages, setTotal])
 
-  // ✅ Validate share URL
-  useEffect(() => {
-    if (!uuid || preview) return
-    setValid(null)
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/check-url/${uuid}`)
-      .then(async (res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
-        const data = await res.json()
-        setValid(data.active ?? false)
-      })
-      .catch((err) => {
-        console.error("Check URL failed:", err)
-        setValid(false)
-      })
-  }, [uuid])
-
   // ✅ Load paged images locally after authorization
   useEffect(() => {
-    if (!authorized || !valid || preview) return
+    if (!authorized || preview) return
     loadImages(page)
-  }, [authorized, valid, page])
+  }, [authorized, page])
 
   // ✅ Core loader (paging from assetIds)
   async function loadImages(pageNum: number) {
@@ -145,17 +128,6 @@ export default function SharePageWrapper({
   }
 
   // === UI States ===
-
-  if (valid === false) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen text-center px-6">
-        <h1 className="text-2xl font-bold">Not Found</h1>
-        <p className="mt-2 text-gray-500">
-          The requested gallery does not exist or has been deactivated.
-        </p>
-      </div>
-    )
-  }
 
   if (!authorized) {
     return (

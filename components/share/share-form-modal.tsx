@@ -22,21 +22,15 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import type { Detail } from "@/components/share/share-detail-table"
-
+import { SharePlatform,ShareDetail } from "@/lib/types/types"
 // -------------------- SCHEMA --------------------
 const detailFormSchema = z.object({
-  name: z.string().min(1, "Detail name is required"),
+  name: z.string().min(1, "ShareDetail name is required"),
   platform: z.number().int().min(1, "Platform is required"),
   settings: z.record(z.string(), z.any()).optional(),
 })
 
 type DetailFormData = z.infer<typeof detailFormSchema>
-
-export interface PlatformOption {
-  id: number
-  name: string
-}
 
 // -------------------- KEY-VALUE EDITOR --------------------
 interface KeyValue {
@@ -108,7 +102,7 @@ function KeyValueEditor({
 
 // -------------------- ADD MODAL --------------------
 interface AddShareDetailModalProps {
-  platforms: PlatformOption[]
+  platforms: SharePlatform[]
 }
 
 export function AddShareDetailModal({ platforms }: AddShareDetailModalProps) {
@@ -165,7 +159,7 @@ export function AddShareDetailModal({ platforms }: AddShareDetailModalProps) {
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add New Detail</DialogTitle>
+          <DialogTitle>Add New ShareDetail</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -179,7 +173,7 @@ export function AddShareDetailModal({ platforms }: AddShareDetailModalProps) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Detail Name</FormLabel>
+                  <FormLabel>ShareDetail Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter detail name" {...field} />
                   </FormControl>
@@ -248,10 +242,10 @@ export function AddShareDetailModal({ platforms }: AddShareDetailModalProps) {
 
 // -------------------- EDIT MODAL --------------------
 interface DetailEditModalProps {
-  detail: Detail | null
+  detail: ShareDetail | null
   open: boolean
   onOpenChange: (open: boolean) => void
-  platform: PlatformOption
+  platform: SharePlatform
 }
 
 export function EditShareDetailModal({
@@ -313,7 +307,7 @@ export function EditShareDetailModal({
         throw new Error(msg || "Failed to update detail")
       }
 
-      toast.success(`Detail "${data.name}" updated.`)
+      toast.success(`ShareDetail "${data.name}" updated.`)
       onOpenChange(false)
       router.refresh()
     } catch (err: any) {
@@ -327,7 +321,7 @@ export function EditShareDetailModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit Detail</DialogTitle>
+          <DialogTitle>Edit ShareDetail</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -341,7 +335,7 @@ export function EditShareDetailModal({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Detail Name</FormLabel>
+                  <FormLabel>ShareDetail Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter detail name" {...field} disabled={loading} />
                   </FormControl>
@@ -406,8 +400,8 @@ export function EditShareDetailModal({
 interface DeleteShareDetailModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  detail: Detail | null
-  platform: PlatformOption
+  detail: ShareDetail | null
+  platform: SharePlatform
 }
 
 export function DeleteShareDetailModal({
@@ -449,7 +443,7 @@ export function DeleteShareDetailModal({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete Detail</AlertDialogTitle>
+          <AlertDialogTitle>Delete ShareDetail</AlertDialogTitle>
           <AlertDialogDescription>
             Are you sure you want to delete{" "}
             <span className="font-medium">{detail.name}</span> from{" "}

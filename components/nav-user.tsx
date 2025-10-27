@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/sidebar"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { logOutClient } from "@/lib/client/auth"
 
 export function NavUser({
   user,
@@ -46,11 +47,12 @@ export function NavUser({
 
   const handleLogout = async () => {
     try {
-      await fetch("/api/auth/logout", { method: "POST" }) // clear cookie server-side
+      await logOutClient() // 🔹 use shared client helper
       toast.success("Logged out successfully ✅")
-      router.push("/login") // redirect
+      router.push("/login")
     } catch (err) {
       console.error("Logout failed:", err)
+      toast.error("Logout failed ❌")
     }
   }
 
