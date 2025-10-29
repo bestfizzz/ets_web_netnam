@@ -197,7 +197,7 @@ export function URLTable({ tableData, error, platforms, shareDetails, templateTy
                             ))}
                     </DropdownMenuContent>
                 </DropdownMenu>
-                <UrlAddModal platforms={platforms} shareDetails={shareDetails} />
+                <UrlAddModal platforms={platforms} shareDetails={shareDetails} templateTypes={templateTypes} templateDetails={templateDetails} />
             </div>
             <div className="overflow-hidden rounded-md border">
                 <Table>
