@@ -1,24 +1,16 @@
-/** --- Entity --- */
-export interface ShareDetail {
-  id: number
-  platformId: number
-  name: string
-  settings: Record<string, any>
-  createdAt: string
-  updatedAt: string
-}
+import { ShareDetail } from "@/lib/types/types"
 
 /** --- Requests --- */
 export interface CreateShareDetailRequest {
   platform: number
   name: string
-  settings: Record<string, any>
+  settings?: Record<string, any>
 }
 
 export interface UpdateShareDetailRequest {
   platform: number
   name: string
-  settings: Record<string, any>
+  settings?: Record<string, any>
 }
 
 /** --- Responses --- */

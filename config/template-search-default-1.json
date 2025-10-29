@@ -1,46 +1,50 @@
 {
-  "settings": {
-    "themeColor": "#48dbaa",
-    "customCSS": "",
-    "pageTitle": "",
-    "pageLogo": ""
+  "templateType": {
+    "name": "search",
+    "id": 1
   },
-  "content": [
-    {
-      "_type": "block",
-      "style": "h1",
-      "children": [
-        {
-          "_type": "span",
-          "text": "Welcome to Search Default 1"
-        }
-      ]
+  "id": "srch_87rqu97n",
+  "name": "Search Default 1",
+  "isActive": true,
+  "jsonConfig": {
+    "settings": {
+      "themeColor": "#e49a9a",
+      "pageTitle": "",
+      "pageLogo": "",
+      "pageSize": 10,
+      "customCSS": "",
+      "privateGallery": false
     },
-    {
-      "_type": "searchBar",
-      "placeholder": "Search here..."
-    },
-    {
-      "_type": "feature",
-      "title": "Fast and Reliable",
-      "description": "Get results instantly with our optimized search engine."
-    },
-    {
-      "_type": "feature",
-      "title": "Easy to Use",
-      "description": "Designed with simplicity and usability in mind."
-    },
-    {
-      "_type": "shareButtons",
-      "buttons": [
-        "Facebook",
-        "Twitter",
-        "LinkedIn"
-      ]
-    },
-    {
-      "_type": "footer",
-      "text": "© 2025 Your Company. All rights reserved."
-    }
-  ]
+    "content": [
+      {
+        "_type": "block",
+        "style": "h1",
+        "children": [
+          {
+            "_type": "span",
+            "text": "Welcome to Search Default 1"
+          }
+        ]
+      },
+      {
+        "_type": "GallerySection"
+      },
+      
+      {
+        "_type": "searchBar",
+        "placeholder": "Search..."
+      },
+      {
+        "_type": "block",
+        "style": "normal",
+        "children": [
+          {
+            "_type": "span",
+            "text": "asdadasdasda"
+          }
+        ],
+        "markDefs": []
+      }
+    ]
+  }
 }

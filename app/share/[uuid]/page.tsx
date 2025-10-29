@@ -1,15 +1,9 @@
 import TemplateGenerator from "@/components/customize/template-generator"
-import { checkGallery } from "@/app/search/[uuid]/page"
-async function fetchTemplate(id: string): Promise<any> {
-  id = 'shre_ez17l1hq'
-  const res = await fetch(
-    `${process.env.URL}/api/customize/get-template?id=${id}&pageType=share`
-  )
-
-  if (!res.ok) throw new Error("Template not found")
-  const json = await res.json()
-  return json.data
-}
+import { TemplateDetailServerAPI } from "@/lib/server_api/template-detail"
+import { URLManagerServerAPI } from "@/lib/server_api/url-manager"
+import shareTemplate1 from "@/config/template-share-default-1.json"
+import { TemplateDetail } from "@/lib/types/types"
+import type { TypedObject } from "@portabletext/types"
 
 export default async function SharePage({
   params,
@@ -18,12 +12,18 @@ export default async function SharePage({
 }) {
   const { uuid } = await params
 
-  // ✅ Pass your uuid to fetchTemplate if needed
-  
-  const isValid = await checkGallery(uuid)
+  let isValid
+  let templateData: TemplateDetail
 
-  if (!isValid) {
-    // Invalid UUID: show 404 / not found page
+  try {
+    // ✅ Safely check URL validity
+    isValid = await URLManagerServerAPI.checkUrl(uuid)
+  } catch (err) {
+    console.error("checkUrl failed:", err)
+    // Leave isValid = false to trigger Not Found
+  }
+
+  if (!isValid || isValid.active === false) {
     return (
       <div className="flex flex-col items-center justify-center h-screen text-center px-6">
         <h1 className="text-2xl font-bold">Not Found</h1>
@@ -33,13 +33,32 @@ export default async function SharePage({
       </div>
     )
   }
-  const data = await fetchTemplate(uuid)
+
+  try {
+    const templates = await TemplateDetailServerAPI.getPageDetails(uuid)
+    const found = templates.find((t) => {
+      const typeName =
+        typeof t.templateType === "string" ? t.templateType : t.templateType.name
+      return typeName === "share"
+    })
+
+    templateData = found || shareTemplate1
+  } catch (err) {
+    console.error("getPageDetails failed:", err, "... using default template")
+    templateData = shareTemplate1
+  }
+  console.log(`Using template ${templateData.name} for uuid ${uuid} templateData:`, templateData)
+  const content: TypedObject[] = (templateData.jsonConfig.content as TypedObject[]) || []
 
   return (
     <TemplateGenerator
-      content={data.data.content}
-      settings={data.data.settings}
-      pageName={data.pageType}
+      content={content}
+      settings={templateData.jsonConfig.settings}
+      pageName={
+        typeof templateData.templateType === "string"
+          ? templateData.templateType
+          : templateData.templateType.name
+      }
       uuid={uuid}
     />
   )

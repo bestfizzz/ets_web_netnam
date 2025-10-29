@@ -22,7 +22,9 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { SharePlatform,ShareDetail } from "@/lib/types/types"
+import { SharePlatform, ShareDetail } from "@/lib/types/types"
+import { ShareDetailClientAPI } from "@/lib/client_api/share-detail.client"
+
 // -------------------- SCHEMA --------------------
 const detailFormSchema = z.object({
   name: z.string().min(1, "ShareDetail name is required"),
@@ -129,17 +131,8 @@ export function AddShareDetailModal({ platforms }: AddShareDetailModalProps) {
 
     try {
       setLoading(true)
-      const res = await fetch("/api/share/details", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
+      await ShareDetailClientAPI.create(data)
       setLoading(false)
-
-      if (!res.ok) {
-        const msg = await res.text()
-        throw new Error(msg || "Failed to add detail")
-      }
 
       toast.success(`New detail "${data.name}" added.`)
       form.reset()
@@ -147,6 +140,7 @@ export function AddShareDetailModal({ platforms }: AddShareDetailModalProps) {
       setOpen(false)
       router.refresh()
     } catch (err: any) {
+      setLoading(false)
       toast.error(err.message || "Request failed ❌")
     }
   }
@@ -295,22 +289,14 @@ export function EditShareDetailModal({
 
     try {
       setLoading(true)
-      const res = await fetch(`/api/share/details/${detail.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
+      await ShareDetailClientAPI.update(detail.id, data)
       setLoading(false)
-
-      if (!res.ok) {
-        const msg = await res.text()
-        throw new Error(msg || "Failed to update detail")
-      }
 
       toast.success(`ShareDetail "${data.name}" updated.`)
       onOpenChange(false)
       router.refresh()
     } catch (err: any) {
+      setLoading(false)
       toast.error(err.message || "Update failed ❌")
     }
   }
@@ -420,21 +406,14 @@ export function DeleteShareDetailModal({
     if (!detail?.id) return
     try {
       setLoading(true)
-      const res = await fetch(`/api/share/details/${detail.id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-      })
+      await ShareDetailClientAPI.delete(detail.id)
       setLoading(false)
-
-      if (!res.ok) {
-        const msg = await res.text()
-        throw new Error(msg || "Failed to delete detail")
-      }
 
       toast.success(`Deleted "${detail.name}" from ${platformName}`)
       onOpenChange(false)
       router.refresh()
     } catch (err: any) {
+      setLoading(false)
       toast.error(err.message || "Delete failed ❌")
     }
   }

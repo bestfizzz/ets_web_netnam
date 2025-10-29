@@ -58,7 +58,6 @@ export const PageCustomize = forwardRef(({
   onDesignChange,
   templateOptions
 }: PageCustomizeProps, ref) => {
-
   // ✅ Stable empty defaults to prevent uncontrolled fields
   const defaultValues = {
     name: "",
@@ -108,16 +107,17 @@ export const PageCustomize = forwardRef(({
     if (!pageData) return;
 
     const resetData = {
-      ...(pageData.data ?? {}),
+      ...(pageData.jsonConfig ?? {}),
       name: pageData.name ?? "",
       settings: {
-        themeColor: pageData.data?.settings?.themeColor ?? "#000000",
-        pageTitle: pageData.data?.settings?.pageTitle ?? "",
-        pageLogo: pageData.data?.settings?.pageLogo ?? "",
-        pageSize: pageData.data?.settings?.pageSize ?? 10,
-        customCSS: pageData.data?.settings?.customCSS ?? "",
-        privateGallery: pageData.data?.settings?.privateGallery ?? false,
+        themeColor: pageData.jsonConfig?.settings?.themeColor ?? "#000000",
+        pageTitle: pageData.jsonConfig?.settings?.pageTitle ?? "",
+        pageLogo: pageData.jsonConfig?.settings?.pageLogo ?? "",
+        pageSize: pageData.jsonConfig?.settings?.pageSize ?? 10,
+        customCSS: pageData.jsonConfig?.settings?.customCSS ?? "",
+        privateGallery: pageData.jsonConfig?.settings?.privateGallery ?? false,
       },
+      content: pageData.jsonConfig?.content ?? [],
     };
 
     reset(resetData);
@@ -378,6 +378,7 @@ export const PageCustomize = forwardRef(({
                       <Input
                         type="number"
                         min={1}
+                        max={60}
                         value={field.value ?? 10}
                         onChange={(e) => field.onChange(Number(e.target.value))}
                         placeholder="Enter number of images per page"

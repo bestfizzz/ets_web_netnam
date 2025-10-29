@@ -8,7 +8,7 @@ import { Download, X, ImageIcon, Share2, CheckSquare, SquareX } from "lucide-rea
 import { downloadSelected, formatVietnamesePhone } from "@/lib/utils"
 import { useGalleryContext } from "@/hooks/gallery-context"
 import { toast } from "sonner"
-import { createGuestShare } from "@/lib/api/share-actions"
+import { ShareActionsAPI } from "@/lib/server_api/share-actions"
 
 export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
   const {
@@ -62,20 +62,14 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
     setIsSubmitting(true)
     try {
       toast.loading("Creating share link...")
-      const res = await createGuestShare(uuid, {
+      const res = await ShareActionsAPI.createGuest(uuid, {
         contact: formatted,
         assetIds,
       })
 
       toast.dismiss()
       setDialogOpen(false)
-      if (res?.shareUrl) {
-        toast.success("Share link created successfully!")
-        navigator.clipboard.writeText(res.shareUrl)
-        toast.info("Copied link to clipboard")
-      } else {
-        toast.success("Guest share created successfully!")
-      }
+      toast.success("Guest share created successfully!")
 
     } catch (err) {
       console.error("Share error:", err)

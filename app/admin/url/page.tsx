@@ -1,40 +1,40 @@
-import AdminLayout from "@/components/layout-admin"
-import { URLTable, URL } from "@/components/url/url-table"
+'use server'
+
 import { cookies } from "next/headers"
-import { ShareDetail,SharePlatform } from "@/lib/types/types"
-// ✅ Fetch Wrapper
-async function fetchBackend(url: string) {
-  try {
-    const cookieStore = await cookies()
-    const session = cookieStore.get("session")?.value
-    const accessToken = cookieStore.get("accessToken")?.value
+import AdminLayout from "@/components/layout-admin"
+import { URLTable } from "@/components/url/url-table"
+import {  ShareDetail, SharePlatform,  UrlManager} from "@/lib/types/types"
+import { UrlManagerClientAPI } from "@/lib/client_api/url-manager.client"
+import { SharePlatformClientAPI } from "@/lib/client_api/share-platform.client"
+import { ShareDetailClientAPI } from "@/lib/client_api/share-detail.client"
+import { TemplateDetailClientAPI } from "@/lib/client_api/template-detail.client"
+import { TemplateTypeClientAPI } from "@/lib/client_api/template-type.client"
 
-    const res = await fetch(`${process.env.URL}${url}`, {
-      cache: "no-store",
-      headers: {
-        cookie: `session=${session};accessToken=${accessToken}`,
-      },
-    })
-
-    if (!res.ok) {
-      console.error(`API ${url} failed:`, res.status)
-      return []
-    }
-
-    return res.json()
-  } catch (err) {
-    console.error(`API ${url} error:`, err)
-    return []
-  }
-}
-
-// ✅ Load all required data concurrently
+// ✅ Load all required data concurrently using ClientAPI
 export default async function Page() {
-  const [urls, platforms, shareDetails] = await Promise.all([
-    fetchBackend("/api/url-manager") as Promise<URL[]>,
-    fetchBackend("/api/share/platforms") as Promise<SharePlatform[]>,
-    fetchBackend("/api/share/details") as Promise<ShareDetail[]>,
-  ])
+  const cookieStore = await cookies()
+  const session = cookieStore.get("session")?.value
+  const accessToken = cookieStore.get("accessToken")?.value
+
+  const [urlsResult, platformsResult, shareDetailsResult,templateTypesResult, templateDetailsResult] =
+    await Promise.allSettled([
+      UrlManagerClientAPI.serverList(session,accessToken),
+      SharePlatformClientAPI.serverList(session,accessToken),
+      ShareDetailClientAPI.serverList(session,accessToken),
+      TemplateTypeClientAPI.serverList(session,accessToken),
+      TemplateDetailClientAPI.serverList(session,accessToken),
+    ])
+
+  const urls: UrlManager[] =
+    urlsResult.status === "fulfilled" ? urlsResult.value : []
+  const platforms: SharePlatform[] =
+    platformsResult.status === "fulfilled" ? platformsResult.value : []
+  const shareDetails: ShareDetail[] =
+    shareDetailsResult.status === "fulfilled" ? shareDetailsResult.value : []
+  const templateTypes =
+    templateTypesResult.status === "fulfilled" ? templateTypesResult.value : []
+  const templateDetails =
+    templateDetailsResult.status === "fulfilled" ? templateDetailsResult.value : []
 
   return (
     <AdminLayout>
@@ -43,6 +43,8 @@ export default async function Page() {
           tableData={urls}
           platforms={platforms}
           shareDetails={shareDetails}
+          templateTypes={templateTypes}
+          templateDetails={templateDetails}
         />
       </div>
     </AdminLayout>

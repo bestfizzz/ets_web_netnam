@@ -22,6 +22,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/customize/template-share.jsx", "components/customize/template-search.jsx", "components/customize/template-generator.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/customize/template-share.jsx", "components/customize/template-search.jsx", "components/customize/template-generator.tsx"],
   "exclude": ["node_modules"]
 }

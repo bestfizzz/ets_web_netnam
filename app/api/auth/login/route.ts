@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { SignJWT } from "jose"
-import { loginUser } from "@/lib/api/auth"
-import { AuthSigninSchema } from "@/lib/types/types"
+import { AuthServerAPI } from "@/lib/server_api/auth"
+import { AuthSigninSchema } from "@/lib/types/auth"
 
 export async function POST(req: Request) {
   try {
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const { email, password } = parsed.data
 
     // 🔹 Call backend via shared http client
-    const { accessToken, expires } = await loginUser({ email, password })
+    const { accessToken, expires } = await AuthServerAPI.signin({ email, password })
 
     // 🔹 Sign a short-lived session JWT
     const secret = new TextEncoder().encode(process.env.JWT_SECRET!)

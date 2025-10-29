@@ -8,6 +8,20 @@ export interface HttpOptions extends Omit<RequestInit, "body"> {
   baseUrl?: string
 }
 
+export class HttpError extends Error {
+  status: number
+  statusText: string
+  url: string
+  body?: string
+  constructor(status: number, statusText: string, url: string, message?: string, body?: string) {
+    super(message)
+    this.status = status
+    this.statusText = statusText
+    this.url = url
+    this.body = body
+  }
+}
+
 export async function http<T = any>(
   url: string,
   options: HttpOptions = {}
@@ -25,6 +39,7 @@ export async function http<T = any>(
 
   const isServer = typeof window === "undefined"
 
+  // --- Construct final URL ---
   let finalUrl =
     baseUrl && !/^https?:\/\//.test(url)
       ? baseUrl.replace(/\/$/, "") + "/" + url.replace(/^\//, "")
@@ -38,6 +53,7 @@ export async function http<T = any>(
     finalUrl += (finalUrl.includes("?") ? "&" : "?") + params.toString()
   }
 
+  // --- Normalize headers ---
   const normalizedHeaders: Record<string, string> = {}
   if (headers instanceof Headers) headers.forEach((v, k) => (normalizedHeaders[k] = v))
   else if (Array.isArray(headers)) for (const [k, v] of headers) normalizedHeaders[k] = v
@@ -52,27 +68,59 @@ export async function http<T = any>(
   if (body && typeof body === "object" && !(body instanceof FormData)) {
     finalHeaders["Content-Type"] = "application/json"
     finalBody = JSON.stringify(body)
-  } else finalBody = body as any
+  } else {
+    finalBody = body as any
+  }
+
+  if (isServer) {
+    console.log("HTTP Request Debug:")
+    console.log("  URL:", finalUrl)
+    console.log("  Method:", method)
+    console.log("  Headers:", finalHeaders)
+    console.log("  Body:", finalBody)
+  }
 
   const fetchFn = isServer ? globalThis.fetch : window.fetch
-
   const res = await fetchFn(finalUrl, {
     method,
     headers: finalHeaders,
     body: finalBody,
-    cache: "no-store",
-    credentials: "include",
     ...rest,
   })
 
+  if (isServer) {
+    console.log("HTTP Response Debug:")
+    console.log("  Status:", res.status, res.statusText)
+    console.log("  Content-Type:", res.headers.get("content-type"))
+  }
+
+  let rawText: string | undefined
+  try {
+    rawText = await res.text()
+  } catch {
+    rawText = undefined
+  }
+
+  const contentType = res.headers.get("content-type") || ""
+  let parsedJson: any = undefined
+  if (parseJson && contentType.includes("application/json") && rawText) {
+    try {
+      parsedJson = JSON.parse(rawText)
+    } catch {
+      parsedJson = undefined
+    }
+  }
+
+  // --- Error Handling (preserve status) ---
   if (throwOnError && !res.ok) {
-    const text = await res.text()
-    throw new Error(`HTTP ${res.status} ${res.statusText}: ${text}`)
+    let message = parsedJson?.message || parsedJson?.error || rawText || res.statusText
+
+    if (isServer) console.error("HTTP Error Response Body:", message)
+
+    throw new HttpError(res.status, res.statusText, finalUrl, message, rawText)
   }
 
-  if (parseJson && res.headers.get("content-type")?.includes("application/json")) {
-    return res.json() as Promise<T>
-  }
-
-  return res as unknown as T
+  // --- Success ---
+  if (parseJson && parsedJson !== undefined) return parsedJson as T
+  return (rawText as unknown) as T
 }

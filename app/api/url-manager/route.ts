@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from "next/server"
-import { listUrlManagers, createUrlManager } from "@/lib/api/url-manager"
+import { URLManagerServerAPI } from "@/lib/server_api/url-manager"
+import { UrlManagerPayload } from "@/lib/types/url-manager"
 
 export async function GET(req: NextRequest) {
   try {
     const accessToken = req.cookies.get("accessToken")?.value
-    if (!accessToken)
+    if (!accessToken) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
 
-    const data = await listUrlManagers(accessToken)
+    const data = await URLManagerServerAPI.list(accessToken)
     return NextResponse.json(data)
   } catch (err) {
     console.error("Get URL Managers error:", err)
@@ -18,12 +20,13 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const accessToken = req.cookies.get("accessToken")?.value
-    if (!accessToken)
+    if (!accessToken) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
 
-    const { data } = await req.json()
-    const result = await createUrlManager(
-      { name: data.name, shareDetailIds: data.shareDetailIds },
+    const body: UrlManagerPayload = await req.json()
+    const result = await URLManagerServerAPI.create(
+      body,
       accessToken
     )
 

@@ -43,31 +43,24 @@ import {
 } from "@/components/ui/table"
 import { toast } from "sonner"
 import { UrlAddModal, UrlEditModal, UrlDeleteModal } from "@/components/url/url-modals"
-import { ShareDetail } from "@/lib/types/types"
-
-export type URL = {
-    id: string
-    uuid: string
-    name: string
-    searchTemplate?: string | "none"
-    shareTemplate?: string | "none"
-    [key: string]: any // For dynamic platform fields
-}
+import { ShareDetail, TemplateDetail, TemplateType, UrlManager } from "@/lib/types/types"
 
 interface URLTableProps {
-    tableData: URL[]
+    tableData: UrlManager[]
     error?: string
     platforms: { id: number; name: string }[]
     shareDetails: ShareDetail[]
+    templateTypes: TemplateType[]
+    templateDetails: TemplateDetail[]
 }
 
-export function URLTable({ tableData, error, platforms, shareDetails }: URLTableProps) {
+export function URLTable({ tableData, error, platforms, shareDetails, templateTypes, templateDetails }: URLTableProps) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
 
-    const columns: ColumnDef<URL>[] = React.useMemo(() => [
+    const columns: ColumnDef<UrlManager>[] = React.useMemo(() => [
         {
             accessorKey: "id",
             header: "ID",
@@ -125,6 +118,8 @@ export function URLTable({ tableData, error, platforms, shareDetails }: URLTable
                             url={url}
                             platforms={platforms}
                             shareDetails={shareDetails}
+                            templateTypes={templateTypes}
+                            templateDetails={templateDetails}
                         />
                         <UrlDeleteModal
                             url={url}
@@ -135,7 +130,7 @@ export function URLTable({ tableData, error, platforms, shareDetails }: URLTable
                 )
             },
         },
-    ], [platforms, shareDetails])
+    ], [platforms, shareDetails, templateTypes, templateDetails])
 
     const data = tableData
     const table = useReactTable({

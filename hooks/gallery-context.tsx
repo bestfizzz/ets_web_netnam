@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode, use } from "react"
 import { useFancybox } from "@/hooks/use-fancybox"
 import { performDownload } from "@/lib/utils"
+import { TemplateJsonConfig } from "@/lib/types/types"
 
 export type AssetMeta = {
   id: string
@@ -12,12 +13,7 @@ export type AssetMeta = {
   filename: string
 }
 
-type GallerySettings = {
-  themeColor: string
-  pageTitle: string
-  pageSize: number
-  privateGallery: boolean
-}
+type GallerySettings = TemplateJsonConfig["settings"]
 
 
 type GalleryContextType = {
@@ -50,8 +46,8 @@ type GalleryContextType = {
   totalPages: number
   pageSize: number
   setPageSize: (pageSize: number) => void
-  nextPage: number | null
-  setNextPage: (nextPage: number | null) => void
+  nextPage: string | null
+  setNextPage: (nextPage: string | null) => void
   // Selection Mode
   selectMode: boolean
   setSelectMode: (mode: boolean) => void
@@ -135,6 +131,12 @@ export function GalleryProvider({ children, gallerySettings }: { children: React
       setPrivateGallery(gallerySettings.privateGallery)
     }
   }, [gallerySettings?.privateGallery])
+
+  useEffect(() => {
+    if (gallerySettings?.pageSize) {
+      setPageSize(gallerySettings.pageSize)
+    }
+  }, [gallerySettings?.pageSize])
 
   const value: GalleryContextType = {
     valid,

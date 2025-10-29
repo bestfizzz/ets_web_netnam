@@ -13,8 +13,8 @@ export function capitalizeFirstLetter(string: string) {
 }
 
 // Simple ID generator like "srch_xxxxxxxx" or "shre_xxxxxxxx"
-export function generateId(pageType: "search" | "share") {
-  const prefix = pageType === "search" ? "srch" : "shre"
+export function generateId(templateType: "search" | "share") {
+  const prefix = templateType === "search" ? "srch" : "shre"
   return `${prefix}_${Math.random().toString(36).substr(2, 8)}`
 }
 
@@ -140,3 +140,12 @@ export const formatVietnamesePhone = (input: string) => {
   if (digits.length === 9) return "84" + digits
   return digits
 }
+
+export function extractIdsByPrefix(payload: Record<string, any>, prefix: string): number[] {
+  return Object.entries(payload)
+    .filter(([key, value]) => key.startsWith(prefix) && value && value !== "none")
+    .map(([_, value]) => Number(value))
+    .filter((n) => !Number.isNaN(n))
+}
+
+

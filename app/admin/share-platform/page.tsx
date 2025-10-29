@@ -1,77 +1,35 @@
-import { cookies } from "next/headers"
 import AdminLayout from "@/components/layout-admin"
 import ShareDetailsClient from "@/components/share/share-detail-client"
-
-async function getSharePlatforms(): Promise<{ data: any[]; error?: string }> {
-  try {
-    const cookieStore = cookies()
-    const session = (await cookieStore).get("session")?.value
-    const accessToken = (await cookieStore).get("accessToken")?.value
-
-    const res = await fetch(`${process.env.URL}/api/share/platforms`, {
-      cache: "no-store",
-      headers: {
-        cookie: `session=${session};accessToken=${accessToken}`,
-      },
-    })
-
-    if (!res.ok) {
-      const text = await res.text()
-      console.error("Failed to fetch platforms:", res.status, text)
-      return { data: [], error: `Failed to fetch platforms: ${res.status}` }
-    }
-
-    const json = await res.json()
-    const data = Array.isArray(json) ? json : json.data ?? []
-    return { data }
-  } catch (err) {
-    console.error("Network error:", err)
-    return { data: [], error: "Network error while fetching platforms" }
-  }
-}
-
-async function getShareDetails(): Promise<{ data: any; error?: string }> {
-  try {
-    const cookieStore = cookies()
-    const session = (await cookieStore).get("session")?.value
-    const accessToken = (await cookieStore).get("accessToken")?.value
-
-    const res = await fetch(`${process.env.URL}/api/share/details`, {
-      cache: "no-store",
-      headers: {
-        cookie: `session=${session};accessToken=${accessToken}`,
-      },
-    })
-
-    if (!res.ok) {
-      const text = await res.text()
-      console.error("Failed to fetch details:", res.status, text)
-      return { data: {}, error: `Failed to fetch details: ${res.status}` }
-    }
-
-    const json = await res.json()
-    const data = Array.isArray(json) ? json : json.data ?? {}
-    return { data }
-  } catch (err) {
-    console.error("Network error:", err)
-    return { data: {}, error: "Network error while fetching details" }
-  }
-}
+import { ShareDetailClientAPI } from "@/lib/client_api/share-detail.client"
+import { SharePlatformClientAPI } from "@/lib/client_api/share-platform.client"
+import { cookies } from "next/headers"
 
 export default async function Page() {
-  const [platforms, details] = await Promise.all([
-    getSharePlatforms(),
-    getShareDetails(),
-  ])
+  const cookieStore = await cookies()
+  const session = cookieStore.get("session")?.value
+  const accessToken = cookieStore.get("accessToken")?.value
 
-  const error = platforms.error || details.error
+  // Load both share platforms and share details concurrently
+  const [platformsResult, detailsResult] = await Promise.allSettled([
+    SharePlatformClientAPI.serverList(session,accessToken),
+    ShareDetailClientAPI.serverList(session,accessToken),
+  ])
+  console.log("Platforms Result:", platformsResult)
+  console.log("Details Result:", detailsResult)
+  const platforms =
+    platformsResult.status === "fulfilled" ? platformsResult.value : []
+  const details =
+    detailsResult.status === "fulfilled" ? detailsResult.value : []
+
+  const error =
+    platformsResult.status === "rejected" || detailsResult.status === "rejected"
 
   return (
     <AdminLayout>
       <div className="flex flex-col gap-3 p-3 xs:gap-6 xs:p-6">
         <ShareDetailsClient
-          platforms={platforms.data}
-          data={details.data}
+          platforms={platforms}
+          data={details}
           error={error ? true : undefined}
         />
       </div>

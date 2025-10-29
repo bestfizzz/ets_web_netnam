@@ -24,32 +24,46 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { CheckCircle } from "lucide-react"
-import { URL } from "@/components/url/url-table"
-import { ShareDetail,SharePlatform } from "@/lib/types/types"
+import {
+  ShareDetail,
+  SharePlatform,
+  TemplateDetail,
+  TemplateType,
+  UrlManager,
+} from "@/lib/types/types"
+import { capitalizeFirstLetter } from "@/lib/utils"
 
-// Create dynamic schema based on available platforms
-const createUrlFormSchema = (platforms: { id: number; name: string }[] = []) => {
+// -----------------------------
+// Schema Factory
+// -----------------------------
+const createUrlFormSchema = (
+  platforms: { id: number; name: string }[] = [],
+  templateTypes: TemplateType[] = []
+) => {
   const schemaFields: Record<string, z.ZodTypeAny> = {
     name: z.string().min(1, "Name is required"),
-    searchTemplate: z.string().optional(),
-    shareTemplate: z.string().optional(),
   }
 
-  // Add platform fields dynamically
   platforms.forEach((platform) => {
     schemaFields[`platform_${platform.id}`] = z.string().optional()
+  })
+
+  templateTypes.forEach((t) => {
+    schemaFields[`template_${t.name.toLowerCase()}`] = z.string().optional()
   })
 
   return z.object(schemaFields)
 }
 
 type UrlFormProps = {
-  url?: URL
+  url?: UrlManager
   onSubmit: (data: Record<string, any>) => void
   shareDetails?: ShareDetail[]
   platforms?: SharePlatform[]
-  designs?: { pageType: string; id: string; name: string }[]
+  templateTypes?: TemplateType[]
+  templateDetails?: TemplateDetail[]
   formId: string
+  loading?: boolean
 }
 
 export function UrlForm({
@@ -57,61 +71,57 @@ export function UrlForm({
   onSubmit,
   shareDetails = [],
   platforms = [],
-  designs = [],
-  formId
+  templateTypes = [],
+  templateDetails = [],
+  formId,
+  loading = false,
 }: UrlFormProps) {
-  const urlFormSchema = useMemo(() => createUrlFormSchema(platforms), [platforms])
-  // Group share details by platform
+  const urlFormSchema = useMemo(
+    () => createUrlFormSchema(platforms, templateTypes),
+    [platforms, templateTypes]
+  )
+
+  // -----------------------------
+  // Group shareDetails by platform
+  // -----------------------------
   const groupedDetails = useMemo(() => {
     const grouped: Record<number, ShareDetail[]> = {}
     shareDetails.forEach((detail) => {
       const platformId = detail.platform?.id
       if (platformId !== undefined) {
-        if (!grouped[platformId]) {
-          grouped[platformId] = []
-        }
+        if (!grouped[platformId]) grouped[platformId] = []
         grouped[platformId].push(detail)
       }
     })
     return grouped
   }, [shareDetails])
 
-  // Create default values
-  // Create default values
+  // -----------------------------
+  // Default Values
+  // -----------------------------
   const getDefaultValues = () => {
-    
     const defaults: Record<string, any> = {
       name: url?.name ?? "",
-      searchTemplate: url?.searchTemplate ?? "none",
-      shareTemplate: url?.shareTemplate ?? "none",
     }
 
-    // Loop through each available platform
+    // Platform defaults
     platforms.forEach((platform) => {
       const fieldName = `platform_${platform.id}`
-      let matchedId = "none"
-
-      if (url?.shareDetails?.length) {
-        
-        // Get the IDs from url.shareDetails
-        const urlDetailIds = url.shareDetails.map((d: any) => Number(d.id))
-        
-        // Find a detail that matches one of the URL's detail IDs AND belongs to this platform
-        const matched = shareDetails.find((detail: ShareDetail) => {
-          const idMatch = urlDetailIds.includes(Number(detail.id))
-          const platformMatch = detail.platform.id === platform.id
-
-          return idMatch && platformMatch
-        })
-        
-        if (matched) {
-          matchedId = String(matched.id)
-        } 
-      }
-
-      defaults[fieldName] = matchedId
+      const matched = url?.shareDetails?.find(
+        (d) => d.platform.id === platform.id
+      )
+      defaults[fieldName] = matched ? String(matched.id) : "none"
     })
-    
+
+    // Template defaults
+    templateTypes.forEach((t) => {
+      const fieldName = `template_${t.name.toLowerCase()}`
+      const matched = url?.templateDetails?.find(
+        (td) => String(td.templateType.id) === String(t.id)
+      )
+      defaults[fieldName] = matched ? String(matched.id) : "none"
+    })
+
     return defaults
   }
 
@@ -120,13 +130,15 @@ export function UrlForm({
     defaultValues: getDefaultValues(),
   })
 
-  // Reset form whenever url changes
   useEffect(() => {
     form.reset(getDefaultValues())
-  }, [url, platforms])
+  }, [url, platforms, templateTypes])
 
   const selected = form.watch()
 
+  // -----------------------------
+  // Render
+  // -----------------------------
   return (
     <Form {...form}>
       <form
@@ -149,14 +161,14 @@ export function UrlForm({
           )}
         />
 
-        {/* Social Credentials - Dynamic */}
+        {/* Platforms */}
         {platforms.length > 0 && (
           <div className="pt-4 border-t grid gap-4 w-full">
             <FormLabel>Social Credentials</FormLabel>
             <Tabs defaultValue={`platform_${platforms[0]?.id}`} className="w-full">
-              <ScrollArea >
+              <ScrollArea>
                 <div className="relative rounded-sm overflow-x-auto overflow-y-hidden h-13 bg-muted">
-                  <TabsList className="absolute flex flex-row w-full min-w-max ">
+                  <TabsList className="absolute flex flex-row w-full min-w-max">
                     {platforms.map((platform) => {
                       const fieldName = `platform_${platform.id}`
                       return (
@@ -167,9 +179,9 @@ export function UrlForm({
                         >
                           <span className="truncate">{platform.name}</span>
                           <CheckCircle
-                            className={`w-4 h-4 flex-shrink-0 ${selected[fieldName] && selected[fieldName] !== "none"
-                              ? "text-green-500"
-                              : "text-gray-400"
+                            className={`w-4 h-4 ${selected[fieldName] && selected[fieldName] !== "none"
+                                ? "text-green-500"
+                                : "text-gray-400"
                               }`}
                           />
                         </TabsTrigger>
@@ -180,11 +192,9 @@ export function UrlForm({
                 <ScrollBar orientation="horizontal" />
               </ScrollArea>
 
-
               {platforms.map((platform) => {
                 const fieldName = `platform_${platform.id}`
                 const accounts = groupedDetails[platform.id] || []
-
                 return (
                   <TabsContent key={platform.id} value={fieldName}>
                     <FormField
@@ -194,7 +204,11 @@ export function UrlForm({
                         <FormItem>
                           <FormLabel>{platform.name} Account</FormLabel>
                           <FormControl>
-                            <Select onValueChange={field.onChange} value={field.value}>
+                            <Select
+                              disabled={loading}
+                              onValueChange={field.onChange}
+                              value={field.value}
+                            >
                               <SelectTrigger>
                                 <SelectValue placeholder="Select credential" />
                               </SelectTrigger>
@@ -220,91 +234,70 @@ export function UrlForm({
         )}
 
         {/* Templates */}
-        <div className="pt-4 border-t grid gap-4">
-          <FormLabel>Templates</FormLabel>
-          <Tabs defaultValue="search" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              {["search", "share"].map((tab) => (
-                <TabsTrigger
-                  key={tab}
-                  value={tab}
-                  className="flex items-center gap-2"
-                >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                  <CheckCircle
-                    className={`w-5 h-5 ${selected[`${tab}Template`] &&
-                      selected[`${tab}Template`] !== "none"
-                      ? "text-green-500"
-                      : "text-gray-400"
-                      }`}
-                  />
-                </TabsTrigger>
-              ))}
-            </TabsList>
+        {templateTypes.length > 0 && (
+          <div className="pt-4 border-t grid gap-4">
+            <FormLabel>Templates</FormLabel>
+            <Tabs defaultValue={`template_${templateTypes[0]?.name.toLowerCase()}`}>
+              <TabsList className="grid w-full grid-cols-2">
+                {templateTypes.map((t) => {
+                  const fieldName = `template_${t.name.toLowerCase()}`
+                  return (
+                    <TabsTrigger key={t.id} value={fieldName}>
+                      {t.name}
+                      <CheckCircle
+                        className={`w-5 h-5 ${selected[fieldName] && selected[fieldName] !== "none"
+                            ? "text-green-500"
+                            : "text-gray-400"
+                          }`}
+                      />
+                    </TabsTrigger>
+                  )
+                })}
+              </TabsList>
 
-            {/* Search Templates */}
-            <TabsContent value="search">
-              <FormField
-                control={form.control}
-                name="searchTemplate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Search Templates</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select template" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="none">None</SelectItem>
-                          {designs
-                            .filter((d) => d.pageType === "search")
-                            .map((d) => (
-                              <SelectItem key={d.id} value={d.id}>
-                                {d.name}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </TabsContent>
+              {templateTypes.map((t) => {
+                const fieldName = `template_${t.name.toLowerCase()}`
+                const templates = templateDetails.filter(
+                  (td) => td.templateType?.id === t.id
+                )
 
-            {/* Share Templates */}
-            <TabsContent value="share">
-              <FormField
-                control={form.control}
-                name="shareTemplate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Share Templates</FormLabel>
-                    <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select template" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="none">None</SelectItem>
-                          {designs
-                            .filter((d) => d.pageType === "share")
-                            .map((d) => (
-                              <SelectItem key={d.id} value={d.id}>
-                                {d.name}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </TabsContent>
-          </Tabs>
-        </div>
+                return (
+                  <TabsContent key={t.id} value={fieldName}>
+                    <FormField
+                      control={form.control}
+                      name={fieldName}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{t.name} Templates</FormLabel>
+                          <FormControl>
+                            <Select
+                              disabled={loading}
+                              onValueChange={field.onChange}
+                              value={field.value}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select template" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="none">None</SelectItem>
+                                {templates.map((tpl) => (
+                                  <SelectItem key={tpl.id} value={String(tpl.id)}>
+                                    {tpl.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </TabsContent>
+                )
+              })}
+            </Tabs>
+          </div>
+        )}
       </form>
     </Form>
   )

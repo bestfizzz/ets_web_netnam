@@ -4,15 +4,13 @@ import SearchHeader from "@/components/pages/search/search-header"
 import SearchSelectionDrawer from "@/components/pages/search/search-selection-drawer"
 import { Progress } from "@/components/ui/progress"
 import { toast } from "sonner"
-import { getPersonAssets, getAllAssets, getPersonAssetStats, getAssetsByKeyword } from "@/lib/api/assets"
+import { AssetsServerAPI } from "@/lib/server_api/assets"
 import type { AssetMeta } from "@/hooks/gallery-context"
 import { scrollToGallery } from "@/lib/utils"
 
 
 export default function SearchPageWrapper({ children, uuid, settings, preview = false }: { children?: React.ReactNode, uuid: string, settings: any, preview?: boolean }) {
   const {
-    valid,
-    setValid,
     mode,
     privateGallery,
     personId,
@@ -34,7 +32,7 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
   useEffect(() => {
     if (!preview) return
     setShowFullLoading(false)
-    const placeholderAssets: AssetMeta[] = Array.from({ length: 10 }, (_, i) => ({
+    const placeholderAssets: AssetMeta[] = Array.from({ length: pageSize }, (_, i) => ({
       id: `placeholder-${i}`,
       thumb: `/placeholder/400.svg`,
       preview: `/placeholder/1200.svg`,
@@ -43,8 +41,8 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
     }))
 
     setImages(placeholderAssets)
-    setTotal(placeholderAssets.length)
-  }, [preview, setImages, setTotal])
+    setTotal(120)
+  }, [preview, pageSize,setImages, setTotal])
 
   // Fetch assets when mode or personId changes
   useEffect(() => {
@@ -89,16 +87,16 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
 
       if (mode === "person" && personId) {
         setProgress(40)
-        const stats = await getPersonAssetStats(uuid, personId)
+        const stats = await AssetsServerAPI.personStats(uuid, personId)
         totalAssets = stats.assets ?? 0
         setProgress(70)
-        data = await getPersonAssets(uuid, personId, pageNum, pageSize)
+        data = await AssetsServerAPI.personAssets(uuid, personId, pageNum, pageSize)
       } else if (mode === "keyword" && query) {
         setProgress(60)
-        data = await getAssetsByKeyword(uuid, query, pageNum, pageSize)
+        data = await AssetsServerAPI.searchByKeyword(uuid, query, pageNum, pageSize)
       } else {
         setProgress(50)
-        data = await getAllAssets(uuid, pageNum, pageSize)
+        data = await AssetsServerAPI.getAll(uuid, pageNum, pageSize)
         totalAssets = data.assets?.total ?? data.assets?.count ?? 0
       }
 

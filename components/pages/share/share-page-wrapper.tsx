@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { Check, EllipsisVertical } from "lucide-react"
 import ShareSelectionDrawer from "@/components/pages/share/share-selection-drawer"
-import { shareAuthentication } from "@/lib/api/share-actions"
+import { ShareActionsAPI } from "@/lib/server_api/share-actions"
 import { AssetMeta, useGalleryContext } from "@/hooks/gallery-context"
 
 export default function SharePageWrapper({
@@ -46,7 +46,7 @@ export default function SharePageWrapper({
     if (!preview) return
     setAuthorized(true)
     setShowFullLoading(false)
-    const placeholderAssets: AssetMeta[] = Array.from({ length: 10 }, (_, i) => ({
+    const placeholderAssets: AssetMeta[] = Array.from({ length: pageSize }, (_, i) => ({
       id: `placeholder-${i}`,
       thumb: `/placeholder/400.svg`,
       preview: `/placeholder/1200.svg`,
@@ -55,8 +55,8 @@ export default function SharePageWrapper({
     }))
 
     setImages(placeholderAssets)
-    setTotal(placeholderAssets.length)
-  }, [preview, setImages, setTotal])
+    setTotal(120)
+  }, [preview, setImages, pageSize,setTotal])
 
   // ✅ Load paged images locally after authorization
   useEffect(() => {
@@ -66,7 +66,7 @@ export default function SharePageWrapper({
 
   // ✅ Core loader (paging from assetIds)
   async function loadImages(pageNum: number) {
-    if (!uuid || assetIds.length === 0) return
+    if (!uuid || preview || assetIds.length === 0) return
     try {
       setLoading(true)
       setShowFullLoading(true)
@@ -106,7 +106,7 @@ export default function SharePageWrapper({
     }
 
     try {
-      const data = await shareAuthentication(uuid, contactID, accessCode)
+      const data = await ShareActionsAPI.authenticate(uuid, contactID, accessCode)
       if (!data?.assetIds?.length) {
         return toast.error("No assets found for this access code")
       }

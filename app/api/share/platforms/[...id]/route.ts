@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import {
-  getSharePlatform,
-  updateSharePlatform,
-  deleteSharePlatform,
-} from "@/lib/api/share-platform"
+import { SharePlatformServerAPI } from "@/lib/server_api/share-platform"
 
 export async function GET(
   req: NextRequest,
@@ -15,7 +11,7 @@ export async function GET(
     if (!token)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-    const res = await getSharePlatform(Number(id), token)
+    const res = await SharePlatformServerAPI.get(Number(id), token)
     return NextResponse.json(res, { status: 200 })
   } catch (err) {
     console.error("Get Share Platform error:", err)
@@ -34,7 +30,7 @@ export async function PUT(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
     const body = await req.json()
-    const res = await updateSharePlatform(Number(id), body, token)
+    const res = await SharePlatformServerAPI.update(Number(id), body, token)
     return NextResponse.json(res, { status: 200 })
   } catch (err) {
     console.error("Update Share Platform error:", err)
@@ -52,8 +48,8 @@ export async function DELETE(
     if (!token)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-    const res = await deleteSharePlatform(Number(id), token)
-    return NextResponse.json(res, { status: 204 })
+    await SharePlatformServerAPI.delete(Number(id), token)
+    return NextResponse.json({ message: "Deleted successfully" }, { status: 200 })
   } catch (err) {
     console.error("Delete Share Platform error:", err)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })

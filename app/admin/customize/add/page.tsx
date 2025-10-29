@@ -9,113 +9,140 @@ import { SkeletonLoading } from "@/components/skeleton-loading"
 import { toast } from "sonner"
 import { capitalizeFirstLetter } from "@/lib/utils"
 import BackButton from "@/components/back-button"
-
-const pages = ["search", "share"]
+import { TemplateDetailClientAPI } from "@/lib/client_api/template-detail.client"
+import { TemplateTypeClientAPI } from "@/lib/client_api/template-type.client"
+import { TemplateDetail, TemplateType } from "@/lib/types/types"
 
 export default function CustomizeAddPage() {
   const router = useRouter()
-  const [selectedPage, setSelectedPage] = React.useState(pages[0])
+  const [templateTypes, setTemplateTypes] = React.useState<TemplateType[]>([])
+  const [templateType, setTemplateType] = React.useState<TemplateType>()
   const [selectedDesign, setSelectedDesign] = React.useState<string>("")
-  const [pageData, setPageData] = React.useState<any>(null)
-  const [templates, setTemplates] = React.useState<any[]>([])
+  const [pageData, setPageData] = React.useState<TemplateDetail>()
+  const [templates, setTemplates] = React.useState<TemplateDetail[]>([])
+  const [allTemplates, setAllTemplates] = React.useState<TemplateDetail[]>([])
   const [loading, setLoading] = React.useState(false)
   const [onRequest, setOnRequest] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
   const pageCustomizeRef = React.useRef<any>(null)
 
-  // Fetch templates by page type
+  // 🧠 Load template types (once)
   React.useEffect(() => {
-    const fetchTemplates = async () => {
+    const fetchTemplateTypes = async () => {
+      try {
+        const res = await TemplateTypeClientAPI.list()
+        const types = res?.data || res || []
+        if (types.length === 0) throw new Error("No template types found")
+        setTemplateTypes(types)
+        setTemplateType(types[0]) // first as default
+      } catch (err: any) {
+        console.error("Error fetching template types:", err)
+        toast.error(err.message || "Failed to load template types")
+      }
+    }
+    fetchTemplateTypes()
+  }, [])
+
+  // 🧠 Fetch *all* default templates ONCE
+  React.useEffect(() => {
+    const fetchAllDefaults = async () => {
       setLoading(true)
       setError(null)
-      setPageData(null)
-      setTemplates([])
-
       try {
-        const res = await fetch("/api/customize/get-template", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pageType: selectedPage }),
-        })
-
-        if (!res.ok) throw new Error("Failed to fetch templates")
-
-        const { data } = await res.json()
-
-        if (!Array.isArray(data) || data.length === 0) {
-          throw new Error("No templates found for this page type")
-        }
-
-        setTemplates(data)
-
-        // pick first template as default
-        setSelectedDesign(data[0].id)
-        setPageData(data[0].data)
+        const res = await TemplateDetailClientAPI.getDefaultsTemplates()
+        const all = Array.isArray(res) ? res : []
+        if (all.length === 0) throw new Error("No default templates found")
+        setAllTemplates(all)
       } catch (err: any) {
-        setError(err.message)
-        toast.error(err.message)
+        console.error("Error fetching defaults:", err)
+        setError(err.message || "Failed to load templates")
+        toast.error(err.message || "Failed to load templates")
       } finally {
         setLoading(false)
       }
     }
+    fetchAllDefaults()
+  }, [])
 
-    fetchTemplates()
-  }, [selectedPage])
-
-  // Load template when selectedDesign changes
+  // 🧠 Filter templates by selected type
   React.useEffect(() => {
-    const template = templates.find(t => t.id === selectedDesign)
+    if (!templateType || allTemplates.length === 0) return
+
+    const filtered = allTemplates.filter(
+      (t) => t.templateType?.id === templateType.id
+    )
+
+    if (filtered.length === 0) {
+      setTemplates([])
+      setPageData(undefined)
+      toast.warning(`No templates found for "${templateType.name}"`)
+      return
+    }
+
+    setTemplates(filtered)
+    const first = filtered[0]
+    setSelectedDesign(first.id)
+    setPageData(first)
+  }, [templateType, allTemplates])
+
+  // 🧠 Load selected template
+  React.useEffect(() => {
+    const template = templates.find((t) => t.id === selectedDesign)
     if (template) {
       setPageData(template)
-      toast.info(`Loaded ${capitalizeFirstLetter(selectedPage)} template "${template.name}"`)
+      toast.info(
+        `Loaded ${capitalizeFirstLetter(templateType?.name || "")} template "${template.name}"`
+      )
     }
   }, [selectedDesign, templates])
 
+  // 🧠 Save new template
   const handleSave = async (formData: any) => {
+    if (!templateType) return
     try {
       setOnRequest(true)
-      const res = await fetch(`/api/customize/save-template`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          pageType: selectedPage,
-          name: formData.name,
-          data: formData,
-        }),
+      const { name, ...restData } = formData
+      await TemplateDetailClientAPI.create({
+        templateTypeId: templateType.id,
+        name: name || "Untitled",
+        isActive: true,
+        jsonConfig: restData,
       })
-
-      if (!res.ok) throw new Error("Failed to save")
-
-      toast.success(`Saved new design ${formData.name} for ${selectedPage}`)
+      toast.success(`Saved new design "${name}" for ${templateType.name}`)
       router.push("/admin/customize")
     } catch (err: any) {
+      console.error("Save error:", err)
       toast.error(`Error saving template: ${err.message || err}`)
     } finally {
       setOnRequest(false)
     }
   }
 
-  const templateOptions = templates.map(t => ({ id: t.id, label: t.name }))
+  const templateOptions = templates.map((t) => ({
+    id: t.id,
+    label: t.name,
+  }))
 
   return (
     <AdminLayout>
       <div className="flex flex-col gap-6 p-6">
         <BackButton path={"/admin/customize"} />
 
-        {/* Tabs for page selection + Save button */}
+        {/* Tabs for template selection + Save button */}
         <div className="flex items-center justify-between border-b border-gray-200 pb-2">
           <div className="flex space-x-2">
-            {pages.map((page) => (
+            {templateTypes.map((template) => (
               <button
-                key={page}
+                key={template.id}
                 className={`px-4 py-2 -mb-px font-medium border-b-2 transition-colors
-                  ${selectedPage === page
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  ${
+                    templateType?.id === template.id
+                      ? "border-blue-500 text-blue-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                   }`}
-                onClick={() => setSelectedPage(page)}
+                onClick={() => setTemplateType(template)}
               >
-                <p className="capitalize">{page}</p>
+                <p className="capitalize">{template.name}</p>
               </button>
             ))}
           </div>
@@ -125,7 +152,7 @@ export default function CustomizeAddPage() {
             size="lg"
             className="h-9"
             onClick={() => pageCustomizeRef.current?.handleSubmit(handleSave)()}
-            disabled={onRequest}
+            disabled={onRequest || !templateType}
           >
             {onRequest ? "Creating Page..." : "Save Page"}
           </Button>
@@ -136,7 +163,7 @@ export default function CustomizeAddPage() {
           {error && <p className="text-red-500">❌ {error}</p>}
           {!loading && pageData && (
             <PageCustomize
-              pageName={selectedPage}
+              pageName={templateType?.name || ""}
               pageData={pageData}
               selectedDesign={selectedDesign}
               onDesignChange={setSelectedDesign}

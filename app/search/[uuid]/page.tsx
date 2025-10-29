@@ -1,40 +1,29 @@
 import TemplateGenerator from "@/components/customize/template-generator"
+import { TemplateDetailServerAPI } from "@/lib/server_api/template-detail"
+import { URLManagerServerAPI } from "@/lib/server_api/url-manager"
+import searchTemplate1 from "@/config/template-search-default-1.json"
+import { TemplateDetail } from "@/lib/types/types"
+import type { TypedObject } from "@portabletext/types"
 
-export async function checkGallery(uuid: string) {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/check-url/${uuid}`)
-    if (!res.ok) return false
-    const data = await res.json()
-    return data.active ?? false
-  } catch (err) {
-    console.error("Check URL failed:", err)
-    return false
-  }
-}
-
-async function fetchTemplate(id: string): Promise<any> {
-    id = 'srch_b47d92aa'
-  const res = await fetch(
-    `${process.env.URL}/api/customize/get-template?id=${id}&pageType=search`
-  )
-  if (!res.ok) throw new Error("Template not found")
-  const json = await res.json()
-  return json.data
-}
-
-// ✅ default export comes last and should not use `async default`
 export default async function SearchPage({
   params,
 }: {
   params: { uuid: string }
 }) {
-  const { uuid } = params
+  const { uuid } = await params
 
-  // ✅ First check if the gallery is valid
-  const isValid = await checkGallery(uuid)
+  let isValid
+  let templateData: TemplateDetail
 
-  if (!isValid) {
-    // Invalid UUID: show 404 / not found page
+  try {
+    // ✅ Safely check URL validity
+    isValid = await URLManagerServerAPI.checkUrl(uuid)
+  } catch (err) {
+    console.error("checkUrl failed:", err)
+    // Leave isValid = false to trigger Not Found
+  }
+
+  if (!isValid || isValid.active === false) {
     return (
       <div className="flex flex-col items-center justify-center h-screen text-center px-6">
         <h1 className="text-2xl font-bold">Not Found</h1>
@@ -45,14 +34,30 @@ export default async function SearchPage({
     )
   }
 
-  // ✅ Only fetch template if UUID is valid
-  const templateData = await fetchTemplate(uuid)
+  try {
+    const templates = await TemplateDetailServerAPI.getPageDetails(uuid)
+    const found = templates.find((t) => {
+      const typeName =
+        typeof t.templateType === "string" ? t.templateType : t.templateType.name
+      return typeName === "search"
+    })
+    templateData = found || searchTemplate1
+  } catch (err) {
+    console.error("getPageDetails failed:", err, "... using default template")
+    templateData = searchTemplate1
+  }
+  console.log(`Using template ${templateData.name} for uuid ${uuid} templateData:`, templateData)
+  const content: TypedObject[] = (templateData.jsonConfig.content as TypedObject[]) || []
 
   return (
     <TemplateGenerator
-      content={templateData.data.content}
-      settings={templateData.data.settings}
-      pageName={templateData.pageType}
+      content={content}
+      settings={templateData.jsonConfig.settings}
+      pageName={
+        typeof templateData.templateType === "string"
+          ? templateData.templateType
+          : templateData.templateType.name
+      } 
       uuid={uuid}
     />
   )

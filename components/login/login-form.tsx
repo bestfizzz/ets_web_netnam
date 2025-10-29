@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 import { Mail, Lock } from "lucide-react"
-import { loginClient } from "@/lib/client/auth"
+import { AuthClientAPI } from "@/lib/client_api/auth.client"
 
 export function LoginForm({
   className,
@@ -35,7 +35,7 @@ export function LoginForm({
     const password = formData.get("password")?.toString() || ""
 
     try {
-      const res = await loginClient({ email, password })
+      const res = await AuthClientAPI.signin({ email, password })
 
       if (!res.ok) {
         const message = res.message || "Login failed"

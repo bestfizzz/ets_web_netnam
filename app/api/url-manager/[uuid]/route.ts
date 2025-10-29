@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
-import {
-  getUrlManager,
-  updateUrlManager,
-  deleteUrlManager,
-} from "@/lib/api/url-manager"
+import { URLManagerServerAPI } from "@/lib/server_api/url-manager"
+import { UrlManagerPayload } from "@/lib/types/url-manager"
 
 export async function GET(
   req: NextRequest,
@@ -12,10 +9,11 @@ export async function GET(
   try {
     const { uuid } = await context.params
     const accessToken = req.cookies.get("accessToken")?.value
-    if (!accessToken)
+    if (!accessToken) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
 
-    const data = await getUrlManager(uuid, accessToken)
+    const data = await URLManagerServerAPI.get(uuid, accessToken)
     return NextResponse.json(data)
   } catch (err) {
     console.error("Get URL Manager error:", err)
@@ -30,13 +28,14 @@ export async function PATCH(
   try {
     const { uuid } = await context.params
     const accessToken = req.cookies.get("accessToken")?.value
-    if (!accessToken)
+    if (!accessToken) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
 
-    const { data } = await req.json()
-    const result = await updateUrlManager(
+    const body: UrlManagerPayload = await req.json()
+    const result = await URLManagerServerAPI.update(
       uuid,
-      { name: data.name, shareDetailIds: data.shareDetailIds },
+      body,
       accessToken
     )
 
@@ -54,10 +53,11 @@ export async function DELETE(
   try {
     const { uuid } = await context.params
     const accessToken = req.cookies.get("accessToken")?.value
-    if (!accessToken)
+    if (!accessToken) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
 
-    const result = await deleteUrlManager(uuid, accessToken)
+    const result = await URLManagerServerAPI.delete(uuid, accessToken)
     return NextResponse.json(result)
   } catch (err) {
     console.error("Delete URL Manager error:", err)

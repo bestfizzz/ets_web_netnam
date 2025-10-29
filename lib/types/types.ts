@@ -44,10 +44,28 @@ export type ShareDetail = {
   updatedAt?: string
 }
 
-/** Template detail entry (expand with real fields if available) */
+/** TemplateType */
+export type TemplateType =  { id: number; name: string }
+
+export interface TemplateJsonConfig {
+  settings: {
+    themeColor: string
+    pageTitle: string
+    pageSize: number
+    privateGallery: boolean
+    pageLogo: string
+    customCSS: string
+  }
+  content: Array<Record<string, any>>
+}
+
 export interface TemplateDetail {
-  id: number
-  name?: string
-  [key: string]: any
+  id: string
+  name: string
+  templateType: TemplateType
+  jsonConfig: TemplateJsonConfig
+  isActive: boolean
+  createdAt?: string
+  updatedAt?: string
 }
 

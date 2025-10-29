@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import {
-  listSharePlatforms,
-  createSharePlatform,
-} from "@/lib/api/share-platform"
+import { SharePlatformServerAPI } from "@/lib/server_api/share-platform"
 
 export async function GET(req: NextRequest) {
   try {
@@ -10,7 +7,7 @@ export async function GET(req: NextRequest) {
     if (!token)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-    const res = await listSharePlatforms(token)
+    const res = await SharePlatformServerAPI.list(token)
     return NextResponse.json(res, { status: 200 })
   } catch (err) {
     console.error("Get Share Platforms error:", err)
@@ -24,8 +21,8 @@ export async function POST(req: NextRequest) {
     if (!token)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-    const { data } = await req.json()
-    const res = await createSharePlatform({ name: data.name }, token)
+    const body = await req.json()
+    const res = await SharePlatformServerAPI.create({ name: body.name }, token)
     return NextResponse.json(res, { status: 201 })
   } catch (err) {
     console.error("Create Share Platform error:", err)

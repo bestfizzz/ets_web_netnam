@@ -20,102 +20,87 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog"
 import { capitalizeFirstLetter } from "@/lib/utils"
+import { TemplateDetail } from "@/lib/types/types"
+import { TemplateDetailClientAPI } from "@/lib/client_api/template-detail.client"
+
+
 export default function EditPage() {
   const params = useParams()
   const router = useRouter()
   const pageCustomizeRef = React.useRef<any>(null)
 
   const [pageName, designID] = params.id as string[]
-  const [pageData, setPageData] = React.useState<any>(null)
-  const [designName, setDesignName] = React.useState<string>("")
+  const [pageData, setPageData] = React.useState<TemplateDetail | null>(null)
+  const [designName, setDesignName] = React.useState("")
   const [loading, setLoading] = React.useState(true)
   const [notFoundState, setNotFoundState] = React.useState(false)
-
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false)
   const [onRequest, setOnRequest] = React.useState(false)
 
-  // Fetch template data
+  // 🧠 Fetch template by ID
   React.useEffect(() => {
     if (!designID) {
       setNotFoundState(true)
       return
     }
 
-    const fetchData = async () => {
+    const fetchTemplate = async () => {
       setLoading(true)
       try {
-        const res = await fetch(`/api/customize/get-template?id=${designID}`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        })
+        const data = await TemplateDetailClientAPI.get(Number(designID))
 
-        if (!res.ok) throw new Error("Failed to load page")
+        if (!data) throw new Error("Template not found")
 
-        const { data } = await res.json()
-
-        if (!data) {
-          setNotFoundState(true)
-        } else {
-          setPageData(data)
-          setDesignName(data.name)
-          toast.info(`Loaded ${capitalizeFirstLetter(data.pageType)} template "${data.name}"`)
-        }
-      } catch {
+        setPageData(data)
+        setDesignName(data.name)
+        toast.info(
+          `Loaded ${capitalizeFirstLetter(data.templateType.name)} template "${data.name}"`
+        )
+      } catch (err: any) {
+        console.error("Error fetching template:", err)
+        toast.error(err.message || "Failed to load template")
         setNotFoundState(true)
       } finally {
         setLoading(false)
       }
     }
 
-    fetchData()
+    fetchTemplate()
   }, [designID])
 
-  if (notFoundState) {
-    return notFound()
-  }
+  if (notFoundState) return notFound()
 
-  // Save template
+  // 🧠 Save updated template
   const handleSave = async (formData: any) => {
     try {
-      setOnRequest(true);
-
-      const res = await fetch(`/api/customize/save-template`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          id: designID,
-          data: formData,
-        }),
-      });
-
-      if (!res.ok) throw new Error("Failed to save");
-
-      toast.success(`✅ Saved ${pageName} (${formData.name})`);
-      router.push("/admin/customize");
+      setOnRequest(true)
+      const { name, ...restData } = formData
+      await TemplateDetailClientAPI.update(Number(designID), {
+        name: name,
+        isActive: true,
+        jsonConfig: restData,
+        templateTypeId: pageData?.templateType.id!,
+      })
+      toast.success(`✅ Saved ${pageName} (${name})`)
+      router.push("/admin/customize")
     } catch (err: any) {
-      toast.error(`Error saving: ${err.message}`);
+      console.error("Error saving:", err)
+      toast.error(err.message || "Error saving template")
     } finally {
-      setOnRequest(false);
+      setOnRequest(false)
     }
-  };
+  }
 
-  // Delete template
+  // 🧠 Delete template
   const handleDelete = async () => {
     try {
       setOnRequest(true)
-      const res = await fetch(`/api/customize/delete-template`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: designID }),
-      })
-
-      if (!res.ok) throw new Error("Failed to delete")
-
+      await TemplateDetailClientAPI.delete(Number(designID))
       toast.success(`✅ Deleted ${pageName} (${designName})`)
       router.push("/admin/customize")
     } catch (err: any) {
-      toast.error(`Error deleting: ${err.message}`)
+      console.error("Error deleting:", err)
+      toast.error(err.message || "Error deleting template")
     } finally {
       setDeleteDialogOpen(false)
       setOnRequest(false)
@@ -125,10 +110,13 @@ export default function EditPage() {
   return (
     <AdminLayout>
       <div className="p-6 flex flex-col gap-4">
-        <BackButton path={"/admin/customize"} />
+        <BackButton path="/admin/customize" />
+
         {loading && <SkeletonLoading />}
+
         {!loading && pageData && (
           <>
+            {/* Header */}
             <div className="flex items-center justify-between">
               <h1 className="text-2xl font-bold capitalize hidden xs:block">
                 Editing {pageName} - {designName}
@@ -136,11 +124,16 @@ export default function EditPage() {
               <h1 className="text-2xl font-bold capitalize xs:hidden mr-2">
                 {designName}
               </h1>
+
               <div className="flex gap-2 xs:gap-3">
-                {/* ShadCN AlertDialog for Delete */}
+                {/* 🗑️ Delete Dialog */}
                 <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
                   <AlertDialogTrigger asChild>
-                    <Button className="h-9 w-19 gap-1 xs:w-fit" variant="destructive" type="button">
+                    <Button
+                      className="h-9 w-19 gap-1 xs:w-fit"
+                      variant="destructive"
+                      type="button"
+                    >
                       <Trash2 className="h-2 w-2 xs:h-4 xs:w-4" />
                       Delete
                     </Button>
@@ -149,31 +142,39 @@ export default function EditPage() {
                     <AlertDialogHeader>
                       <AlertDialogTitle>Delete Template</AlertDialogTitle>
                       <AlertDialogDescription>
-                        Are you sure you want to delete <strong>{designName}</strong>? This action cannot be undone.
+                        Are you sure you want to delete <strong>{designName}</strong>?{" "}
+                        This action cannot be undone.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <div className="flex justify-end gap-2 mt-4">
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleDelete} disabled={onRequest}>Delete</AlertDialogAction>
+                      <AlertDialogAction
+                        onClick={handleDelete}
+                        disabled={onRequest}
+                      >
+                        Delete
+                      </AlertDialogAction>
                     </div>
                   </AlertDialogContent>
                 </AlertDialog>
 
+                {/* 💾 Save Button */}
                 <Button
                   type="button"
                   onClick={() => pageCustomizeRef.current?.handleSubmit(handleSave)()}
-                  disabled={onRequest}  
+                  disabled={onRequest}
                 >
                   {onRequest ? "Saving..." : "Save Changes"}
                 </Button>
               </div>
             </div>
 
+            {/* Page Customizer */}
             <PageCustomize
               pageName={pageName}
               pageData={pageData}
               selectedDesign={designID}
-              onDesignChange={() => { }}
+              onDesignChange={() => {}}
               templateOptions={[]}
               ref={pageCustomizeRef}
             />
