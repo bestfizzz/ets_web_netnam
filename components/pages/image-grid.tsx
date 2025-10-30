@@ -42,7 +42,7 @@ export default function ImageGrid() {
                 href={img.preview}
                 {...(selectMode ? {} : { "data-fancybox": "gallery" })}
                 data-download-src={img.download}
-                data-download-filename={`${img.filename}.jpg`}
+                data-download-filename={img.filename}
                 onClick={(e) => {
                   if (selectMode) {
                     e.preventDefault()

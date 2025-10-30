@@ -25,10 +25,11 @@ export const performDownload = async (url?: string | null, filename?: string) =>
     const res = await fetch(url)
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const blob = await res.blob()
+    const ext = blob.type.split("/")[1] || "jpeg"
     const objUrl = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = objUrl
-    a.download = filename || `Image_${Date.now()}.jpg`
+    a.download = `${filename}.${ext}` || `Image_${Date.now()}.jpeg`
     a.click()
     URL.revokeObjectURL(objUrl)
     toast.success("Tải xuống hoàn tất", { id })
@@ -38,66 +39,64 @@ export const performDownload = async (url?: string | null, filename?: string) =>
 }
 
 export const downloadSelected = async (
-  selectedMap: Record<string, { download: string; filename?: string }>, pageTitle: string
+  selectedMap: Record<string, { download: string; filename?: string }>,
+  pageTitle: string
 ) => {
   const ids = Object.keys(selectedMap)
   if (ids.length === 0) return toast.error("Không có ảnh nào được chọn")
 
-  // ✅ Case 1: single image → perform direct download
+  // Single image → direct download
   if (ids.length === 1) {
     const id = ids[0]
     const meta = selectedMap[id]
     if (!meta?.download) return toast.error("Không tìm thấy URL tải xuống")
-
-    await performDownload(meta.download, meta.filename || `Image_${id}.jpg`)
+    await performDownload(meta.download, meta.filename || `Image_${id}.jpeg`)
     return
   }
 
-  // ✅ Case 2: multiple → build ZIP with live progress
+  // Multiple images → ZIP
   const total = ids.length
   const toastId = toast.loading(`Đang tải xuống 0 / ${total} ảnh...`)
   const zip = new JSZip()
   let successCount = 0
   let failCount = 0
-  let index = 1
 
-  try {
-    for (const id of ids) {
-      const meta = selectedMap[id]
-      if (!meta?.download) {
-        failCount++
-        continue
-      }
-
-      try {
-        const res = await fetch(meta.download)
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
-        const blob = await res.blob()
-
-        zip.file(meta.filename || `Image_${index}.jpg`, blob)
-        successCount++
-      } catch (e) {
-        console.warn(`❌ Failed to fetch ${meta.download}`)
-        failCount++
-      }
-
-      index++
-      toast.message(`🔄 Đang tải ảnh ${successCount + failCount} / ${total}...`, { id: toastId })
-      await new Promise((r) => setTimeout(r, 50))
+  for (let i = 0; i < ids.length; i++) {
+    const id = ids[i]
+    const meta = selectedMap[id]
+    if (!meta?.download) {
+      failCount++
+      continue
     }
 
-    toast.message("📦 Đang nén ảnh...", { id: toastId })
+    try {
+      const res = await fetch(meta.download)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
 
-    const zipBlob = await zip.generateAsync({
-      type: "blob",
-      compression: "DEFLATE", // ✅ compression enabled
-    })
+      const blob = await res.blob()
+      const ext = blob.type.split("/")[1] || "jpeg"
+      const filename = `${meta.filename}.${ext}` || `Image_${i + 1}.${ext}`
 
-    saveAs(zipBlob, `${pageTitle}_${Date.now()}.zip` || `Selected_Images_${Date.now()}.zip`)
+      zip.file(filename, blob, { binary: true })
+      successCount++
+    } catch (err) {
+      console.warn(`❌ Failed to fetch ${meta.download}`, err)
+      failCount++
+    }
+
+    toast.message(`🔄 Đang tải ảnh ${successCount + failCount} / ${total}...`, { id: toastId })
+    await new Promise((r) => setTimeout(r, 50))
+  }
+
+  toast.message("📦 Đang nén ảnh...", { id: toastId })
+
+  try {
+    const zipBlob = await zip.generateAsync({ type: "blob", compression: "DEFLATE" })
+    saveAs(zipBlob, `${pageTitle}_${Date.now()}.zip`)
     toast.success(`✅ Hoàn tất tải ${successCount}/${total} ảnh`, { id: toastId })
   } catch (err) {
     console.error(err)
-    toast.error("❌ Tải xuống thất bại", { id: toastId })
+    toast.error("❌ Nén ảnh thất bại", { id: toastId })
   }
 }
 
