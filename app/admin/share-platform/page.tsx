@@ -14,8 +14,7 @@ export default async function Page() {
     SharePlatformClientAPI.serverList(session,accessToken),
     ShareDetailClientAPI.serverList(session,accessToken),
   ])
-  console.log("Platforms Result:", platformsResult)
-  console.log("Details Result:", detailsResult)
+  
   const platforms =
     platformsResult.status === "fulfilled" ? platformsResult.value : []
   const details =

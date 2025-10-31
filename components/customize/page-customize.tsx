@@ -73,7 +73,7 @@ export const PageCustomize = forwardRef(({
   };
 
   const { control, watch, setValue, reset, getValues, formState: { errors }, handleSubmit } =
-    useForm({ defaultValues });
+    useForm<any>({ defaultValues });
 
   const [formData, setFormData] = useState(defaultValues);
   const content = watch("content");
@@ -98,7 +98,10 @@ export const PageCustomize = forwardRef(({
 
   // ✅ Keep formData in sync with watched values
   useEffect(() => {
-    const subscription = watch((values) => setFormData(values));
+    const subscription = watch((values) => {
+      // merge partial updates returned by watch into the previous full state
+      setFormData((prev) => ({ ...prev, ...(values as any) }));
+    });
     return () => subscription.unsubscribe();
   }, [watch]);
 
@@ -159,7 +162,7 @@ export const PageCustomize = forwardRef(({
       alert("You cannot delete the Gallery Section.")
       return
     }
-    setValue("content", content.filter((_, i) => i !== idx))
+    setValue("content", content.filter((_: any, i: number) => i !== idx))
     setCollapsed(prev => prev.filter((_, i) => i !== idx))
   }
 
@@ -168,8 +171,8 @@ export const PageCustomize = forwardRef(({
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
     if (over && active.id !== over.id) {
-      const from = Number(active.id.split("-")[1])
-      const to = Number(over.id.split("-")[1])
+      const from = Number(String(active.id).split("-")[1])
+      const to = Number(String(over.id).split("-")[1])
       setValue("content", arrayMove(content, from, to))
       setCollapsed(arrayMove(collapsed, from, to))
     }

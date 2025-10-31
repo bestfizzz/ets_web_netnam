@@ -28,7 +28,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const [user, setUser] = React.useState<any>(null)
 
   React.useEffect(() => {
-    getCurrentUser().then(({ user }) => setUser(user ?? "anonymous"))
+    getCurrentUser().then(({ user }: any) => setUser(user ?? "anonymous"))
   }, [])
 
   const data = {

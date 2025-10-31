@@ -12,12 +12,6 @@ export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-// Simple ID generator like "srch_xxxxxxxx" or "shre_xxxxxxxx"
-export function generateId(templateType: "search" | "share") {
-  const prefix = templateType === "search" ? "srch" : "shre"
-  return `${prefix}_${Math.random().toString(36).substr(2, 8)}`
-}
-
 export const performDownload = async (url?: string | null, filename?: string) => {
   if (!url) return toast.error("Không tìm thấy URL tải xuống")
   const id = toast.loading("Đang tải xuống ảnh của bạn...")
@@ -130,7 +124,6 @@ export const nSpaceTrimmer = (str: string) => {
   return cleaned.trim()
 }
 
-// ✅ Regex formatter for Vietnam numbers
 export const formatVietnamesePhone = (input: string) => {
   const digits = input.replace(/\D/g, "")
   if (digits.startsWith("84")) return digits

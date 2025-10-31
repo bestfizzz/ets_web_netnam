@@ -33,4 +33,10 @@ export const AssetsServerAPI = {
       method: "GET",
       query: { personId },
     }),
+
+  /** ✅ Check if a gallery URL is active */
+  checkUrl: (uuid: string) =>
+    http<{ active: boolean }>(`${ASSET_BASE}/check-url/${uuid}`, {
+      method: "GET",
+    }),
 }

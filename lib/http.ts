@@ -72,14 +72,6 @@ export async function http<T = any>(
     finalBody = body as any
   }
 
-  if (isServer) {
-    console.log("HTTP Request Debug:")
-    console.log("  URL:", finalUrl)
-    console.log("  Method:", method)
-    console.log("  Headers:", finalHeaders)
-    console.log("  Body:", finalBody)
-  }
-
   const fetchFn = isServer ? globalThis.fetch : window.fetch
   const res = await fetchFn(finalUrl, {
     method,
@@ -87,12 +79,6 @@ export async function http<T = any>(
     body: finalBody,
     ...rest,
   })
-
-  if (isServer) {
-    console.log("HTTP Response Debug:")
-    console.log("  Status:", res.status, res.statusText)
-    console.log("  Content-Type:", res.headers.get("content-type"))
-  }
 
   let rawText: string | undefined
   try {
@@ -113,9 +99,7 @@ export async function http<T = any>(
 
   // --- Error Handling (preserve status) ---
   if (throwOnError && !res.ok) {
-    let message = parsedJson?.message || parsedJson?.error || rawText || res.statusText
-
-    if (isServer) console.error("HTTP Error Response Body:", message)
+    const message = parsedJson?.message || parsedJson?.error || rawText || res.statusText
 
     throw new HttpError(res.status, res.statusText, finalUrl, message, rawText)
   }

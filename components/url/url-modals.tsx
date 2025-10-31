@@ -217,8 +217,8 @@ export function UrlDeleteModal({ url, open, onOpenChange }: any) {
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete?</AlertDialogTitle>
-          <AlertDialogDescription>{url.name}</AlertDialogDescription>
+          <AlertDialogTitle>Are you sure to want to delete URL {url.name} ?</AlertDialogTitle>
+          <AlertDialogDescription>This action cannot be undone</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>No</AlertDialogCancel>

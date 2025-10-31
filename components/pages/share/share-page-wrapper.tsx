@@ -124,7 +124,7 @@ export default function SharePageWrapper({
   }
 
   const toggleSelectMode = () => {
-    setSelectMode((prev) => !prev)
+    setSelectMode(!selectMode)
   }
 
   // === UI States ===

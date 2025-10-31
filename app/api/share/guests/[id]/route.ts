@@ -23,7 +23,7 @@ export async function GET(
     return NextResponse.json(data, { status: backendRes.status })
   } catch (err) {
     console.error("Get URL Manager detail error:", err)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 })
   }
 }
 
@@ -52,7 +52,7 @@ export async function PUT(
     return NextResponse.json(res, { status: backendRes.status })
   } catch (err) {
     console.error("Update URL Manager error:", err)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 })
   }
 }
 
@@ -76,6 +76,6 @@ export async function DELETE(
     return NextResponse.json(data, { status: backendRes.status })
   } catch (err) {
     console.error("Delete URL Manager error:", err)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 })
   }
 }

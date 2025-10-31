@@ -93,7 +93,7 @@ export function GalleryProvider({ children, gallerySettings }: { children: React
   const [selectedMap, setSelectedMap] = useState<Record<string, Omit<AssetMeta, "id">>>({})
   const [noResults, setNoResults] = useState(false)
   const [page, setPage] = useState(1)
-  const [nextPage, setNextPage] = useState<number | null>(null)
+  const [nextPage, setNextPage] = useState<string | null>(null)
   const [total, setTotal] = useState(0)
   const [pageSize, setPageSize] = useState(60)
   const [mode, setMode] = useState<"all" | "person" | "keyword">("all")
@@ -104,6 +104,8 @@ export function GalleryProvider({ children, gallerySettings }: { children: React
     pageTitle: "Gallery",
     pageSize: 60,
     privateGallery: false,
+    pageLogo: "",
+    customCSS: "",
   })
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize))

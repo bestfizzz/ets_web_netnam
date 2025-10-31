@@ -177,7 +177,7 @@ export function UrlForm({
                           value={fieldName}
                           className="flex items-center gap-2 min-w-[120px]"
                         >
-                          <span className="truncate">{platform.name}</span>
+                          <span className="truncate">{capitalizeFirstLetter(platform.name)}</span>
                           <CheckCircle
                             className={`w-4 h-4 ${selected[fieldName] && selected[fieldName] !== "none"
                                 ? "text-green-500"
@@ -243,7 +243,7 @@ export function UrlForm({
                   const fieldName = `template_${t.name.toLowerCase()}`
                   return (
                     <TabsTrigger key={t.id} value={fieldName}>
-                      {t.name}
+                      {capitalizeFirstLetter(t.name)}
                       <CheckCircle
                         className={`w-5 h-5 ${selected[fieldName] && selected[fieldName] !== "none"
                             ? "text-green-500"

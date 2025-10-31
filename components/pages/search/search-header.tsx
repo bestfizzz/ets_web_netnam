@@ -72,7 +72,7 @@ export default function SearchHeader({ themeColor = '#ffffff', pageTitle = 'Sear
   }
 
   const toggleSelectMode = () => {
-    setSelectMode((prev: boolean) => !prev)
+    setSelectMode(!selectMode)
   }
 
   return (

@@ -31,7 +31,7 @@ export default function CustomizeAddPage() {
     const fetchTemplateTypes = async () => {
       try {
         const res = await TemplateTypeClientAPI.list()
-        const types = res?.data || res || []
+        const types = res || []
         if (types.length === 0) throw new Error("No template types found")
         setTemplateTypes(types)
         setTemplateType(types[0]) // first as default

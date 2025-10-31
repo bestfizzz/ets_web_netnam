@@ -1,9 +1,12 @@
 import TemplateGenerator from "@/components/customize/template-generator"
 import { TemplateDetailServerAPI } from "@/lib/server_api/template-detail"
-import { URLManagerServerAPI } from "@/lib/server_api/url-manager"
+
 import searchTemplate1 from "@/config/template-search-default-1.json"
 import { TemplateDetail } from "@/lib/types/types"
 import type { TypedObject } from "@portabletext/types"
+import { AssetsServerAPI } from "@/lib/server_api/assets"
+import { logger } from "@/lib/logger/logger"
+import LoggerContext from "@/lib/logger/logger-context"
 
 export default async function SearchPage({
   params,
@@ -17,9 +20,9 @@ export default async function SearchPage({
 
   try {
     // ✅ Safely check URL validity
-    isValid = await URLManagerServerAPI.checkUrl(uuid)
+    isValid = await AssetsServerAPI.checkUrl(uuid)
   } catch (err) {
-    console.error("checkUrl failed:", err)
+    logger.error("checkUrl failed:", {context: LoggerContext.AssetsServer,error:err})
     // Leave isValid = false to trigger Not Found
   }
 
@@ -43,10 +46,10 @@ export default async function SearchPage({
     })
     templateData = found || searchTemplate1
   } catch (err) {
-    console.error("getPageDetails failed:", err, "... using default template")
+    logger.error(`getPageDetails failed: ${err} ... using default template`,{ context: LoggerContext.TemplateDetailServer})
     templateData = searchTemplate1
   }
-  console.log(`Using template ${templateData.name} for uuid ${uuid} templateData:`, templateData)
+  logger.info(`Using template ${templateData.name} for uuid ${uuid} templateData:`, { context: LoggerContext.TemplateDetailServer, templateData })
   const content: TypedObject[] = (templateData.jsonConfig.content as TypedObject[]) || []
 
   return (

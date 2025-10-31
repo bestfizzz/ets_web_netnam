@@ -7,7 +7,6 @@ import type {
     TemplateDetailUpdateResponse,
     TemplateDetailDeleteResponse,
 } from "@/lib/types/template-detail"
-import type { TemplateDetail } from "@/lib/types/types"
 
 const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL!
 

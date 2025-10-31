@@ -30,6 +30,9 @@ import {
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -82,9 +85,9 @@ export function URLTable({ tableData, error, platforms, shareDetails, templateTy
                 const [editOpen, setEditOpen] = React.useState(false)
                 const [deleteOpen, setDeleteOpen] = React.useState(false)
 
-                const handleShow = () => {
+                const handleShow = (pageDirect: "search" | "share") => {
                     // Open a new tab with focus
-                    window.open(`/search/${url.uuid}`, "_blank")?.focus()
+                    window.open(`/${pageDirect}/${url.uuid}`, "_blank")?.focus()
                 }
 
                 return (
@@ -98,9 +101,20 @@ export function URLTable({ tableData, error, platforms, shareDetails, templateTy
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuItem onClick={handleShow}>
-                                    <Eye className="mr-2 h-4 w-4" /> View URL
-                                </DropdownMenuItem>
+                                <DropdownMenuSub>
+                                    <DropdownMenuSubTrigger>
+                                        <Eye className="mr-2 h-4 w-4" />
+                                        View URL
+                                    </DropdownMenuSubTrigger>
+                                    <DropdownMenuSubContent>
+                                        <DropdownMenuItem onClick={() => handleShow("search")}>
+                                            View Search URL
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => handleShow("share")}>
+                                            View Share URL
+                                        </DropdownMenuItem>
+                                    </DropdownMenuSubContent>
+                                </DropdownMenuSub>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={() => setEditOpen(true)}>
                                     Edit

@@ -1,0 +1,2185 @@
+2025-10-30T06:41:34.072Z - INFO [unknown] : Fetched URL managers successfully
+2025-10-30T06:42:56.763Z - INFO [unknown] : Fetched URL managers successfully
+2025-10-30T06:46:10.113Z - INFO [unknown] : Fetched URL managers successfully
+2025-10-30T06:51:20.036Z - INFO [[root-of-the-server]__6e08e1e1._.js:getCallerInfo] : Fetched URL managers successfully
+2025-10-30T06:52:25.187Z - INFO [6e08e1e1._.js:238:17)] : Fetched URL managers successfully
+2025-10-30T07:01:01.205Z - INFO [unknown] : Fetched URL managers successfully
+2025-10-30T07:01:19.257Z - INFO [unknown] : Fetched URL managers successfully
+2025-10-30T07:02:03.749Z - INFO [getCallerInfo (C:\Users\ASUS\Desktop\ETSclientUI\ets_web\.next\server\chunks\6e08e1e1._.js:238:17)] : Fetched URL managers successfully
+2025-10-30T07:06:05.545Z - INFO [unknown:getCallerInfo:?] : Fetched URL managers successfully
+2025-10-30T07:08:31.568Z - INFO [[root-of-the-server]__6e08e1e1._.js:formatLine:262] : Fetched URL managers successfully
+2025-10-30T07:19:19.262Z - INFO [[root-of-the-server]__6e08e1e1._.js:formatLine:280] : Fetched URL managers successfully
+2025-10-30T07:21:52.777Z - INFO unknown : Fetched URL managers successfully
+2025-10-30T07:22:21.354Z - INFO [unknown] : Fetched URL managers successfully
+2025-10-30T07:22:51.991Z - INFO [[root-of-the-server]__6e08e1e1._.js:formatLine:280] : Fetched URL managers successfully
+2025-10-30T07:36:08.020Z - unknown - INFO - Fetched URL managers successfully
+2025-10-30T07:40:31.074Z - unknown - INFO - Fetched URL managers successfully
+[2025-10-30T07:44:19.180Z] [INFO ] [[root-of-the-server]__6e08e1e1._.js:247] Fetched URL managers successfully
+[2025-10-30T07:45:22.034Z] [INFO] [[root-of-the-server]__6e08e1e1._.js:247] Fetched URL managers successfully
+[2025-10-30T08:09:32.956Z] [INFO] [[root-of-the-server]__6e08e1e1._.js:247] Fetched URL managers successfully
+[2025-10-30T08:11:04.429Z] [INFO] [[root-of-the-server]__6e08e1e1._.js:247] Fetched URL managers successfully
+[2025-10-30T08:21:38.973Z] [INFO] [[root-of-the-server]__6e08e1e1._.js:247] Fetched URL managers successfully
+[2025-10-30T08:21:51.023Z] [INFO] [[root-of-the-server]__6e08e1e1._.js:247] Fetched URL managers successfully
+[2025-10-30T08:24:02.786Z] [INFO] [[root-of-the-server]__6e08e1e1._.js:247] Fetched URL managers successfully
+[2025-10-30T08:49:13.907Z] [INFO ] [URLManagerServerAPI] Fetching URL Managers list
+[2025-10-30T08:49:14.109Z] [DEBUG] [URLManagerServerAPI] URL Managers list fetched successfully
+[INFO ]  [2025-10-30T09:03:35.326Z]  [URLManagerServerAPI] Fetching URL Managers list
+[INFO ]  [2025-10-30T09:03:35.384Z]  [ShareDetailServerAPI] Fetching share details list
+[INFO ]  [2025-10-30T09:03:35.434Z]  [SharePlatformServerAPI] Fetching share platforms list
+[INFO ]  [2025-10-30T09:03:35.559Z]  [TemplateTypeServerAPI] Fetching template types list
+[INFO ]  [2025-10-30T09:03:35.608Z]  [TemplateDetailServerAPI] Fetching template details list
+[DEBUG]  [2025-10-30T09:03:35.685Z]  [ShareDetailServerAPI] Share details list fetched successfully
+[DEBUG]  [2025-10-30T09:03:35.782Z]  [SharePlatformServerAPI] Share platforms list fetched successfully
+[DEBUG]  [2025-10-30T09:03:35.832Z]  [URLManagerServerAPI] URL Managers list fetched successfully
+[DEBUG]  [2025-10-30T09:03:35.891Z]  [TemplateTypeServerAPI] Template types list fetched successfully
+[DEBUG]  [2025-10-30T09:03:36.023Z]  [TemplateDetailServerAPI] Template details list fetched successfully
+[INFO ]  [2025-10-30T09:04:44.385Z]  [URLManagerServerAPI] Fetching URL Managers list
+[INFO ]  [2025-10-30T09:04:44.399Z]  [ShareDetailServerAPI] Fetching share details list
+[INFO ]  [2025-10-30T09:04:44.449Z]  [SharePlatformServerAPI] Fetching share platforms list
+[INFO ]  [2025-10-30T09:04:44.452Z]  [TemplateTypeServerAPI] Fetching template types list
+[INFO ]  [2025-10-30T09:04:44.454Z]  [TemplateDetailServerAPI] Fetching template details list
+[DEBUG]  [2025-10-30T09:04:44.602Z]  [URLManagerServerAPI] URL Managers list fetched successfully
+[DEBUG]  [2025-10-30T09:04:44.618Z]  [TemplateTypeServerAPI] Template types list fetched successfully
+[DEBUG]  [2025-10-30T09:04:44.630Z]  [TemplateDetailServerAPI] Template details list fetched successfully
+[DEBUG]  [2025-10-30T09:04:44.634Z]  [ShareDetailServerAPI] Share details list fetched successfully
+[DEBUG]  [2025-10-30T09:04:44.638Z]  [SharePlatformServerAPI] Share platforms list fetched successfully
+[INFO] [2025-10-30T09:06:40.318Z] [URLManagerServerAPI]: Creating new URL Manager
+[DEBUG] [2025-10-30T09:06:40.898Z] [URLManagerServerAPI]: URL Manager created successfully
+[INFO] [2025-10-30T09:06:42.214Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-30T09:06:42.225Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-30T09:06:42.261Z] [SharePlatformServerAPI]: Fetching share platforms list
+[DEBUG] [2025-10-30T09:06:42.264Z] [ShareDetailServerAPI]: Share details list fetched successfully
+[INFO] [2025-10-30T09:06:42.283Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-30T09:06:42.292Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-30T09:06:42.296Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+[DEBUG] [2025-10-30T09:06:42.315Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+[DEBUG] [2025-10-30T09:06:42.330Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+[DEBUG] [2025-10-30T09:06:42.352Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+[INFO] [2025-10-30T09:09:45.743Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-30T09:09:45.757Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-30T09:09:45.781Z] [ShareDetailServerAPI]: Fetching share details list
+[DEBUG] [2025-10-30T09:09:45.812Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+[INFO] [2025-10-30T09:09:45.839Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-30T09:09:45.881Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+[DEBUG] [2025-10-30T09:09:45.891Z] [ShareDetailServerAPI]: Share details list fetched successfully
+[INFO] [2025-10-30T09:09:45.896Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-30T09:09:45.905Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+[DEBUG] [2025-10-30T09:09:45.969Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+[INFO] [2025-10-30T09:09:59.466Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-30T09:09:59.474Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-30T09:09:59.507Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-30T09:09:59.524Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-30T09:09:59.536Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+[DEBUG] [2025-10-30T09:09:59.551Z] [ShareDetailServerAPI]: Share details list fetched successfully
+[INFO] [2025-10-30T09:09:59.558Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-30T09:09:59.600Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+[DEBUG] [2025-10-30T09:09:59.639Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+[DEBUG] [2025-10-30T09:09:59.667Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+[INFO] [2025-10-30T09:10:12.473Z] [URLManagerServerAPI]: Fetching URL Managers list
+[DEBUG] [2025-10-30T09:10:12.500Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+[INFO] [2025-10-30T09:10:12.527Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-30T09:10:12.553Z] [SharePlatformServerAPI]: Fetching share platforms list
+[DEBUG] [2025-10-30T09:10:12.595Z] [ShareDetailServerAPI]: Share details list fetched successfully
+[INFO] [2025-10-30T09:10:12.604Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-30T09:10:12.610Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-30T09:10:12.653Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+[DEBUG] [2025-10-30T09:10:12.666Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+[DEBUG] [2025-10-30T09:10:12.734Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+[INFO] [2025-10-30T09:10:19.666Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-30T09:10:19.697Z] [SharePlatformServerAPI]: Fetching share platforms list
+[DEBUG] [2025-10-30T09:10:19.708Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+[INFO] [2025-10-30T09:10:19.736Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-30T09:10:19.747Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-30T09:10:19.783Z] [ShareDetailServerAPI]: Share details list fetched successfully
+[INFO] [2025-10-30T09:10:19.798Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-30T09:10:19.822Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+[DEBUG] [2025-10-30T09:10:19.879Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+[DEBUG] [2025-10-30T09:10:19.886Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+[INFO] [2025-10-30T09:10:25.907Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-30T09:10:25.915Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-30T09:10:25.926Z] [URLManagerServerAPI]: Fetching URL Managers list
+[DEBUG] [2025-10-30T09:10:25.968Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+[INFO] [2025-10-30T09:10:25.977Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-30T09:10:25.989Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-30T09:10:26.035Z] [ShareDetailServerAPI]: Share details list fetched successfully
+[DEBUG] [2025-10-30T09:10:26.056Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+[DEBUG] [2025-10-30T09:10:26.093Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+[DEBUG] [2025-10-30T09:10:26.155Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+[INFO] [2025-10-30T09:13:58.687Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-30T09:13:58.701Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-30T09:13:58.731Z] [ShareDetailServerAPI]: Fetching share details list
+[DEBUG] [2025-10-30T09:13:58.756Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+[INFO] [2025-10-30T09:13:58.764Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-30T09:13:58.768Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-30T09:13:58.817Z] [ShareDetailServerAPI]: Share details list fetched successfully
+[DEBUG] [2025-10-30T09:13:58.854Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+[DEBUG] [2025-10-30T09:13:58.928Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+[DEBUG] [2025-10-30T09:13:58.975Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+[INFO] [2025-10-30T09:18:21.341Z] [URLManagerServerAPI]: Deleting URL Manager
+[DEBUG] [2025-10-30T09:18:21.555Z] [URLManagerServerAPI]: URL Manager deleted successfully
+[INFO] [2025-10-30T09:18:22.174Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-30T09:18:22.184Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-30T09:18:22.192Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-30T09:18:22.198Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-30T09:18:22.200Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-30T09:18:22.204Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+[DEBUG] [2025-10-30T09:18:22.218Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+[DEBUG] [2025-10-30T09:18:22.252Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+[DEBUG] [2025-10-30T09:18:22.283Z] [ShareDetailServerAPI]: Share details list fetched successfully
+[DEBUG] [2025-10-30T09:18:22.300Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+[INFO] [2025-10-30T09:24:48.295Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-30T09:24:48.312Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-30T09:24:48.326Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-30T09:24:48.367Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-30T09:24:48.370Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-30T09:24:48.540Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+[DEBUG] [2025-10-30T09:24:48.549Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+[DEBUG] [2025-10-30T09:24:48.553Z] [ShareDetailServerAPI]: Share details list fetched successfully
+[DEBUG] [2025-10-30T09:24:48.560Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+[DEBUG] [2025-10-30T09:24:48.574Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+[INFO] [2025-10-30T09:25:02.165Z] [URLManagerServerAPI]: Fetching URL Manager details
+[DEBUG] [2025-10-30T09:25:02.235Z] [URLManagerServerAPI]: URL Manager details fetched successfully
+[INFO ] [2025-10-30T09:30:02.233Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO ] [2025-10-30T09:30:02.248Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO ] [2025-10-30T09:30:02.267Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO ] [2025-10-30T09:30:02.330Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO ] [2025-10-30T09:30:02.334Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-30T09:30:02.391Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-30T09:30:02.479Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[DEBUG] [2025-10-30T09:30:02.489Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 8
+}
+[DEBUG] [2025-10-30T09:30:02.497Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[DEBUG] [2025-10-30T09:30:02.506Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[INFO ] [2025-10-30T09:30:34.198Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f"
+}
+[DEBUG] [2025-10-30T09:30:34.325Z] [URLManagerServerAPI]: URL Manager details fetched successfully
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f",
+  "name": "siv"
+}
+[INFO ] [2025-10-30T09:31:05.786Z] [URLManagerServerAPI]: Deleting URL Manager
+{
+  "uuid": "09bcbc25-2cbc-402b-9963-7bb66d58a63a"
+}
+[DEBUG] [2025-10-30T09:31:05.884Z] [URLManagerServerAPI]: URL Manager deleted successfully
+{
+  "uuid": "09bcbc25-2cbc-402b-9963-7bb66d58a63a"
+}
+[INFO ] [2025-10-30T09:31:06.491Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO ] [2025-10-30T09:31:06.496Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO ] [2025-10-30T09:31:06.500Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO ] [2025-10-30T09:31:06.512Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO ] [2025-10-30T09:31:06.513Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-30T09:31:06.523Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 7
+}
+[DEBUG] [2025-10-30T09:31:06.533Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-30T09:31:06.546Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[DEBUG] [2025-10-30T09:31:06.575Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-30T09:31:06.606Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[INFO ] [2025-10-30T09:33:24.693Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO ] [2025-10-30T09:33:24.708Z] [ShareDetailServerAPI]: Fetching share details list
+[DEBUG] [2025-10-30T09:33:24.791Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-30T09:33:24.807Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[INFO ] [2025-10-30T09:34:31.816Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO ] [2025-10-30T09:34:31.826Z] [ShareDetailServerAPI]: Fetching share details list
+[DEBUG] [2025-10-30T09:34:31.892Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-30T09:34:31.911Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[INFO ] [2025-10-30T09:34:49.081Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO ] [2025-10-30T09:34:49.087Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO ] [2025-10-30T09:34:49.115Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO ] [2025-10-30T09:34:49.133Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO ] [2025-10-30T09:34:49.135Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-30T09:34:49.261Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-30T09:34:49.269Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-30T09:34:49.290Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[DEBUG] [2025-10-30T09:34:49.312Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[DEBUG] [2025-10-30T09:34:49.318Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 7
+}
+[INFO ] [2025-10-30T09:35:55.927Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO ] [2025-10-30T09:35:55.973Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO ] [2025-10-30T09:35:56.016Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO ] [2025-10-30T09:35:56.018Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO ] [2025-10-30T09:35:56.020Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-30T09:35:56.179Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[DEBUG] [2025-10-30T09:35:56.189Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[DEBUG] [2025-10-30T09:35:56.196Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-30T09:35:56.202Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-30T09:35:56.214Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 7
+}
+[INFO ] [2025-10-30T09:52:49.534Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-30T09:52:49.653Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[INFO ] [2025-10-30T09:52:50.228Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-30T09:52:50.265Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[INFO ] [2025-10-30T09:53:04.013Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-30T09:53:04.084Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[INFO ] [2025-10-30T09:53:04.182Z] [TemplateDetailServerAPI]: Fetching default templates
+[DEBUG] [2025-10-30T09:53:04.183Z] [TemplateDetailServerAPI]: Default templates fetched successfully
+{
+  "count": 3,
+  "templates": [
+    "Search Default 1",
+    "Search Default 2",
+    "Share Default 1"
+  ]
+}
+[INFO ] [2025-10-30T09:53:04.617Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-30T09:53:04.645Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[INFO ] [2025-10-30T09:53:04.668Z] [TemplateDetailServerAPI]: Fetching default templates
+[DEBUG] [2025-10-30T09:53:04.669Z] [TemplateDetailServerAPI]: Default templates fetched successfully
+{
+  "count": 3,
+  "templates": [
+    "Search Default 1",
+    "Search Default 2",
+    "Share Default 1"
+  ]
+}
+[INFO ] [2025-10-30T09:53:29.392Z] [TemplateDetailServerAPI]: Fetching default templates
+[DEBUG] [2025-10-30T09:53:29.394Z] [TemplateDetailServerAPI]: Default templates fetched successfully
+{
+  "count": 3,
+  "templates": [
+    "Search Default 1",
+    "Search Default 2",
+    "Share Default 1"
+  ]
+}
+[INFO ] [2025-10-30T09:53:29.413Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-30T09:53:29.495Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[INFO ] [2025-10-30T10:06:29.426Z] [TemplateDetailServerAPI]: Fetching default templates
+[DEBUG] [2025-10-30T10:06:29.429Z] [TemplateDetailServerAPI]: Default templates fetched successfully
+{
+  "count": 3,
+  "templates": [
+    "Search Default 1",
+    "Search Default 2",
+    "Share Default 1"
+  ]
+}
+[INFO ] [2025-10-30T10:06:29.526Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-30T10:06:29.636Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[INFO ] [2025-10-30T10:06:45.109Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-30T10:06:45.179Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[INFO ] [2025-10-30T10:06:45.722Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-30T10:06:45.758Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[INFO ] [2025-10-30T10:06:45.975Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-30T10:06:46.023Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[INFO ] [2025-10-30T10:06:46.468Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-30T10:06:46.504Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[INFO ] [2025-10-31T01:56:53.740Z] [AuthServerAPI]: Login attempt
+{
+  "email": "test@netnam.vn"
+}
+[ERROR] [2025-10-31T01:56:55.812Z] [AuthServerAPI]: Login failed
+{
+  "error": "fetch failed"
+}
+[INFO ] [2025-10-31T01:56:57.632Z] [AuthServerAPI]: Login attempt
+{
+  "email": "test@netnam.vn"
+}
+[ERROR] [2025-10-31T01:56:59.689Z] [AuthServerAPI]: Login failed
+{
+  "error": "fetch failed"
+}
+[INFO] [2025-10-31T02:04:49.848Z] [AuthServerAPI]: Login attempt
+{
+  "email": "test@netnam.vn"
+}
+[DEBUG] [2025-10-31T02:04:51.013Z] [AuthServerAPI]: Login successful
+{
+  "email": "test@netnam.vn",
+  "expiresAt": "2025-10-31T04:04:50.000Z"
+}
+[INFO] [2025-10-31T02:04:56.743Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:04:56.841Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:04:56.875Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:04:56.878Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:04:56.881Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-31T02:04:56.994Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[DEBUG] [2025-10-31T02:04:57.245Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:04:57.349Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:04:57.461Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[DEBUG] [2025-10-31T02:04:57.482Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 7
+}
+[INFO] [2025-10-31T02:08:32.598Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f"
+}
+[DEBUG] [2025-10-31T02:08:32.786Z] [URLManagerServerAPI]: URL Manager details fetched successfully
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f",
+  "name": "siv"
+}
+[INFO] [2025-10-31T02:08:38.946Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:08:38.956Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:08:38.966Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:08:38.985Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:08:38.989Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-31T02:08:39.036Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[DEBUG] [2025-10-31T02:08:39.067Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:08:39.093Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[DEBUG] [2025-10-31T02:08:39.126Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:08:39.147Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 7
+}
+[INFO] [2025-10-31T02:08:44.177Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "747f34ec-40d8-45de-93a6-e2c9bc0907e6"
+}
+[DEBUG] [2025-10-31T02:08:44.221Z] [URLManagerServerAPI]: URL Manager details fetched successfully
+{
+  "uuid": "747f34ec-40d8-45de-93a6-e2c9bc0907e6",
+  "name": "dasdat"
+}
+[INFO] [2025-10-31T02:08:49.737Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f"
+}
+[DEBUG] [2025-10-31T02:08:49.788Z] [URLManagerServerAPI]: URL Manager details fetched successfully
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f",
+  "name": "siv"
+}
+[INFO] [2025-10-31T02:10:04.652Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:10:04.661Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:10:04.669Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:10:04.679Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:10:04.684Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-31T02:10:04.817Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[DEBUG] [2025-10-31T02:10:04.833Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:10:04.856Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[DEBUG] [2025-10-31T02:10:04.862Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:10:04.869Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 7
+}
+[INFO] [2025-10-31T02:10:30.922Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f"
+}
+[DEBUG] [2025-10-31T02:10:31.016Z] [URLManagerServerAPI]: URL Manager details fetched successfully
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f",
+  "name": "siv"
+}
+[INFO] [2025-10-31T02:10:36.420Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "fc9d57bf-5cb0-41e8-b992-72a12fb20bd2"
+}
+[DEBUG] [2025-10-31T02:10:36.467Z] [URLManagerServerAPI]: URL Manager details fetched successfully
+{
+  "uuid": "fc9d57bf-5cb0-41e8-b992-72a12fb20bd2",
+  "name": "test-3-edited"
+}
+[INFO] [2025-10-31T02:10:41.207Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f"
+}
+[DEBUG] [2025-10-31T02:10:41.245Z] [URLManagerServerAPI]: URL Manager details fetched successfully
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f",
+  "name": "siv"
+}
+[INFO] [2025-10-31T02:10:45.713Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "1bbfe476-ae28-4a33-94c6-631874edf408"
+}
+[DEBUG] [2025-10-31T02:10:45.762Z] [URLManagerServerAPI]: URL Manager details fetched successfully
+{
+  "uuid": "1bbfe476-ae28-4a33-94c6-631874edf408",
+  "name": "-3123213"
+}
+[INFO] [2025-10-31T02:10:49.985Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:10:49.996Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:10:50.024Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:10:50.042Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:10:50.047Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-31T02:10:50.067Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 7
+}
+[DEBUG] [2025-10-31T02:10:50.095Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:10:50.104Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[DEBUG] [2025-10-31T02:10:50.152Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[DEBUG] [2025-10-31T02:10:50.162Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[INFO] [2025-10-31T02:10:54.091Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f"
+}
+[DEBUG] [2025-10-31T02:10:54.167Z] [URLManagerServerAPI]: URL Manager details fetched successfully
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f",
+  "name": "siv"
+}
+[INFO] [2025-10-31T02:10:58.977Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:10:58.998Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:10:59.016Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:10:59.027Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-31T02:10:59.034Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 7
+}
+[DEBUG] [2025-10-31T02:10:59.042Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[INFO] [2025-10-31T02:10:59.048Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-31T02:10:59.077Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[DEBUG] [2025-10-31T02:10:59.084Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:10:59.094Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[INFO] [2025-10-31T02:11:02.475Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f"
+}
+[DEBUG] [2025-10-31T02:11:02.565Z] [URLManagerServerAPI]: URL Manager details fetched successfully
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f",
+  "name": "siv"
+}
+[INFO] [2025-10-31T02:11:11.498Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "1bbfe476-ae28-4a33-94c6-631874edf408"
+}
+[DEBUG] [2025-10-31T02:11:11.554Z] [URLManagerServerAPI]: URL Manager details fetched successfully
+{
+  "uuid": "1bbfe476-ae28-4a33-94c6-631874edf408",
+  "name": "-3123213"
+}
+[INFO] [2025-10-31T02:11:16.156Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "747f34ec-40d8-45de-93a6-e2c9bc0907e6"
+}
+[DEBUG] [2025-10-31T02:11:16.203Z] [URLManagerServerAPI]: URL Manager details fetched successfully
+{
+  "uuid": "747f34ec-40d8-45de-93a6-e2c9bc0907e6",
+  "name": "dasdat"
+}
+[INFO] [2025-10-31T02:11:26.978Z] [URLManagerServerAPI]: Updating URL Manager
+{
+  "uuid": "747f34ec-40d8-45de-93a6-e2c9bc0907e6",
+  "updates": {
+    "name": "dasdat"
+  }
+}
+[DEBUG] [2025-10-31T02:11:27.193Z] [URLManagerServerAPI]: URL Manager updated successfully
+{
+  "uuid": "747f34ec-40d8-45de-93a6-e2c9bc0907e6",
+  "name": "dasdat"
+}
+[INFO] [2025-10-31T02:11:28.482Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:11:28.498Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:11:28.513Z] [ShareDetailServerAPI]: Fetching share details list
+[DEBUG] [2025-10-31T02:11:28.537Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 7
+}
+[INFO] [2025-10-31T02:11:28.544Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:11:28.546Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-31T02:11:28.571Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:11:28.597Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:11:28.622Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[DEBUG] [2025-10-31T02:11:28.630Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[INFO] [2025-10-31T02:11:31.976Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "747f34ec-40d8-45de-93a6-e2c9bc0907e6"
+}
+[DEBUG] [2025-10-31T02:11:32.021Z] [URLManagerServerAPI]: URL Manager details fetched successfully
+{
+  "uuid": "747f34ec-40d8-45de-93a6-e2c9bc0907e6",
+  "name": "dasdat"
+}
+[INFO] [2025-10-31T02:12:00.444Z] [URLManagerServerAPI]: Creating new URL Manager
+{
+  "name": "abc"
+}
+[DEBUG] [2025-10-31T02:12:00.558Z] [URLManagerServerAPI]: URL Manager created successfully
+{
+  "id": 21,
+  "name": "abc"
+}
+[INFO] [2025-10-31T02:12:01.751Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:12:01.758Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:12:01.782Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:12:01.786Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:12:01.789Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-31T02:12:01.830Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 8
+}
+[DEBUG] [2025-10-31T02:12:01.838Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:12:01.873Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[DEBUG] [2025-10-31T02:12:01.894Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:12:01.942Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[INFO] [2025-10-31T02:17:38.614Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:17:38.621Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:17:38.635Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:17:38.655Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:17:38.657Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-31T02:17:38.686Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 8
+}
+[DEBUG] [2025-10-31T02:17:38.691Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:17:38.711Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[DEBUG] [2025-10-31T02:17:38.748Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:17:38.753Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[INFO] [2025-10-31T02:18:23.309Z] [[root-of-the-server]__81688747._.js:269]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:18:33.323Z] [[root-of-the-server]__81688747._.js:269]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+[INFO] [2025-10-31T02:18:37.955Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:18:58.929Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:19:03.770Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:19:04.405Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:19:04.414Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:19:04.419Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:19:04.429Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:19:04.432Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-31T02:19:04.721Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:19:04.753Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 8
+}
+[DEBUG] [2025-10-31T02:19:04.771Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[DEBUG] [2025-10-31T02:19:04.798Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:19:04.815Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[INFO] [2025-10-31T02:19:27.213Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:19:30.352Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:19:32.944Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:19:41.325Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:19:43.563Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:19:44.333Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:19:44.343Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:19:44.347Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:19:44.355Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:19:44.357Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-31T02:19:44.436Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[DEBUG] [2025-10-31T02:19:44.453Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:19:44.468Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 8
+}
+[DEBUG] [2025-10-31T02:19:44.475Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:19:44.493Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[INFO] [2025-10-31T02:20:00.215Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:20:08.346Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:20:20.795Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:21:00.221Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:21:00.270Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:21:10.933Z] [TemplateDetailServerAPI]: Using template Share Default 1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "templateType": {
+      "name": "share",
+      "id": 2
+    },
+    "id": "shre_c17f45bd",
+    "name": "Share Default 1",
+    "isActive": true,
+    "jsonConfig": {
+      "settings": {
+        "themeColor": "#3490dc",
+        "pageTitle": "",
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "privateGallery": false
+      },
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "_type": "span",
+              "text": "Share With Friends defualt 1",
+              "marks": []
+            }
+          ],
+          "markDefs": []
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "_type": "span",
+              "text": "Spread the word and let others know!",
+              "marks": []
+            }
+          ],
+          "markDefs": []
+        },
+        {
+          "_type": "shareButtons",
+          "buttons": [
+            "Facebook",
+            "Twitter",
+            "LinkedIn",
+            "Email"
+          ]
+        },
+        {
+          "_type": "feature",
+          "title": "Easy Sharing",
+          "description": "Quickly share content with just one click."
+        },
+        {
+          "_type": "feature",
+          "title": "Custom Messages",
+          "description": "Add a personal note to your shared links."
+        },
+        {
+          "_type": "feature",
+          "title": "Track Engagement",
+          "description": "See how many people engage with your shares."
+        },
+        {
+          "_type": "footer",
+          "text": "© 2025 Share Page. All rights reserved."
+        }
+      ]
+    }
+  }
+}
+[INFO] [2025-10-31T02:21:11.253Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:21:14.283Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:21:14.351Z] [TemplateDetailServerAPI]: Using template Share Default 1 for uuid 4b2a0fec-0a90-41ab-b35c-826cd00744ca templateData:
+{
+  "templateData": {
+    "templateType": {
+      "name": "share",
+      "id": 2
+    },
+    "id": "shre_c17f45bd",
+    "name": "Share Default 1",
+    "isActive": true,
+    "jsonConfig": {
+      "settings": {
+        "themeColor": "#3490dc",
+        "pageTitle": "",
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "privateGallery": false
+      },
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "_type": "span",
+              "text": "Share With Friends defualt 1",
+              "marks": []
+            }
+          ],
+          "markDefs": []
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "_type": "span",
+              "text": "Spread the word and let others know!",
+              "marks": []
+            }
+          ],
+          "markDefs": []
+        },
+        {
+          "_type": "shareButtons",
+          "buttons": [
+            "Facebook",
+            "Twitter",
+            "LinkedIn",
+            "Email"
+          ]
+        },
+        {
+          "_type": "feature",
+          "title": "Easy Sharing",
+          "description": "Quickly share content with just one click."
+        },
+        {
+          "_type": "feature",
+          "title": "Custom Messages",
+          "description": "Add a personal note to your shared links."
+        },
+        {
+          "_type": "feature",
+          "title": "Track Engagement",
+          "description": "See how many people engage with your shares."
+        },
+        {
+          "_type": "footer",
+          "text": "© 2025 Share Page. All rights reserved."
+        }
+      ]
+    }
+  }
+}
+[INFO] [2025-10-31T02:21:15.045Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:21:15.053Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:21:15.058Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:21:15.070Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:21:15.073Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-31T02:21:15.090Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 8
+}
+[DEBUG] [2025-10-31T02:21:15.103Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[DEBUG] [2025-10-31T02:21:15.116Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[DEBUG] [2025-10-31T02:21:15.121Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:21:15.145Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[INFO] [2025-10-31T02:21:55.261Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:21:55.273Z] [ShareDetailServerAPI]: Fetching share details list
+[DEBUG] [2025-10-31T02:21:55.339Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:21:55.367Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[INFO] [2025-10-31T02:22:03.604Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:22:03.611Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:22:03.620Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:22:03.638Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:22:03.642Z] [TemplateDetailServerAPI]: Fetching template details list
+[DEBUG] [2025-10-31T02:22:03.663Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[DEBUG] [2025-10-31T02:22:03.687Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 8
+}
+[DEBUG] [2025-10-31T02:22:03.725Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:22:03.730Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[DEBUG] [2025-10-31T02:22:03.748Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[INFO] [2025-10-31T02:22:13.282Z] [URLManagerServerAPI]: Deleting URL Manager
+{
+  "uuid": "4b2a0fec-0a90-41ab-b35c-826cd00744ca"
+}
+[DEBUG] [2025-10-31T02:22:13.350Z] [URLManagerServerAPI]: URL Manager deleted successfully
+{
+  "uuid": "4b2a0fec-0a90-41ab-b35c-826cd00744ca"
+}
+[INFO] [2025-10-31T02:22:14.069Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:22:14.073Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:22:14.078Z] [ShareDetailServerAPI]: Fetching share details list
+[DEBUG] [2025-10-31T02:22:14.090Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[INFO] [2025-10-31T02:22:14.094Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:22:14.095Z] [TemplateTypeServerAPI]: Fetching template types list
+[DEBUG] [2025-10-31T02:22:14.118Z] [URLManagerServerAPI]: URL Managers list fetched successfully
+{
+  "count": 7
+}
+[DEBUG] [2025-10-31T02:22:14.137Z] [TemplateTypeServerAPI]: Template types list fetched successfully
+{
+  "count": 2
+}
+[DEBUG] [2025-10-31T02:22:14.162Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[DEBUG] [2025-10-31T02:22:14.175Z] [TemplateDetailServerAPI]: Template details list fetched successfully
+{
+  "count": 5
+}
+[INFO] [2025-10-31T02:22:25.776Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:22:25.785Z] [ShareDetailServerAPI]: Fetching share details list
+[DEBUG] [2025-10-31T02:22:25.837Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 5
+}
+[DEBUG] [2025-10-31T02:22:25.846Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[INFO] [2025-10-31T02:22:38.119Z] [SharePlatformServerAPI]: Deleting share platform
+{
+  "platformId": "11"
+}
+[DEBUG] [2025-10-31T02:22:38.199Z] [SharePlatformServerAPI]: Share platform deleted successfully
+{
+  "platformId": "11"
+}
+[INFO] [2025-10-31T02:22:38.809Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:22:38.813Z] [SharePlatformServerAPI]: Fetching share platforms list
+[DEBUG] [2025-10-31T02:22:38.829Z] [ShareDetailServerAPI]: Share details list fetched successfully
+{
+  "count": 3
+}
+[DEBUG] [2025-10-31T02:22:38.849Z] [SharePlatformServerAPI]: Share platforms list fetched successfully
+{
+  "count": 4
+}
+[INFO] [2025-10-31T02:44:33.304Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:44:33.321Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:44:35.871Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:44:35.881Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:44:35.909Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:44:35.922Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:44:35.936Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:44:37.668Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:44:37.675Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:44:37.681Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:44:37.690Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:44:37.696Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:47:18.662Z] [TemplateDetailServerAPI]: Using template Share1 for uuid fd1cd598-5b9d-4a59-a483-659dc14a595f templateData:
+{
+  "templateData": {
+    "id": 4,
+    "name": "Share1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Moderndasdadadas",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search there..."
+        },
+        {
+          "_type": "feature",
+          "title": "Fast and Reliable",
+          "description": "afgsgagagagssfsdfasdas"
+        },
+        {
+          "_type": "feature",
+          "title": "Easy to Use",
+          "description": "Designed with simplicity and usability in mind."
+        },
+        {
+          "text": "© 2025 Your Company. All rights reserved.",
+          "_type": "footer"
+        }
+      ],
+      "settings": {
+        "pageLogo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP4BR24zE3UTBrVh_Fn39ijUNNc_qKx27vMw&s",
+        "pageSize": 27,
+        "customCSS": "/* main{\n  background-color: red !important;\n}\n\nfooter{\n  display: none !important;\n} */",
+        "pageTitle": "NETN@M AI Share1",
+        "themeColor": "#ffffff",
+        "privateGallery": true
+      }
+    },
+    "isActive": true,
+    "templateType": "share"
+  }
+}
+[INFO] [2025-10-31T02:47:29.211Z] [TemplateDetailServerAPI]: Using template NameChange for uuid fd1cd598-5b9d-4a59-a483-659dc14a595f templateData:
+{
+  "templateData": {
+    "id": 1,
+    "name": "NameChange",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Moderndasdadadas",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search there..."
+        },
+        {
+          "_type": "feature",
+          "title": "Fast and Reliable",
+          "description": "afgsgagagagssfsdfasdas"
+        },
+        {
+          "_type": "feature",
+          "title": "Easy to Use",
+          "description": "Designed with simplicity and usability in mind."
+        },
+        {
+          "text": "© 2025 Your Company. All rights reserved.",
+          "_type": "footer"
+        }
+      ],
+      "settings": {
+        "pageLogo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQP4BR24zE3UTBrVh_Fn39ijUNNc_qKx27vMw&s",
+        "pageSize": 27,
+        "customCSS": "/* main{\n  background-color: red !important;\n}\n\nfooter{\n  display: none !important;\n} */",
+        "pageTitle": "NETN@M AI SEARCH AVDFD",
+        "themeColor": "#ffffff",
+        "privateGallery": true
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}
+[INFO] [2025-10-31T02:52:43.557Z] [URLManagerServerAPI]: Creating new URL Manager
+{
+  "name": "C"
+}
+[INFO] [2025-10-31T02:52:43.891Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:52:43.898Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:52:43.907Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:52:43.916Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:52:43.925Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:52:47.261Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "f66f6495-c5b5-43d7-9c54-9b50d64c6073"
+}
+[INFO] [2025-10-31T02:52:59.250Z] [URLManagerServerAPI]: Updating URL Manager
+{
+  "uuid": "f66f6495-c5b5-43d7-9c54-9b50d64c6073",
+  "updates": {
+    "name": "U"
+  }
+}
+[INFO] [2025-10-31T02:52:59.499Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:52:59.506Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:52:59.516Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:52:59.523Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:52:59.534Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:53:03.502Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "f66f6495-c5b5-43d7-9c54-9b50d64c6073"
+}
+[INFO] [2025-10-31T02:53:11.176Z] [URLManagerServerAPI]: Deleting URL Manager
+{
+  "uuid": "f66f6495-c5b5-43d7-9c54-9b50d64c6073"
+}
+[INFO] [2025-10-31T02:53:11.293Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:53:11.300Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:53:11.307Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:53:11.318Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:53:11.328Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:53:16.998Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:53:17.005Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:53:24.394Z] [ShareDetailServerAPI]: Updating share detail
+{
+  "shareDetailId": "8",
+  "updates": {
+    "name": "dadas"
+  }
+}
+[INFO] [2025-10-31T02:53:24.959Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:53:24.965Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:53:42.764Z] [ShareDetailServerAPI]: Creating new share detail
+{
+  "shareDetailInfo": {
+    "name": "asfafass"
+  }
+}
+[INFO] [2025-10-31T02:53:42.989Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:53:42.996Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:53:54.582Z] [ShareDetailServerAPI]: Updating share detail
+{
+  "shareDetailId": "11",
+  "updates": {
+    "name": "U"
+  }
+}
+[INFO] [2025-10-31T02:53:54.714Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:53:54.720Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:54:07.960Z] [ShareDetailServerAPI]: Deleting share detail
+{
+  "shareDetailId": "11"
+}
+[INFO] [2025-10-31T02:54:08.107Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:54:08.113Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:54:13.966Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:54:14.023Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:54:16.168Z] [TemplateDetailServerAPI]: Fetching template detail
+{
+  "templateDetailId": 2
+}
+[INFO] [2025-10-31T02:55:01.828Z] [TemplateDetailServerAPI]: Updating template detail
+{
+  "templateDetailId": 2,
+  "updates": {
+    "name": "Modern",
+    "templateTypeId": 1
+  }
+}
+[INFO] [2025-10-31T02:55:02.051Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:55:02.102Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:55:03.591Z] [TemplateDetailServerAPI]: Fetching template detail
+{
+  "templateDetailId": 3
+}
+[INFO] [2025-10-31T02:55:05.891Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:55:05.938Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:55:08.424Z] [TemplateDetailServerAPI]: Fetching template detail
+{
+  "templateDetailId": 2
+}
+[INFO] [2025-10-31T02:55:10.489Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:55:10.549Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:55:12.842Z] [TemplateDetailServerAPI]: Fetching template detail
+{
+  "templateDetailId": 4
+}
+[INFO] [2025-10-31T02:55:14.212Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:55:14.286Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:55:15.908Z] [TemplateDetailServerAPI]: Fetching template detail
+{
+  "templateDetailId": 2
+}
+[INFO] [2025-10-31T02:55:24.266Z] [TemplateDetailServerAPI]: Updating template detail
+{
+  "templateDetailId": 2,
+  "updates": {
+    "name": "Modern",
+    "templateTypeId": 1
+  }
+}
+[INFO] [2025-10-31T02:55:24.403Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:55:24.462Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:55:29.253Z] [TemplateDetailServerAPI]: Fetching template detail
+{
+  "templateDetailId": 2
+}
+[INFO] [2025-10-31T02:55:34.838Z] [TemplateDetailServerAPI]: Updating template detail
+{
+  "templateDetailId": 2,
+  "updates": {
+    "name": "Modern",
+    "templateTypeId": 1
+  }
+}
+[INFO] [2025-10-31T02:55:35.025Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:55:35.070Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:55:37.522Z] [TemplateDetailServerAPI]: Fetching template detail
+{
+  "templateDetailId": 4
+}
+[INFO] [2025-10-31T02:55:52.967Z] [TemplateDetailServerAPI]: Updating template detail
+{
+  "templateDetailId": 4,
+  "updates": {
+    "name": "Share1",
+    "templateTypeId": 2
+  }
+}
+[INFO] [2025-10-31T02:55:53.150Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:55:53.195Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:55:56.356Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:55:56.365Z] [TemplateDetailServerAPI]: Fetching default templates
+[INFO] [2025-10-31T02:56:57.584Z] [TemplateDetailServerAPI]: Creating new template detail
+{
+  "templateTypeId": 2,
+  "name": "Share TEST2"
+}
+[INFO] [2025-10-31T02:56:57.859Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:56:57.930Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:57:22.297Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:57:22.304Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:57:22.312Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:57:22.320Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:57:22.329Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:57:34.499Z] [URLManagerServerAPI]: Fetching URL Manager details
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f"
+}
+[INFO] [2025-10-31T02:57:40.687Z] [URLManagerServerAPI]: Updating URL Manager
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f",
+  "updates": {
+    "name": "siv"
+  }
+}
+[INFO] [2025-10-31T02:57:40.910Z] [URLManagerServerAPI]: Updating URL Manager
+{
+  "uuid": "fd1cd598-5b9d-4a59-a483-659dc14a595f",
+  "updates": {
+    "name": "siv"
+  }
+}
+[INFO] [2025-10-31T02:57:41.095Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:57:41.104Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:57:41.156Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:57:41.184Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:57:41.229Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:57:41.660Z] [URLManagerServerAPI]: Fetching URL Managers list
+[INFO] [2025-10-31T02:57:41.673Z] [SharePlatformServerAPI]: Fetching share platforms list
+[INFO] [2025-10-31T02:57:41.710Z] [ShareDetailServerAPI]: Fetching share details list
+[INFO] [2025-10-31T02:57:41.784Z] [TemplateTypeServerAPI]: Fetching template types list
+[INFO] [2025-10-31T02:57:41.896Z] [TemplateDetailServerAPI]: Fetching template details list
+[INFO] [2025-10-31T02:57:44.125Z] [TemplateDetailServerAPI]: Using template Search test1 for uuid fd1cd598-5b9d-4a59-a483-659dc14a595f templateData:
+{
+  "templateData": {
+    "id": 6,
+    "name": "Search test1",
+    "jsonConfig": {
+      "content": [
+        {
+          "_type": "block",
+          "style": "h1",
+          "children": [
+            {
+              "text": "Welcome to Search Default 1",
+              "_type": "span"
+            }
+          ]
+        },
+        {
+          "_type": "GallerySection"
+        },
+        {
+          "_type": "searchBar",
+          "placeholder": "Search..."
+        },
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [
+            {
+              "text": "asdadasdasda",
+              "_type": "span"
+            }
+          ],
+          "markDefs": []
+        }
+      ],
+      "settings": {
+        "pageLogo": "",
+        "pageSize": 10,
+        "customCSS": "",
+        "pageTitle": "TEST SEARCH",
+        "themeColor": "#e49a9a",
+        "privateGallery": false
+      }
+    },
+    "isActive": true,
+    "templateType": "search"
+  }
+}

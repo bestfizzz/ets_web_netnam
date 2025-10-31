@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(data, { status: backendRes.status })
   } catch (err) {
     console.error("Get URL Managers error:", err)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 })
   }
 }
 
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(res, { status: backendRes.status })
   } catch (err) {
     console.error("Create URL Manager error:", err)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 })
   }
 }
 

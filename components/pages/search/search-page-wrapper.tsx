@@ -15,6 +15,7 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
     privateGallery,
     personId,
     query,
+    images,
     setImages,
     page,
     setPage,
@@ -112,7 +113,7 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
         filename: `${settings.pageTitle}_${item.id}`
       }))
       if (mode === 'keyword') {
-        setImages(prev => [...prev, ...mapped])
+        setImages([...images, ...mapped])
       } else {
         setTotal(totalAssets)
         setImages(mapped)
