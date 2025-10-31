@@ -57,6 +57,11 @@ export async function PUT(
     const body = await req.json()
     logger.info("Updating template type", {
       context: LoggerContext.TemplateTypeServer,
+      templateTypeId: id
+    })
+
+    logger.debug("Updating template type", {
+      context: LoggerContext.TemplateTypeServer,
       templateTypeId: id,
       updates: {
         name: body.name

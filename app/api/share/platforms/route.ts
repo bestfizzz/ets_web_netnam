@@ -43,10 +43,12 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json()
     logger.info("Creating new share platform", {
+      context: LoggerContext.SharePlatformServer
+    })
+    logger.debug("Creating new share platform", {
       context: LoggerContext.SharePlatformServer,
       name: body.name
     })
-
     const res = await SharePlatformServerAPI.create({ name: body.name }, token)
     logger.debug("Share platform created successfully", {
       context: LoggerContext.SharePlatformServer,

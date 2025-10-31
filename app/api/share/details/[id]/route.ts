@@ -60,13 +60,15 @@ export async function PUT(
     const body = await req.json()
     logger.info("Updating share detail", {
       context: LoggerContext.ShareDetailServer,
-      shareDetailId: id,
-      updates: {
-        name: body.name,
-        platformId: body.platformId
-      }
+      shareDetailId: id
     })
     
+    logger.debug("Updating share detail", {
+      context: LoggerContext.ShareDetailServer,
+      shareDetailId: id,
+      body
+    })
+
     const data = await ShareDetailServerAPI.update(Number(id), body, token)
     logger.debug("Share detail updated successfully", {
       context: LoggerContext.ShareDetailServer,

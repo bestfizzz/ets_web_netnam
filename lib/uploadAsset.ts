@@ -1,3 +1,5 @@
+import { http } from "@/lib/http"
+
 export default async function uploadAsset(file: File, uuid: string) {
   const MAX_SIZE_MB = 2
   if (file.size > MAX_SIZE_MB * 1024 * 1024) {
@@ -10,15 +12,10 @@ export default async function uploadAsset(file: File, uuid: string) {
   formData.append("assetData", file)
   formData.append("uuid", uuid)
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets`, {
+  return await http(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets`, {
     method: "POST",
     body: formData,
+    parseJson: true,
+    throwOnError: true,
   })
-
-  if (!res.ok) {
-    const text = await res.text()
-    throw new Error(`Upload failed: ${text}`)
-  }
-
-  return res.json()
 }

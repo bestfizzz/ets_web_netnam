@@ -22,7 +22,7 @@ export default async function SharePage({
     // ✅ Safely check URL validity
     isValid = await AssetsServerAPI.checkUrl(uuid)
   } catch (err) {
-    logger.error("checkUrl failed:", {context: LoggerContext.AssetsServer,error:err})
+    logger.error("checkUrl failed:", { context: LoggerContext.AssetsServer, error: err })
     // Leave isValid = false to trigger Not Found
   }
 
@@ -46,10 +46,11 @@ export default async function SharePage({
     })
     templateData = found || shareTemplate1
   } catch (err) {
-    logger.error(`getPageDetails failed: ${err} ... using default template`,{ context: LoggerContext.TemplateDetailServer})
+    logger.error(`getPageDetails failed: ${err} ... using default template`, { context: LoggerContext.TemplateDetailServer })
     templateData = shareTemplate1
   }
-  logger.info(`Using template ${templateData.name} for uuid ${uuid} templateData:`, { context: LoggerContext.TemplateDetailServer, templateData })
+  logger.info(`Using template ${templateData.name} for uuid ${uuid}`, { context: LoggerContext.TemplateDetailServer })
+  logger.debug(`Using template ${templateData.name} for uuid ${uuid} templateData:`, { context: LoggerContext.TemplateDetailServer, templateData })  
   const content: TypedObject[] = (templateData.jsonConfig.content as TypedObject[]) || []
 
   return (
@@ -60,7 +61,7 @@ export default async function SharePage({
         typeof templateData.templateType === "string"
           ? templateData.templateType
           : templateData.templateType.name
-      } 
+      }
       uuid={uuid}
     />
   )

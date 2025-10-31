@@ -43,11 +43,12 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     logger.info("Creating new share detail", {
+      context: LoggerContext.ShareDetailServer
+    })
+
+    logger.debug("Creating new share detail", {
       context: LoggerContext.ShareDetailServer,
-      shareDetailInfo: {
-        name: body.name,
-        platformId: body.platformId
-      }
+      body
     })
 
     const data = await ShareDetailServerAPI.create(body, token)

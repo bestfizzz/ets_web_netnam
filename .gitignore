@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Ignore all .env files except .env.template
 .env
+.env.*
+!.env.template
 # dependencies
 /node_modules
 /.pnp
@@ -20,7 +23,7 @@
 /build
 
 #logs
-/logs/*
+logs/
 *.log
 # misc
 .DS_Store

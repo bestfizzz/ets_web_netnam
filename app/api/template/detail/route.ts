@@ -44,9 +44,12 @@ export async function POST(req: Request) {
 
     const body = await req.json()
     logger.info("Creating new template detail", {
+      context: LoggerContext.TemplateDetailServer
+    })
+
+    logger.debug("Creating new template detail", {
       context: LoggerContext.TemplateDetailServer,
-      templateTypeId: body.templateTypeId,
-      name: body.name
+      body
     })
 
     const data = await TemplateDetailServerAPI.create(body, token)

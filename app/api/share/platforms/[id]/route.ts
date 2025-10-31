@@ -57,6 +57,10 @@ export async function PUT(
     const body = await req.json()
     logger.info("Updating share platform", {
       context: LoggerContext.SharePlatformServer,
+      platformId: id
+    })
+    logger.debug("Updating share platform", {
+      context: LoggerContext.SharePlatformServer,
       platformId: id,
       name: body.name
     })

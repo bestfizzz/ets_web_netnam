@@ -22,6 +22,9 @@ export async function POST(req: Request) {
     const { email, password } = parsed.data
     
     logger.info("Login attempt", {
+      context: LoggerContext.AuthServer
+    })
+    logger.debug("Login attempt", {
       context: LoggerContext.AuthServer,
       email
     })

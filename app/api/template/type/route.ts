@@ -44,6 +44,9 @@ export async function POST(req: Request) {
 
     const body = await req.json()
     logger.info("Creating new template type", {
+      context: LoggerContext.TemplateTypeServer
+    })
+    logger.debug("Creating new template type", {
       context: LoggerContext.TemplateTypeServer,
       name: body.name
     })

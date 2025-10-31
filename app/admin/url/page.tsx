@@ -3,7 +3,7 @@
 import { cookies } from "next/headers"
 import AdminLayout from "@/components/layout-admin"
 import { URLTable } from "@/components/url/url-table"
-import {  ShareDetail, SharePlatform,  UrlManager} from "@/lib/types/types"
+import { ShareDetail, SharePlatform, TemplateDetail, TemplateType, UrlManager } from "@/lib/types/types"
 import { UrlManagerClientAPI } from "@/lib/client_api/url-manager.client"
 import { SharePlatformClientAPI } from "@/lib/client_api/share-platform.client"
 import { ShareDetailClientAPI } from "@/lib/client_api/share-detail.client"
@@ -16,13 +16,13 @@ export default async function Page() {
   const session = cookieStore.get("session")?.value
   const accessToken = cookieStore.get("accessToken")?.value
 
-  const [urlsResult, platformsResult, shareDetailsResult,templateTypesResult, templateDetailsResult] =
+  const [urlsResult, platformsResult, shareDetailsResult, templateTypesResult, templateDetailsResult] =
     await Promise.allSettled([
-      UrlManagerClientAPI.serverList(session,accessToken),
-      SharePlatformClientAPI.serverList(session,accessToken),
-      ShareDetailClientAPI.serverList(session,accessToken),
-      TemplateTypeClientAPI.serverList(session,accessToken),
-      TemplateDetailClientAPI.serverList(session,accessToken),
+      UrlManagerClientAPI.serverList(session, accessToken),
+      SharePlatformClientAPI.serverList(session, accessToken),
+      ShareDetailClientAPI.serverList(session, accessToken),
+      TemplateTypeClientAPI.serverList(session, accessToken),
+      TemplateDetailClientAPI.serverList(session, accessToken),
     ])
 
   const urls: UrlManager[] =
@@ -31,9 +31,9 @@ export default async function Page() {
     platformsResult.status === "fulfilled" ? platformsResult.value : []
   const shareDetails: ShareDetail[] =
     shareDetailsResult.status === "fulfilled" ? shareDetailsResult.value : []
-  const templateTypes =
+  const templateTypes: TemplateType[] =
     templateTypesResult.status === "fulfilled" ? templateTypesResult.value : []
-  const templateDetails =
+  const templateDetails: TemplateDetail[] =
     templateDetailsResult.status === "fulfilled" ? templateDetailsResult.value : []
 
   return (

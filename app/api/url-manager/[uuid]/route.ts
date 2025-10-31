@@ -56,7 +56,12 @@ export async function PATCH(
     }
 
     const body: UrlManagerPayload = await req.json()
+
     logger.info("Updating URL Manager", {
+      context: LoggerContext.UrlManagerServer,
+      uuid
+    })
+    logger.debug("Updating URL Manager", {
       context: LoggerContext.UrlManagerServer,
       uuid,
       updates: {

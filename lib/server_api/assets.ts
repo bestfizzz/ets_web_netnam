@@ -39,4 +39,5 @@ export const AssetsServerAPI = {
     http<{ active: boolean }>(`${ASSET_BASE}/check-url/${uuid}`, {
       method: "GET",
     }),
+    
 }

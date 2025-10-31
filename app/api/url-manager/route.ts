@@ -44,10 +44,12 @@ export async function POST(req: NextRequest) {
 
     const body: UrlManagerPayload = await req.json()
     logger.info("Creating new URL Manager", { 
-      context: LoggerContext.UrlManagerServer,
-      name: body.name 
+      context: LoggerContext.UrlManagerServer
     })
-
+    logger.debug("Creating new URL Manager", { 
+      context: LoggerContext.UrlManagerServer,
+      body
+    })
     const result = await URLManagerServerAPI.create(
       body,
       accessToken

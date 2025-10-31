@@ -49,7 +49,8 @@ export default async function SearchPage({
     logger.error(`getPageDetails failed: ${err} ... using default template`,{ context: LoggerContext.TemplateDetailServer})
     templateData = searchTemplate1
   }
-  logger.info(`Using template ${templateData.name} for uuid ${uuid} templateData:`, { context: LoggerContext.TemplateDetailServer, templateData })
+  logger.info(`Using template ${templateData.name} for uuid ${uuid}`, { context: LoggerContext.TemplateDetailServer })
+  logger.debug(`Using template ${templateData.name} for uuid ${uuid} templateData:`, { context: LoggerContext.TemplateDetailServer, templateData })
   const content: TypedObject[] = (templateData.jsonConfig.content as TypedObject[]) || []
 
   return (

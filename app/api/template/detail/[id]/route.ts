@@ -63,12 +63,15 @@ export async function PUT(
     const body = await req.json()
     logger.info("Updating template detail", {
       context: LoggerContext.TemplateDetailServer,
-      templateDetailId: idNum,
-      updates: {
-        name: body.name,
-        templateTypeId: body.templateTypeId
-      }
+      templateDetailId: idNum
     })
+
+    logger.debug("Updating template detail", {
+      context: LoggerContext.TemplateDetailServer,
+      templateDetailId: idNum,
+      body
+    })
+
     const data = await TemplateDetailServerAPI.update(idNum, body, token)
     logger.debug("Template detail updated successfully", {
       context: LoggerContext.TemplateDetailServer,

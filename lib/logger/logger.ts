@@ -66,7 +66,7 @@ function formatLogMessage(level: LogLevel, message: string, opts?: LogOptions): 
     if (typeof meta.context === "string") delete meta.context
     if (Object.keys(meta).length > 0) {
       try {
-        logLine += `\n${JSON.stringify(meta, null, 2)}`
+        logLine += " " + JSON.stringify(meta).replace(/,/g, ", ").replace(/:/g, ": ")
       } catch {
         logLine += " [metadata serialization failed]"
       }
