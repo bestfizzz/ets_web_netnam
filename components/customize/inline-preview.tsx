@@ -123,7 +123,10 @@ export function InlinePreview({ formData, pageName, mode }: InlinePreviewProps) 
 
       if (Fancybox) {
         Fancybox.unbind("[data-fancybox='gallery']")
-        Fancybox.bind("[data-fancybox='gallery']", { groupAll: true })
+        Fancybox.bind("[data-fancybox='gallery']", {
+          groupAll: true,
+          Hash: false,
+        })
       }
     }, 300)
     return () => clearTimeout(timer)

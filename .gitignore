@@ -20,7 +20,7 @@
 /build
 
 #logs
-logs
+/logs/*
 *.log
 # misc
 .DS_Store
