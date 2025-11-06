@@ -3,7 +3,7 @@
     "name": "share",
     "id": 2
   },
-  "id": "shre_c17f45bd",
+  "id": "shre_c17fbkas",
   "name": "Share Default 1",
   "isActive": true,
   "jsonConfig": {
@@ -11,8 +11,10 @@
       "themeColor": "#3490dc",
       "pageTitle": "",
       "pageLogo": "",
-      "pageSize": 10,
+      "pageSize": 20,
       "customCSS": "",
+      "hasAds": false,
+      "layout": "default",
       "privateGallery": false
     },
     "content": [
@@ -39,6 +41,10 @@
           }
         ],
         "markDefs": []
+      },
+      {
+        "_type": "GallerySection",
+        "layoutType": "default"
       },
       {
         "_type": "shareButtons",

@@ -1,10 +1,10 @@
 {
   "templateType": {
-    "name": "search",
-    "id": 1
+    "name": "share",
+    "id": 2
   },
-  "id": "srch_baq3phim",
-  "name": "Search Default 2",
+  "id": "shre_baqdasim",
+  "name": "Share Default 2",
   "isActive": true,
   "jsonConfig": {
     "settings": {
@@ -24,7 +24,7 @@
         "children": [
           {
             "_type": "span",
-            "text": "Welcome to Search Default 2"
+            "text": "Welcome to Share Default 2"
           }
         ]
       },
@@ -46,14 +46,6 @@
         "_type": "feature",
         "title": "Easy to Use",
         "description": "Designed with simplicity and usability in mind."
-      },
-      {
-        "_type": "shareButtons",
-        "buttons": [
-          "Facebook",
-          "Twitter",
-          "LinkedIn"
-        ]
       },
       {
         "_type": "footer",

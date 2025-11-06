@@ -80,7 +80,7 @@ export const DraggableBlock = ({
 
           {/* Remove button */}
           <div className="flex justify-end">
-            <Button variant="destructive" size="sm" onClick={() => removeBlock(idx)} disabled={block._type=='GallerySection'}>
+            <Button variant="destructive" size="sm" onClick={() => removeBlock(idx)} disabled={block._type=='GallerySection'||block._type=='GalleryContentSection'}>
               <Trash2 className="w-4 h-4 mr-1" />
               Remove
             </Button>

@@ -29,18 +29,20 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible"
 import { Pencil, Check, ChevronRight } from "lucide-react"
 import { DynamicBlockEditor } from "@/components/customize/dynamic-block-editor"
 import { nSpaceTrimmer } from "@/lib/utils"
+import { SearchLayoutMap } from "@/lib/layoutMap/search-map"
+import { ShareLayoutMap } from "@/lib/layoutMap/share-map"
 
 const defaultBlocks: Record<string, any> = {
   block: { _type: "block", style: "normal", children: [{ _type: "span", text: "" }], markDefs: [] },
   feature: { _type: "feature", title: "", description: "" },
   footer: { _type: "footer", text: "" },
   searchBar: { _type: "searchBar", placeholder: "Search..." },
-  logoBlock: { _type: "logoBlock", leftLogo: "", rightLogo: "" },
-  GallerySection: { _type: "GallerySection" },
+  logoBlock: { _type: "logoBlock", leftLogo: "", rightLogo: "" }
 }
 
 interface PageCustomizeProps {
@@ -68,10 +70,12 @@ export const PageCustomize = forwardRef(({
       pageLogo: "",
       pageSize: 10,
       customCSS: "",
+      layout: "default",
       privateGallery: false,
+      hasAds: false
     },
   };
-
+  const layoutMap = pageName === 'search' ? SearchLayoutMap : ShareLayoutMap;
   const { control, watch, setValue, reset, getValues, formState: { errors }, handleSubmit } =
     useForm<any>({ defaultValues });
 
@@ -119,6 +123,8 @@ export const PageCustomize = forwardRef(({
         pageSize: pageData.jsonConfig?.settings?.pageSize ?? 10,
         customCSS: pageData.jsonConfig?.settings?.customCSS ?? "",
         privateGallery: pageData.jsonConfig?.settings?.privateGallery ?? false,
+        layout: pageData.jsonConfig?.settings?.layout ?? "default",
+        hasAds: pageData.jsonConfig?.settings?.hasAds ?? false,
       },
       content: pageData.jsonConfig?.content ?? [],
     };
@@ -143,10 +149,12 @@ export const PageCustomize = forwardRef(({
 
   const addBlock = (type: string) => {
     // Prevent multiple GallerySections
-    if (type === "GallerySection") {
-      const alreadyExists = content.some((b: any) => b._type === "GallerySection")
+    if (type === "GallerySection" || type === "GalleryContentSection") {
+      const alreadyExists = content.some(
+        (b: any) => b._type === type
+      )
       if (alreadyExists) {
-        alert("You can only have one Gallery Section.")
+        alert(`You can only have one ${type}.`)
         return
       }
     }
@@ -158,7 +166,7 @@ export const PageCustomize = forwardRef(({
 
   const removeBlock = (idx: number) => {
     const block = content[idx]
-    if (block?._type === "GallerySection") {
+    if (block?._type === "GallerySection" || block?._type === "GalleryContentSection") {
       alert("You cannot delete the Gallery Section.")
       return
     }
@@ -279,6 +287,34 @@ export const PageCustomize = forwardRef(({
                 <ChevronRight className="w-4 h-4 group-data-[state=open]:rotate-90" strokeWidth={3} />
               </CollapsibleTrigger>
               <CollapsibleContent className="mt-3 pt-2 flex flex-col gap-3 border-t-1">
+                {/* Header Layout */}
+                <Controller
+                  name="settings.layout"
+                  control={control}
+                  defaultValue="default"
+                  render={({ field }) => (
+                    <div className="flex flex-col gap-1">
+                      <Label className="text-sm font-medium">Layout</Label>
+                      <Select
+                        value={field.value || "default"}
+                        onValueChange={(val) => field.onChange(val)}
+                      >
+                        <SelectTrigger className="w-full h-10 text-sm">
+                          <SelectValue placeholder="Choose header layout" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {Object.values(layoutMap).map((layout) => (
+                            <SelectItem key={layout.id} value={layout.id}>
+                              {layout.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+                />
+
+
                 {/* Theme Color */}
                 <Controller
                   name="settings.themeColor"
@@ -355,6 +391,24 @@ export const PageCustomize = forwardRef(({
                     <div className="flex items-center justify-between py-2">
                       <Label className="text-sm">
                         Private Gallery
+                      </Label>
+                      <Switch
+                        name={field.name}
+                        checked={!!field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </div>
+                  )}
+                />
+
+                {/* Ads Banner Toggle */}
+                <Controller
+                  name="settings.hasAds"
+                  control={control}
+                  render={({ field }) => (
+                    <div className="flex items-center justify-between py-2">
+                      <Label className="text-sm">
+                        Advertise Side Banners
                       </Label>
                       <Switch
                         name={field.name}

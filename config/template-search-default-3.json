@@ -3,18 +3,18 @@
     "name": "search",
     "id": 1
   },
-  "id": "srch_87rqu97n",
-  "name": "Search Default 1",
+  "id": "srch_87ads97n",
+  "name": "Search Default 3",
   "isActive": true,
   "jsonConfig": {
     "settings": {
       "themeColor": "#e49a9a",
       "pageTitle": "",
       "pageLogo": "",
-      "pageSize": 10,
+      "pageSize": 20,
       "customCSS": "",
-      "hasAds": false,
-      "layout": "default",
+      "hasAds": true,
+      "layout": "layout1",
       "privateGallery": false
     },
     "content": [
@@ -24,7 +24,7 @@
         "children": [
           {
             "_type": "span",
-            "text": "Welcome to Search Default 1"
+            "text": "Welcome to Search Default 3"
           }
         ]
       },

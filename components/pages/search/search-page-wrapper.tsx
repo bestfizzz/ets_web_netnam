@@ -1,15 +1,26 @@
+"use client"
+
 import { useEffect } from "react"
 import { useGalleryContext } from "@/hooks/gallery-context"
-import SearchHeader from "@/components/pages/search/search-header"
 import SearchSelectionDrawer from "@/components/pages/search/search-selection-drawer"
 import { Progress } from "@/components/ui/progress"
 import { toast } from "sonner"
 import { AssetsServerAPI } from "@/lib/server_api/assets"
 import type { AssetMeta } from "@/hooks/gallery-context"
 import { scrollToGallery } from "@/lib/utils"
+import { SearchLayoutMap, SearchLayoutKey } from "@/lib/layoutMap/search-map"
 
-
-export default function SearchPageWrapper({ children, uuid, settings, preview = false }: { children?: React.ReactNode, uuid: string, settings: any, preview?: boolean }) {
+export default function SearchPageWrapper({
+  children,
+  uuid,
+  settings,
+  preview = false,
+}: {
+  children?: React.ReactNode
+  uuid: string
+  settings: any
+  preview?: boolean
+}) {
   const {
     mode,
     privateGallery,
@@ -28,8 +39,10 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
     progress,
     setProgress,
     setNoResults,
-    fancyRef
+    fancyRef,
   } = useGalleryContext()
+
+  // 🧩 Placeholder preview
   useEffect(() => {
     if (!preview) return
     setShowFullLoading(false)
@@ -38,16 +51,21 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
       thumb: `/placeholder/400.svg`,
       preview: `/placeholder/1200.svg`,
       download: `/placeholder/1200.svg`,
-      filename: `placeholder.svg`
+      filename: `placeholder.svg`,
     }))
-
     setImages(placeholderAssets)
     setTotal(120)
-  }, [preview, pageSize,setImages, setTotal])
+  }, [preview, pageSize, setImages, setTotal])
 
-  // Fetch assets when mode or personId changes
+  // 🧩 Initial load / search trigger
   useEffect(() => {
-    if (!uuid || preview || (mode==='all' && privateGallery===true)) return
+    if (
+      !uuid || preview ||
+      (mode === "all" && privateGallery === true) ||
+      (mode === "keyword" && query.trim() === "") ||
+      (mode === "person" && personId === null)
+    )
+      return
 
     const load = async () => {
       setShowFullLoading(true)
@@ -64,12 +82,11 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
     load()
   }, [mode, personId, query, uuid])
 
-  // Separate effect for page number change
+  // 🧩 Pagination
   useEffect(() => {
-    if (!uuid || preview || (mode==='all' && privateGallery===true)) return
-    
+    if (!uuid || preview || (mode === "all" && privateGallery === true)) return
 
-    if (mode != 'keyword') {
+    if (mode !== "keyword") {
       setImages([])
       scrollToGallery()
     }
@@ -110,15 +127,17 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
         thumb: `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/thumbnail/${uuid}?assetId=${item.id}&size=thumbnail`,
         preview: `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/thumbnail/${uuid}?assetId=${item.id}&size=preview`,
         download: `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/image/${uuid}?assetId=${item.id}`,
-        filename: `${settings.pageTitle}_${item.id}`
+        filename: `${settings.pageTitle}_${item.id}`,
       }))
-      if (mode === 'keyword') {
+
+      if (mode === "keyword") {
         setImages([...images, ...mapped])
       } else {
         setTotal(totalAssets)
         setImages(mapped)
       }
-      setNextPage(nextPage) 
+
+      setNextPage(nextPage)
       setProgress(100)
     } catch (err) {
       console.error("Error fetching assets:", err)
@@ -129,14 +148,48 @@ export default function SearchPageWrapper({ children, uuid, settings, preview = 
     }
   }
 
+  const hasAds = settings.hasAds
+  const HeaderComponent = SearchLayoutMap[settings.layout as SearchLayoutKey]?.header ?? SearchLayoutMap.default.header
+
   return (
-    <main className="relative flex flex-col min-h-screen" ref={fancyRef} style={{ backgroundColor: settings.themeColor }}>
-      <SearchHeader themeColor={settings.themeColor} pageTitle={settings.pageTitle} pageLogo={settings.pageLogo} />
+    <main
+      ref={fancyRef}
+      className="relative min-h-screen flex flex-col bg-white"
+      style={{ backgroundColor: settings.themeColor }}
+    >
+      {/* 🧭 Header */}
+      <HeaderComponent
+        themeColor={settings.themeColor}
+        pageTitle={settings.pageTitle}
+        pageLogo={settings.pageLogo}
+      />
 
-      {children}
+      <div className="relative flex flex-1 w-full overflow-x-hidden">
+        {hasAds && (
+          <aside className="hidden lg:flex fixed top-[var(--header-height,4rem)] left-0 h-[calc(100vh-var(--header-height,4rem))] w-40 bg-white border-r border-gray-200 shadow-md z-20">
+            <div className="m-auto text-center p-3 bg-indigo-500 text-white rounded-lg">
+              Left Ad
+            </div>
+          </aside>
+        )}
 
+        <div className={`flex-1 flex flex-col ${hasAds ? "lg:mx-36" : ""} transition-all duration-300`}>
+          {children}
+        </div>
+
+        {hasAds && (
+          <aside className="hidden lg:flex fixed top-[var(--header-height,4rem)] right-0 h-[calc(100vh-var(--header-height,4rem))] w-40 bg-white border-l border-gray-200 shadow-md z-20">
+            <div className="m-auto text-center p-3 bg-indigo-500 text-white rounded-lg">
+              Right Ad
+            </div>
+          </aside>
+        )}
+      </div>
+
+      {/* 🧺 Drawer */}
       <SearchSelectionDrawer uuid={uuid} />
 
+      {/* ⏳ Fullscreen Loader */}
       {showFullLoading && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm">
           <p className="mb-4 text-gray-700 font-medium">Loading images...</p>

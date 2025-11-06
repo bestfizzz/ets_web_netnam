@@ -1,10 +1,10 @@
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { useGalleryContext } from "@/hooks/gallery-context"
-import ImageGrid from "@/components/pages/image-grid"
+import ImageComponentGrid from "@/components/pages/image-component-grid"
 import PaginationBar from "@/components/pages/search/pagination-bar"
 
-export default function ImageSection({layoutType="default"}: { layoutType?: "default" | "masonry"}) {
+export default function ImageContentSection({layoutType="default"}: { layoutType?: "default" | "masonry"}) {
   const { pageSize, page, total, mode, setPage, loading, nextPage } = useGalleryContext()
 
   const handleLoadMore = () => {
@@ -26,7 +26,7 @@ export default function ImageSection({layoutType="default"}: { layoutType?: "def
         </Label>
       )}
 
-      <ImageGrid layoutType={layoutType} />
+      <ImageComponentGrid layoutType={layoutType} />
 
       {/* ✅ If keyword mode: show "Load more" instead of pagination */}
       {mode === "keyword" ? (

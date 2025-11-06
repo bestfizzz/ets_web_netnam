@@ -102,10 +102,12 @@ export function GalleryProvider({ children, gallerySettings }: { children: React
   const [settings, setSettings] = useState<GallerySettings>({
     themeColor: "#ffffff",
     pageTitle: "Gallery",
-    pageSize: 60,
+    pageSize: 36,
     privateGallery: false,
     pageLogo: "",
     customCSS: "",
+    layout: "default",
+    hasAds: false,
   })
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize))

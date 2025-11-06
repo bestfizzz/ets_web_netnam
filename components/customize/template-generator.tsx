@@ -5,6 +5,7 @@ import { PortableText, PortableTextComponents, PortableTextBlockComponent, Porta
 import SearchPageWrapper from "@/components/pages/search/search-page-wrapper"
 import SharePageWrapper from "@/components/pages/share/share-page-wrapper"
 import GallerySection from "@/components/pages/gallery-section"
+import GalleryContentSection from "@/components/pages/gallery-content-section"
 import { GalleryProvider } from "@/hooks/gallery-context"
 import type { TemplateDetail, TemplateJsonConfig } from "@/lib/types/types"
 import type { TypedObject } from "@portabletext/types"
@@ -51,7 +52,8 @@ const types: Partial<PortableTextComponents["types"]> = {
       </div>
     </div>
   ),
-  GallerySection: () => <GallerySection />,
+  GallerySection: ({value}:any) => <GallerySection layoutType={value.layoutType}/>,
+  GalleryContentSection: ({value}:any) => <GalleryContentSection layoutType={value.layoutType}/>,
 }
 
 const components: Partial<PortableTextComponents> = { block, types }

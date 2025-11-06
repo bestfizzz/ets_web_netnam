@@ -36,6 +36,8 @@ export default function SearchHeader({ themeColor = '#ffffff', pageTitle = 'Sear
         toast.warning("No face recognized.")
         scrollToGallery()
         setNoResults(true)
+        setQuery("")
+        setPersonId(null)
         return
       }
 
@@ -79,7 +81,7 @@ export default function SearchHeader({ themeColor = '#ffffff', pageTitle = 'Sear
     <header className="sticky shadow-sm top-0 z-50" style={{ backgroundColor: themeColor }}>
       <div className="max-w-7xl mx-auto w-full px-3 sm:px-4">
         <div className="flex items-center justify-between gap-2 sm:gap-3 py-2.5 sm:py-3">
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3">
             {pageLogo ?
               <img
                 src={pageLogo}
@@ -91,7 +93,7 @@ export default function SearchHeader({ themeColor = '#ffffff', pageTitle = 'Sear
                 AI
               </div>
             }
-            <h1 className="text-base sm:text-lg font-semibold text-slate-800">{pageTitle}</h1>
+            <h1 className="text-sm sm:text-lg font-semibold text-slate-800">{pageTitle}</h1>
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">

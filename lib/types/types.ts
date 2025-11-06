@@ -55,6 +55,8 @@ export interface TemplateJsonConfig {
     privateGallery: boolean
     pageLogo: string
     customCSS: string
+    layout: string
+    hasAds: boolean
   }
   content: Array<Record<string, any>>
 }

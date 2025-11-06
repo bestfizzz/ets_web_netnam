@@ -1,18 +1,20 @@
+"use client"
+
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
-import { Check, EllipsisVertical } from "lucide-react"
 import ShareSelectionDrawer from "@/components/pages/share/share-selection-drawer"
 import { ShareActionsAPI } from "@/lib/server_api/share-actions"
 import { AssetMeta, useGalleryContext } from "@/hooks/gallery-context"
+import { ShareLayoutMap, ShareLayoutKey } from "@/lib/layoutMap/share-map"
 
 export default function SharePageWrapper({
   children,
   uuid,
   settings,
-  preview = false,  
+  preview = false,
 }: {
   children?: React.ReactNode
   uuid: string
@@ -30,16 +32,13 @@ export default function SharePageWrapper({
     progress,
     setProgress,
     setNoResults,
-    selectMode,
-    setSelectMode,
-    selectedMap,
     fancyRef,
   } = useGalleryContext()
 
   const [contactID, setContactID] = useState("")
   const [accessCode, setAccessCode] = useState("")
   const [authorized, setAuthorized] = useState(false)
-  const [assetIds, setAssetIds] = useState<string[]>([]) // ✅ store full list of assetIds
+  const [assetIds, setAssetIds] = useState<string[]>([]) // full list of assetIds
 
   // ✅ Placeholder mode for preview
   useEffect(() => {
@@ -56,7 +55,7 @@ export default function SharePageWrapper({
 
     setImages(placeholderAssets)
     setTotal(120)
-  }, [preview, setImages, pageSize,setTotal])
+  }, [preview, setImages, pageSize, setTotal])
 
   // ✅ Load paged images locally after authorization
   useEffect(() => {
@@ -111,7 +110,7 @@ export default function SharePageWrapper({
         return toast.error("No assets found for this access code")
       }
 
-      setAssetIds(data.assetIds) // ✅ store for local paging
+      setAssetIds(data.assetIds)
       setAuthorized(true)
       toast.success("Access granted ✅")
 
@@ -121,10 +120,6 @@ export default function SharePageWrapper({
       console.error("Access failed:", err)
       toast.error("Access denied ❌")
     }
-  }
-
-  const toggleSelectMode = () => {
-    setSelectMode(!selectMode)
   }
 
   // === UI States ===
@@ -159,7 +154,8 @@ export default function SharePageWrapper({
     )
   }
 
-  const selectedCount = Object.keys(selectedMap).length
+  const HeaderComponent = ShareLayoutMap[settings.layout as ShareLayoutKey]?.header ?? ShareLayoutMap.default.header
+  const hasAds = false
 
   return (
     <main
@@ -167,51 +163,43 @@ export default function SharePageWrapper({
       ref={fancyRef}
       style={{ backgroundColor: settings.themeColor }}
     >
-      <header
-        className="sticky shadow-sm top-0 z-50"
-        style={{ backgroundColor: settings.themeColor }}
-      >
-        <div className="max-w-7xl mx-auto w-full px-3 sm:px-4">
-          <div className="flex items-center justify-between gap-2 sm:gap-3 py-2.5 sm:py-3">
-            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-              {settings.pageLogo ? (
-                <img
-                  src={settings.pageLogo}
-                  alt="Logo"
-                  className="h-9 sm:h-10 w-9 xs:w-fit object-scale-down xs:object-contain"
-                />
-              ) : (
-                <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-md bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white font-semibold text-sm sm:text-base">
-                  AI
-                </div>
-              )}
-              <h1 className="text-base sm:text-lg font-semibold text-slate-800">
-                {settings.pageTitle ? settings.pageTitle : "Share Page"}
-              </h1>
-            </div>
+      {/* 🧭 Header */}
+      <HeaderComponent
+        themeColor={settings.themeColor}
+        pageTitle={settings.pageTitle}
+        pageLogo={settings.pageLogo}
+      />
 
-            <div className="hidden md:flex items-center gap-1.5 sm:gap-2">
-              <Button
-                variant={selectMode ? "secondary" : "outline"}
-                onClick={toggleSelectMode}
-                className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-3"
-              >
-                {selectMode ? (
-                  <Check className="w-3 h-3 sm:w-4 sm:h-4" />
-                ) : (
-                  <EllipsisVertical className="w-3 h-3 sm:w-4 sm:h-4" />
-                )}
-                {selectMode ? `Selected (${selectedCount})` : "Select"}
-              </Button>
+      <div className="relative flex flex-1 w-full overflow-x-hidden">
+        {hasAds && (
+          <aside className="hidden lg:flex fixed top-[var(--header-height,4rem)] left-0 h-[calc(100vh-var(--header-height,4rem))] w-40 bg-white border-r border-gray-200 shadow-md z-20">
+            <div className="m-auto text-center p-3 bg-indigo-500 text-white rounded-lg">
+              Left Ad
             </div>
-          </div>
+          </aside>
+        )}
+
+        <div
+          className={`flex-1 flex flex-col ${
+            hasAds ? "lg:mx-36" : ""
+          } transition-all duration-300`}
+        >
+          {children}
         </div>
-      </header>
 
-      {children}
+        {hasAds && (
+          <aside className="hidden lg:flex fixed top-[var(--header-height,4rem)] right-0 h-[calc(100vh-var(--header-height,4rem))] w-40 bg-white border-l border-gray-200 shadow-md z-20">
+            <div className="m-auto text-center p-3 bg-indigo-500 text-white rounded-lg">
+              Right Ad
+            </div>
+          </aside>
+        )}
+      </div>
 
+      {/* 🧺 Drawer */}
       <ShareSelectionDrawer />
 
+      {/* ⏳ Fullscreen Loader */}
       {showFullLoading && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm">
           <p className="mb-4 text-gray-700 font-medium">Loading images...</p>

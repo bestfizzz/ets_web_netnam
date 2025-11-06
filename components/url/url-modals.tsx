@@ -79,7 +79,6 @@ export function UrlEditModal({
   if (!currentUrl) return null
 
   const handleSubmit = async (payload: any) => {
-    console.log("Edit payload:", payload)
     try {
       // Usage
       const shareDetailIds = extractIdsByPrefix(payload, "platform_")

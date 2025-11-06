@@ -35,7 +35,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     user: {
       name: user ? "Admin" : "Loading...",
       email: user ?? "anonymous",
-      avatar: "/avatars/shadcn.jpg",
+      avatar: '/logo/small-logo-netnam.png',
     },
     navMain: [
       { title: "URL", url: "/admin/url", icon: Link },
@@ -51,15 +51,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-10 items-center justify-center rounded-lg">
-                  <GalleryVerticalEnd className="size-5" />
-                </div>
+              <a href="#" className="flex items-center gap-2 sm:gap-3">
+                <img
+                  src="/logo/small-logo-netnam.png"
+                  alt="Logo"
+                  className="h-9 sm:h-10 w-auto object-contain"
+                />
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <h1 className="font-medium">Netnam ETS</h1>
-                  <span className="">v1.0.0</span>
+                  <h1 className="font-medium text-sm sm:text-base">Netnam ETS</h1>
+                  <span className="text-xs text-muted-foreground">v1.0.0</span>
                 </div>
               </a>
+
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
