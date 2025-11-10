@@ -24,6 +24,8 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
 
   const [dialogOpen, setDialogOpen] = useState(false)
   const [phone, setPhone] = useState("")
+  const [email, setEmail] = useState("")
+  const [telegramId, setTelegramId] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const toggleSelectAllVisible = () => {
@@ -53,24 +55,55 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
       return
     }
 
-    const formatted = formatVietnamesePhone(phone)
-    if (!/^84\d{8,10}$/.test(formatted)) {
-      toast.error("Invalid Vietnamese phone number")
+    // Trim inputs
+    const trimmedPhone = phone.trim()
+    const trimmedEmail = email.trim()
+    const trimmedTelegram = telegramId.trim()
+
+    // At least one must be filled
+    if (!trimmedPhone && !trimmedEmail && !trimmedTelegram) {
+      toast.error("Please provide at least one contact")
+      return
+    }
+
+    // Validate if filled
+    if (trimmedPhone) {
+      const formattedPhone = formatVietnamesePhone(trimmedPhone)
+      if (!/^84\d{8,10}$/.test(formattedPhone)) {
+        toast.error("Invalid Vietnamese phone number")
+        return
+      }
+    }
+
+    if (trimmedEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      toast.error("Invalid email address")
+      return
+    }
+
+    if (trimmedTelegram && !/^\d+$/.test(trimmedTelegram)) {
+      toast.error("Telegram ID must be numeric")
       return
     }
 
     setIsSubmitting(true)
     try {
-      toast.loading("Creating share link...")
+      const toastId = toast.loading("Creating share link...")
+
+
+      // Only include filled fields
+      const contacts: Record<string, string> = {}
+      if (trimmedPhone) contacts.phone = formatVietnamesePhone(trimmedPhone)
+      if (trimmedEmail) contacts.email = trimmedEmail
+      if (trimmedTelegram) contacts.telegramId = trimmedTelegram
+
       const res = await ShareActionsAPI.createGuest(uuid, {
-        contacts: { phone: formatted },
+        contacts,
         assetIds,
       })
 
-      toast.dismiss()
+      toast.dismiss(toastId)
       setDialogOpen(false)
       toast.success("Guest share created successfully!")
-
     } catch (err) {
       console.error("Share error:", err)
       toast.dismiss()
@@ -92,19 +125,16 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
               Share selected images
             </DialogTitle>
             <p className="text-sm text-gray-500">
-              Enter the recipient’s phone number to send a share link.
+              Enter the recipient’s contact information.
             </p>
           </DialogHeader>
 
-          <div className="py-1">
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+          {/* --- Phone Input --- */}
+          <div >
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Phone number
             </label>
             <Input
-              id="phone"
               type="tel"
               inputMode="numeric"
               placeholder="e.g. 0912 345 678"
@@ -126,6 +156,40 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
             </p>
           </div>
 
+          {/* --- Email Input --- */}
+          <div >
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
+            <Input
+              type="email"
+              placeholder="example@email.com"
+              className="text-base tracking-wider font-medium"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <p className="text-xs text-gray-400 mt-1">
+              Example: <span className="font-sans">user@example.com</span>
+            </p>
+          </div>
+
+          {/* --- Telegram Input --- */}
+          <div >
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Telegram ID
+            </label>
+            <Input
+              type="text"
+              placeholder="e.g. 1234567890"
+              className="text-base tracking-wider font-medium"
+              value={telegramId}
+              onChange={(e) => setTelegramId(e.target.value.trim())}
+            />
+            <p className="text-xs text-gray-400 mt-1">
+              Numeric Telegram user ID (not @username)
+            </p>
+          </div>
+
           <DialogFooter className="flex justify-end gap-2 pt-4">
             <Button
               variant="outline"
@@ -136,7 +200,7 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
             </Button>
             <Button
               onClick={handleShareSubmit}
-              disabled={isSubmitting || !phone}
+              disabled={isSubmitting || (!phone && !email && !telegramId)}
               className="w-28 bg-indigo-600 hover:bg-indigo-700"
             >
               {isSubmitting ? "Sharing..." : "Share"}
@@ -144,7 +208,6 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
 
       {/* 📦 Drawer */}
       <div
