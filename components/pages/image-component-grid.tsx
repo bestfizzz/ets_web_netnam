@@ -106,7 +106,7 @@ export default function InlineComponentGrid({ layoutType = "masonry" }: InlineCo
       {combinedList.map((item) => {
         if ("component" in item) {
           const Comp = item.component
-          return <Comp key={item.id} id={item.id} />
+          return <Comp key={item.id} id={item.id}  />
         }
 
         const img = item as AssetMeta

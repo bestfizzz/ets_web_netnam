@@ -57,6 +57,8 @@ export interface TemplateJsonConfig {
     customCSS: string
     layout: string
     hasAds: boolean
+    adbannerLeft: string
+    adbannerRight: string
   }
   content: Array<Record<string, any>>
 }

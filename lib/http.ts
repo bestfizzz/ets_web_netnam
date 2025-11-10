@@ -61,6 +61,7 @@ export async function http<T = any>(
 
   const finalHeaders: Record<string, string> = {
     Accept: "application/json",
+    Referer: process.env.NEXT_PUBLIC_URL ?? "http://localhost:3000",
     ...normalizedHeaders,
   }
 

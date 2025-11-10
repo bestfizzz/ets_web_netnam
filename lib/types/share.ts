@@ -1,8 +1,13 @@
 // types/share
 export interface CreateSharePayload {
-  contact: string
+  contacts: {
+    phone?: string
+    email?: string
+    telegramId?: string
+  }
   assetIds: string[]
 }
+
 
 export interface ShareAuthPayload {
   accessCode: string

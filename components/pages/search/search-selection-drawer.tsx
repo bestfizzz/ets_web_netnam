@@ -63,7 +63,7 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
     try {
       toast.loading("Creating share link...")
       const res = await ShareActionsAPI.createGuest(uuid, {
-        contact: formatted,
+        contacts: { phone: formatted },
         assetIds,
       })
 

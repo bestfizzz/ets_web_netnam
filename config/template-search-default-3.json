@@ -15,7 +15,9 @@
       "customCSS": "",
       "hasAds": true,
       "layout": "layout1",
-      "privateGallery": false
+      "privateGallery": false,
+      "adbannerLeft": "",
+      "adbannerRight": ""
     },
     "content": [
       {

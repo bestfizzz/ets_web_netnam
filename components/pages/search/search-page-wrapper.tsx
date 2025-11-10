@@ -9,6 +9,7 @@ import { AssetsServerAPI } from "@/lib/server_api/assets"
 import type { AssetMeta } from "@/hooks/gallery-context"
 import { scrollToGallery } from "@/lib/utils"
 import { SearchLayoutMap, SearchLayoutKey } from "@/lib/layoutMap/search-map"
+import AdBanner from "@/components/pages/ad-banner"
 
 export default function SearchPageWrapper({
   children,
@@ -165,25 +166,14 @@ export default function SearchPageWrapper({
       />
 
       <div className="relative flex flex-1 w-full overflow-x-hidden">
-        {hasAds && (
-          <aside className="hidden lg:flex fixed top-[var(--header-height,4rem)] left-0 h-[calc(100vh-var(--header-height,4rem))] w-40 bg-white border-r border-gray-200 shadow-md z-20">
-            <div className="m-auto text-center p-3 bg-indigo-500 text-white rounded-lg">
-              Left Ad
-            </div>
-          </aside>
-        )}
-
-        <div className={`flex-1 flex flex-col ${hasAds ? "lg:mx-36" : ""} transition-all duration-300`}>
+        {hasAds && <AdBanner side="left" src={settings.adbannerLeft} />}
+        <div
+          className={`flex-1 flex flex-col ${hasAds ? "lg:mx-40" : ""
+            } transition-all duration-300`}
+        >
           {children}
         </div>
-
-        {hasAds && (
-          <aside className="hidden lg:flex fixed top-[var(--header-height,4rem)] right-0 h-[calc(100vh-var(--header-height,4rem))] w-40 bg-white border-l border-gray-200 shadow-md z-20">
-            <div className="m-auto text-center p-3 bg-indigo-500 text-white rounded-lg">
-              Right Ad
-            </div>
-          </aside>
-        )}
+        {hasAds && <AdBanner side="right" src={settings.adbannerRight} />}
       </div>
 
       {/* 🧺 Drawer */}

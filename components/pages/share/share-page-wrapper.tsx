@@ -9,6 +9,7 @@ import ShareSelectionDrawer from "@/components/pages/share/share-selection-drawe
 import { ShareActionsAPI } from "@/lib/server_api/share-actions"
 import { AssetMeta, useGalleryContext } from "@/hooks/gallery-context"
 import { ShareLayoutMap, ShareLayoutKey } from "@/lib/layoutMap/share-map"
+import AdBanner from "@/components/pages/ad-banner"
 
 export default function SharePageWrapper({
   children,
@@ -171,29 +172,14 @@ export default function SharePageWrapper({
       />
 
       <div className="relative flex flex-1 w-full overflow-x-hidden">
-        {hasAds && (
-          <aside className="hidden lg:flex fixed top-[var(--header-height,4rem)] left-0 h-[calc(100vh-var(--header-height,4rem))] w-40 bg-white border-r border-gray-200 shadow-md z-20">
-            <div className="m-auto text-center p-3 bg-indigo-500 text-white rounded-lg">
-              Left Ad
-            </div>
-          </aside>
-        )}
-
+        {hasAds && <AdBanner side="left" src={settings.adbannerLeft} />}
         <div
-          className={`flex-1 flex flex-col ${
-            hasAds ? "lg:mx-36" : ""
-          } transition-all duration-300`}
+          className={`flex-1 flex flex-col ${hasAds ? "lg:mx-40" : ""
+            } transition-all duration-300`}
         >
           {children}
         </div>
-
-        {hasAds && (
-          <aside className="hidden lg:flex fixed top-[var(--header-height,4rem)] right-0 h-[calc(100vh-var(--header-height,4rem))] w-40 bg-white border-l border-gray-200 shadow-md z-20">
-            <div className="m-auto text-center p-3 bg-indigo-500 text-white rounded-lg">
-              Right Ad
-            </div>
-          </aside>
-        )}
+        {hasAds && <AdBanner side="right" src={settings.adbannerRight} />}
       </div>
 
       {/* 🧺 Drawer */}

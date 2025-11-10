@@ -13,9 +13,10 @@ export const ShareActionsAPI = {
     }),
 
   /** Create a guest share */
-  createGuest: (uuid: string, data: CreateSharePayload) =>
+  createGuest: (uuid: string, data: CreateSharePayload) =>{
     http<ShareResponse>(`${SHARE_BASE}/${uuid}`, {
       method: "POST",
       body: data,
-    }),
+    })
+  }
 }
