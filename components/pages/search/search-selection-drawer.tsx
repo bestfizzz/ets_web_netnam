@@ -89,7 +89,6 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
     try {
       const toastId = toast.loading("Creating share link...")
 
-
       // Only include filled fields
       const contacts: Record<string, string> = {}
       if (trimmedPhone) contacts.phone = formatVietnamesePhone(trimmedPhone)

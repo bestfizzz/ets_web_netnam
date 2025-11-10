@@ -108,6 +108,8 @@ export function GalleryProvider({ children, gallerySettings }: { children: React
     customCSS: "",
     layout: "default",
     hasAds: false,
+    adbannerLeft: "",
+    adbannerRight: "",
   })
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
