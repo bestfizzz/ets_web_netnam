@@ -10,7 +10,19 @@ import { useGalleryContext } from "@/hooks/gallery-context"
 import { toast } from "sonner"
 import { ShareActionsAPI } from "@/lib/server_api/share-actions"
 
-export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
+type ShareFields = {
+  phone: boolean
+  email: boolean
+  telegramId: boolean
+}
+
+export default function SearchSelectionDrawer({
+  uuid,
+  shareFields,
+}: {
+  uuid: string
+  shareFields: ShareFields
+}) {
   const {
     selectMode,
     setSelectMode,
@@ -27,6 +39,14 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
   const [email, setEmail] = useState("")
   const [telegramId, setTelegramId] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Determine which fields to show
+  let visibleFields: ShareFields
+  if (!shareFields || Object.values(shareFields).every((v) => !v)) {
+    visibleFields = { phone: true, email: false, telegramId: false } // fallback
+  } else {
+    visibleFields = shareFields
+  }
 
   const toggleSelectAllVisible = () => {
     const allSelected = images.every((img) => Boolean(selectedMap[img.id]))
@@ -60,19 +80,22 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
     const trimmedEmail = email.trim()
     const trimmedTelegram = telegramId.trim()
 
-    // At least one must be filled
-    if (!trimmedPhone && !trimmedEmail && !trimmedTelegram) {
-      toast.error("Please provide at least one contact")
+    // Require at least one active & filled field
+    const activeAndFilled = [
+      visibleFields.phone && trimmedPhone,
+      visibleFields.email && trimmedEmail,
+      visibleFields.telegramId && trimmedTelegram,
+    ].some(Boolean)
+
+    if (!activeAndFilled) {
+      toast.error("Please fill at least one active contact field")
       return
     }
 
     // Validate if filled
-    if (trimmedPhone) {
-      const formattedPhone = formatVietnamesePhone(trimmedPhone)
-      if (!/^84\d{8,10}$/.test(formattedPhone)) {
-        toast.error("Invalid Vietnamese phone number")
-        return
-      }
+    if (trimmedPhone && !/^(\+?84|0)\d{8,10}$/.test(formatVietnamesePhone(trimmedPhone))) {
+      toast.error("Invalid Vietnamese phone number")
+      return
     }
 
     if (trimmedEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
@@ -89,16 +112,12 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
     try {
       const toastId = toast.loading("Creating share link...")
 
-      // Only include filled fields
       const contacts: Record<string, string> = {}
-      if (trimmedPhone) contacts.phone = formatVietnamesePhone(trimmedPhone)
-      if (trimmedEmail) contacts.email = trimmedEmail
-      if (trimmedTelegram) contacts.telegramId = trimmedTelegram
+      if (visibleFields.phone && trimmedPhone) contacts.phone = formatVietnamesePhone(trimmedPhone)
+      if (visibleFields.email && trimmedEmail) contacts.email = trimmedEmail
+      if (visibleFields.telegramId && trimmedTelegram) contacts.telegramId = trimmedTelegram
 
-      const res = await ShareActionsAPI.createGuest(uuid, {
-        contacts,
-        assetIds,
-      })
+      await ShareActionsAPI.createGuest(uuid, { contacts, assetIds })
 
       toast.dismiss(toastId)
       setDialogOpen(false)
@@ -116,9 +135,9 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
 
   return (
     <>
-      {/* 📱 Share Dialog */}
+      {/* Share Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] rounded-2xl p-6">
+        <DialogContent className="sm:max-w-[425px] rounded-2xl p-6 gap-2">
           <DialogHeader className="space-y-1">
             <DialogTitle className="text-lg font-semibold text-gray-900">
               Share selected images
@@ -128,78 +147,62 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
             </p>
           </DialogHeader>
 
-          {/* --- Phone Input --- */}
-          <div >
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Phone number
-            </label>
-            <Input
-              type="tel"
-              inputMode="numeric"
-              placeholder="e.g. 0912 345 678"
-              className="text-base tracking-wider font-medium"
-              value={phone}
-              onChange={(e) => {
-                let digits = e.target.value.replace(/\D/g, "")
-                digits = digits.slice(0, 11)
-                if (digits.length > 4 && digits.length <= 7) {
-                  digits = digits.replace(/(\d{4})(\d+)/, "$1 $2")
-                } else if (digits.length > 7) {
-                  digits = digits.replace(/(\d{4})(\d{3})(\d+)/, "$1 $2 $3")
-                }
-                setPhone(digits)
-              }}
-            />
-            <p className="text-xs text-gray-400 mt-1">
-              Format: <span className="font-sans">0912 345 678</span>
-            </p>
-          </div>
+          {/* Conditional inputs */}
+          {visibleFields.phone && (
+            <div className="mt-3">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Phone number</label>
+              <Input
+                type="tel"
+                inputMode="numeric"
+                placeholder="e.g. 0912 345 678"
+                value={phone}
+                onChange={(e) => {
+                  let digits = e.target.value.replace(/\D/g, "")
+                  digits = digits.slice(0, 11)
+                  if (digits.length > 4 && digits.length <= 7) {
+                    digits = digits.replace(/(\d{4})(\d+)/, "$1 $2")
+                  } else if (digits.length > 7) {
+                    digits = digits.replace(/(\d{4})(\d{3})(\d+)/, "$1 $2 $3")
+                  }
+                  setPhone(digits)
+                }}
+              />
+              <p className="text-xs text-gray-400 mt-1">Format: <span className="font-sans">0912 345 678</span></p>
+            </div>
+          )}
 
-          {/* --- Email Input --- */}
-          <div >
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <Input
-              type="email"
-              placeholder="example@email.com"
-              className="text-base tracking-wider font-medium"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <p className="text-xs text-gray-400 mt-1">
-              Example: <span className="font-sans">user@example.com</span>
-            </p>
-          </div>
+          {visibleFields.email && (
+            <div className="mt-3">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <Input
+                type="email"
+                placeholder="example@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+          )}
 
-          {/* --- Telegram Input --- */}
-          <div >
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Telegram ID
-            </label>
-            <Input
-              type="text"
-              placeholder="e.g. 1234567890"
-              className="text-base tracking-wider font-medium"
-              value={telegramId}
-              onChange={(e) => setTelegramId(e.target.value.trim())}
-            />
-            <p className="text-xs text-gray-400 mt-1">
-              Numeric Telegram user ID (not @username)
-            </p>
-          </div>
+          {visibleFields.telegramId && (
+            <div className="mt-3">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Telegram ID</label>
+              <Input
+                type="text"
+                placeholder="e.g. 1234567890"
+                value={telegramId}
+                onChange={(e) => setTelegramId(e.target.value.trim())}
+              />
+              <p className="text-xs text-gray-400 mt-1">Numeric Telegram user ID (not @username)</p>
+            </div>
+          )}
 
           <DialogFooter className="flex justify-end gap-2 pt-4">
-            <Button
-              variant="outline"
-              onClick={() => setDialogOpen(false)}
-              className="w-24"
-            >
+            <Button variant="outline" onClick={() => setDialogOpen(false)} className="w-24">
               Cancel
             </Button>
             <Button
               onClick={handleShareSubmit}
-              disabled={isSubmitting || (!phone && !email && !telegramId)}
+              disabled={isSubmitting || ![phone, email, telegramId].some(Boolean)}
               className="w-28 bg-indigo-600 hover:bg-indigo-700"
             >
               {isSubmitting ? "Sharing..." : "Share"}
@@ -208,7 +211,7 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
         </DialogContent>
       </Dialog>
 
-      {/* 📦 Drawer */}
+      {/* Drawer */}
       <div
         className={`fixed left-1/2 transform -translate-x-1/2 bottom-4 sm:bottom-6 z-50 w-[calc(100%-1rem)] sm:w-[min(960px,calc(100%-2rem))] transition-all duration-300 ease-out
         ${selectMode ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0 pointer-events-none"}`}
@@ -250,11 +253,7 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
               size="sm"
               className="flex items-center gap-1 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-3"
             >
-              {allPageSelected ? (
-                <SquareX className="w-3 h-3 sm:w-4 sm:h-4" />
-              ) : (
-                <CheckSquare className="w-3 h-3 sm:w-4 sm:h-4" />
-              )}
+              {allPageSelected ? <SquareX className="w-3 h-3 sm:w-4 sm:h-4" /> : <CheckSquare className="w-3 h-3 sm:w-4 sm:h-4" />}
               <span>{allPageSelected ? "Deselect" : "Select"} Page</span>
             </Button>
 
@@ -269,12 +268,7 @@ export default function SearchSelectionDrawer({ uuid }: { uuid: string }) {
               <span>Share</span>
             </Button>
 
-            <Button
-              onClick={() => setSelectedMap({})}
-              variant="ghost"
-              size="sm"
-              className="text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-3"
-            >
+            <Button onClick={() => setSelectedMap({})} variant="ghost" size="sm" className="text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-3">
               Clear
             </Button>
 

@@ -87,6 +87,13 @@ export const PageCustomize = forwardRef(({
         hasAds: pageData.jsonConfig?.settings?.hasAds ?? false,
         adbannerLeft: pageData.jsonConfig?.settings?.adbannerLeft ?? "",
         adbannerRight: pageData.jsonConfig?.settings?.adbannerRight ?? "",
+
+        ...(pageName === "search" && {
+          shareFields: pageData.jsonConfig?.settings?.shareFields ?? { phone: true, email: false, telegramId: false },
+        }),
+
+        ...(pageName === "share" && {
+        }),
       },
       content: pageData.jsonConfig?.content ?? [],
     }
@@ -130,7 +137,7 @@ export const PageCustomize = forwardRef(({
           <NameAndAdd setValue={setValue} editingName={editingName} setEditingName={setEditingName} control={control} errors={errors} nameInputRef={nameInputRef} onAddClick={onAddClick} />
 
           {/* settings */}
-          <SettingsPanel control={control} errors={errors} layoutMap={layoutMap} />
+          <SettingsPanel pageName={pageName} control={control} errors={errors} layoutMap={layoutMap} />
 
           {/* Content blocks + add dialog + DnD */}
           <div>

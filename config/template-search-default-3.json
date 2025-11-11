@@ -17,7 +17,12 @@
       "layout": "layout1",
       "privateGallery": false,
       "adbannerLeft": "",
-      "adbannerRight": ""
+      "adbannerRight": "",
+      "shareFields": {
+        "phone": true,
+        "email": true,
+        "telegramId": true
+      }
     },
     "content": [
       {

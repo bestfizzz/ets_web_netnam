@@ -134,7 +134,7 @@ export function InlinePreview({ formData, pageName, mode }: InlinePreviewProps) 
 
   return (
     <div
-      className="bg-gray-100 rounded shadow w-full h-full flex justify-center items-start overflow-hidden"
+      className="bg-gray-100 rounded shadow w-full h-[95%] flex justify-center items-start overflow-hidden"
     >
       <iframe
         ref={iframeRef}

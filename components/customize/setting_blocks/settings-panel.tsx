@@ -10,7 +10,7 @@ import { ChevronRight } from "lucide-react"
 import { nSpaceTrimmer } from "@/lib/utils"
 
 
-export default function SettingsPanel({ control, errors, layoutMap }: any) {
+export default function SettingsPanel({ pageName, control, errors, layoutMap }: any) {
   return (
     <div className="p-3 pt-0 border-b border-gray-200 flex flex-col gap-3">
       <Collapsible defaultOpen>
@@ -109,6 +109,32 @@ export default function SettingsPanel({ control, errors, layoutMap }: any) {
               <Input {...field} placeholder="https://placehold.co/160x900" />
             </div>
           )} />
+
+          {/* search custom */}
+          {pageName === "search" && (
+            <Collapsible defaultOpen className="border-b border-gray-200 pb-1 mb-1">
+              <CollapsibleTrigger className="group flex justify-between w-full items-center text-md font-medium text-gray-700 hover:text-gray-900 py-2">
+                <span>Share Fields</span>
+                <ChevronRight className="w-4 h-4 group-data-[state=open]:rotate-90 transition-transform" strokeWidth={3} />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="flex flex-col gap-2 mt-1 p-2 border-t border-gray-200">
+                {["phone", "email", "telegramId"].map((fieldName) => (
+                  <Controller
+                    key={fieldName}
+                    name={`settings.shareFields.${fieldName}`}
+                    control={control}
+                    defaultValue={false}
+                    render={({ field }) => (
+                      <div className="flex items-center justify-between py-1">
+                        <Label className="text-sm capitalize font-medium">{fieldName.replace(/([A-Z])/g, ' $1')}</Label>
+                        <Switch name={field.name} checked={!!field.value} onCheckedChange={field.onChange} />
+                      </div>
+                    )}
+                  />
+                ))}
+              </CollapsibleContent>
+            </Collapsible>
+          )}
 
           {/* Custom CSS editor */}
           <Controller name="settings.customCSS" control={control} defaultValue="" render={({ field }) => {

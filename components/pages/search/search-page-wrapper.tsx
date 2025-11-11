@@ -177,7 +177,7 @@ export default function SearchPageWrapper({
       </div>
 
       {/* 🧺 Drawer */}
-      <SearchSelectionDrawer uuid={uuid} />
+      <SearchSelectionDrawer uuid={uuid} shareFields={settings.shareFields} />
 
       {/* ⏳ Fullscreen Loader */}
       {showFullLoading && (

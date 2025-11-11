@@ -32,7 +32,7 @@ export function PreviewPane({
     settings: formData.settings
   }), [formData.content, formData.settings ])
   return (
-    <Card className="shadow-lg flex-1 max-w-full">
+    <Card className="shadow-lg flex-1 max-w-full h-screen">
       <CardContent className="px-3 xs:px-6 h-full">
         {/* Tabs + Select Row */}
         <div className="flex justify-between items-center mb-4">

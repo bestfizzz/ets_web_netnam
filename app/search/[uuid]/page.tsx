@@ -2,7 +2,7 @@ import TemplateGenerator from "@/components/customize/template-generator"
 import { TemplateDetailServerAPI } from "@/lib/server_api/template-detail"
 
 import searchTemplate1 from "@/config/template-search-default-1.json"
-import { TemplateDetail, TemplateJsonConfig } from "@/lib/types/types"
+import { SearchTemplateDetail, SearchTemplateJsonConfig } from "@/lib/types/types"
 import type { TypedObject } from "@portabletext/types"
 import { AssetsServerAPI } from "@/lib/server_api/assets"
 import { logger } from "@/lib/logger/logger"
@@ -16,7 +16,7 @@ export default async function SearchPage({
   const { uuid } = await params
 
   let isValid
-  let templateData: TemplateDetail
+  let templateData: SearchTemplateDetail
 
   try {
     // ✅ Safely check URL validity
@@ -43,7 +43,7 @@ export default async function SearchPage({
       const typeName =
         typeof t.templateType === "string" ? t.templateType : t.templateType.name
       return typeName === "search"
-    })
+    }) as SearchTemplateDetail
     templateData = found || searchTemplate1
   } catch (err) {
     logger.error(`getPageDetails failed: ${err} ... using default template`,{ context: LoggerContext.TemplateDetailServer})
@@ -51,12 +51,12 @@ export default async function SearchPage({
   }
   logger.info(`Using template ${templateData.name} for uuid ${uuid}`, { context: LoggerContext.TemplateDetailServer })
   logger.debug(`Using template ${templateData.name} for uuid ${uuid} templateData:`, { context: LoggerContext.TemplateDetailServer, templateData })
-  const content: TypedObject[] = ((templateData.jsonConfig as TemplateJsonConfig).content as TypedObject[]) || []
+  const content: TypedObject[] = ((templateData.jsonConfig as SearchTemplateJsonConfig).content as TypedObject[]) || []
 
   return (
     <TemplateGenerator
       content={content}
-      settings={(templateData.jsonConfig as TemplateJsonConfig).settings}
+      settings={(templateData.jsonConfig as SearchTemplateJsonConfig).settings}
       pageName={
         typeof templateData.templateType === "string"
           ? templateData.templateType
