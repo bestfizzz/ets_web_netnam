@@ -33,7 +33,7 @@ export function PreviewPane({
   }), [formData.content, formData.settings ])
   return (
     <Card className="shadow-lg flex-1 max-w-full">
-      <CardContent className="h-full">
+      <CardContent className="px-3 xs:px-6 h-full">
         {/* Tabs + Select Row */}
         <div className="flex justify-between items-center mb-4">
           <Tabs
@@ -41,14 +41,14 @@ export function PreviewPane({
             onValueChange={v => setMode(v as "desktop" | "mobile")}
             className="w-auto"
           >
-            <TabsList>
-              <TabsTrigger value="desktop">Desktop</TabsTrigger>
-              <TabsTrigger value="mobile">Mobile</TabsTrigger>
+            <TabsList >
+              <TabsTrigger className="text-xs xs:text-sm" value="desktop">Desktop</TabsTrigger>
+              <TabsTrigger className="text-xs xs:text-sm" value="mobile">Mobile</TabsTrigger>
             </TabsList>
           </Tabs>
           {templateOptions.length > 0 && (
             <Select value={selectedDesign} onValueChange={onDesignChange}>
-              <SelectTrigger className="w-[200px]">
+              <SelectTrigger className="w-34 xs:w-[200px] text-xs xs:text-sm ">
                 <SelectValue placeholder="Select template" />
               </SelectTrigger>
               <SelectContent>

@@ -63,11 +63,17 @@ export interface TemplateJsonConfig {
   content: Array<Record<string, any>>
 }
 
+export interface EmailTemplateJsonConfig {
+  source_name: string
+  subject: string
+  html_content: string
+}
+
 export interface TemplateDetail {
   id: string
   name: string
   templateType: TemplateType
-  jsonConfig: TemplateJsonConfig
+  jsonConfig: TemplateJsonConfig | EmailTemplateJsonConfig
   isActive: boolean
   createdAt?: string
   updatedAt?: string

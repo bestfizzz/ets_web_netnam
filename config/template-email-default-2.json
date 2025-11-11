@@ -1,0 +1,14 @@
+{
+    "id": "mail_47rqu69n",
+    "name": "Email Default 2",
+    "jsonConfig": {
+        "subject": "Your Example subject",
+        "source_name": "Digipost",
+        "html_content": "<table cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%\">\n\t<tbody>\n\t\t<tr>\n\t\t\t<td><!-- Main Container -->\n\t\t\t<table cellpadding=\"0\" cellspacing=\"0\" style=\"width:600px\"><!-- Header -->\n\t\t\t\t<tbody>\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td style=\"background-color:#0078d4; text-align:center\"><img alt=\"NetNam Logo\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Logo_Netnam_WITH_SLOGAN.png/1200px-Logo_Netnam_WITH_SLOGAN.png\" style=\"margin-bottom:10px; margin-top:10px; width:150px\" />\n\t\t\t\t\t\t<h2><strong>X&aacute;c nhận Check-in th&agrave;nh c&ocirc;ng</strong></h2>\n\t\t\t\t\t\t</td>\n\t\t\t\t\t</tr>\n\t\t\t\t\t<!-- Hero Image -->\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td><img alt=\"Event Banner\" src=\"https://emkt14.netnam.vn/admin/temp/newsletters/1288/banner1920x1080px.jpg\" style=\"height:auto; width:100%\" /></td>\n\t\t\t\t\t</tr>\n\t\t\t\t\t<!-- Main Content -->\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>\n\t\t\t\t\t\t<p>Xin ch&agrave;o <strong>${guest}</strong>,</p>\n\n\t\t\t\t\t\t<p>Cảm ơn bạn đ&atilde; tham dự sự kiện của ch&uacute;ng t&ocirc;i! Dưới đ&acirc;y l&agrave; th&ocirc;ng tin check-in của bạn:</p>\n\t\t\t\t\t\t<!-- Info Card -->\n\n\t\t\t\t\t\t<table border=\"1\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%\">\n\t\t\t\t\t\t\t<tbody>\n\t\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t\t<td style=\"width:40%\">Người tham dự:</td>\n\t\t\t\t\t\t\t\t\t<td><strong>${id}</strong></td>\n\t\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t\t<td>M&atilde; tham dự:</td>\n\t\t\t\t\t\t\t\t\t<td><strong>${accesscode}</strong></td>\n\t\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t</tbody>\n\t\t\t\t\t\t</table>\n\n\t\t\t\t\t\t<p>Xem ảnh sự kiện tại: <a href=\"${url}\">${url}</a></p>\n\t\t\t\t\t\t<!-- CTA Button -->\n\n\t\t\t\t\t\t<table align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\n\t\t\t\t\t\t\t<tbody>\n\t\t\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t\t\t<td style=\"border-radius:4px\"><a href=\"${url}\">Xem h&igrave;nh của bạn</a></td>\n\t\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t</tbody>\n\t\t\t\t\t\t</table>\n\n\t\t\t\t\t\t<p>Ch&uacute;c bạn c&oacute; một trải nghiệm tuyệt vời c&ugrave;ng NetNam!</p>\n\t\t\t\t\t\t</td>\n\t\t\t\t\t</tr>\n\t\t\t\t\t<!-- Footer -->\n\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td style=\"background-color:#f0f3f7; text-align:center\">&copy; 2025 NetNam Corporation. <a href=\"https://www.netnam.vn\">www.netnam.vn</a></td>\n\t\t\t\t\t</tr>\n\t\t\t\t</tbody>\n\t\t\t</table>\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n"
+    },
+    "isActive": true,
+    "templateType": {
+        "id": 3,
+        "name": "email"
+    }
+}

@@ -11,7 +11,7 @@ export async function GET() {
 
     // Match both search and share template patterns
     const matchedFiles = files.filter((file) =>
-      /^template-(search|share)-default-\d+\.json$/.test(file)
+      /^template-(search|share|email)-default-\d+\.json$/.test(file)
     )
 
     const templates = matchedFiles.map((file) => {

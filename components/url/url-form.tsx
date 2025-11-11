@@ -180,8 +180,8 @@ export function UrlForm({
                           <span className="truncate">{capitalizeFirstLetter(platform.name)}</span>
                           <CheckCircle
                             className={`w-4 h-4 ${selected[fieldName] && selected[fieldName] !== "none"
-                                ? "text-green-500"
-                                : "text-gray-400"
+                              ? "text-green-500"
+                              : "text-gray-400"
                               }`}
                           />
                         </TabsTrigger>
@@ -235,25 +235,37 @@ export function UrlForm({
 
         {/* Templates */}
         {templateTypes.length > 0 && (
-          <div className="pt-4 border-t grid gap-4">
+          <div className="pt-4 border-t grid gap-4 w-full">
             <FormLabel>Templates</FormLabel>
-            <Tabs defaultValue={`template_${templateTypes[0]?.name.toLowerCase()}`}>
-              <TabsList className="grid w-full grid-cols-2">
-                {templateTypes.map((t) => {
-                  const fieldName = `template_${t.name.toLowerCase()}`
-                  return (
-                    <TabsTrigger key={t.id} value={fieldName}>
-                      {capitalizeFirstLetter(t.name)}
-                      <CheckCircle
-                        className={`w-5 h-5 ${selected[fieldName] && selected[fieldName] !== "none"
-                            ? "text-green-500"
-                            : "text-gray-400"
-                          }`}
-                      />
-                    </TabsTrigger>
-                  )
-                })}
-              </TabsList>
+            <Tabs
+              defaultValue={`template_${templateTypes[0]?.name.toLowerCase()}`}
+              className="w-full"
+            >
+              <ScrollArea>
+                <div className="relative rounded-sm overflow-x-auto overflow-y-hidden h-13 bg-muted">
+                  <TabsList className="absolute flex flex-row w-full min-w-max">
+                    {templateTypes.map((t) => {
+                      const fieldName = `template_${t.name.toLowerCase()}`
+                      return (
+                        <TabsTrigger
+                          key={t.id}
+                          value={fieldName}
+                          className="flex items-center gap-2 min-w-[120px] justify-center"
+                        >
+                          {capitalizeFirstLetter(t.name)}
+                          <CheckCircle
+                            className={`w-4 h-4 ${selected[fieldName] && selected[fieldName] !== "none"
+                                ? "text-green-500"
+                                : "text-gray-400"
+                              }`}
+                          />
+                        </TabsTrigger>
+                      )
+                    })}
+                  </TabsList>
+                </div>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
 
               {templateTypes.map((t) => {
                 const fieldName = `template_${t.name.toLowerCase()}`
@@ -298,6 +310,7 @@ export function UrlForm({
             </Tabs>
           </div>
         )}
+
       </form>
     </Form>
   )

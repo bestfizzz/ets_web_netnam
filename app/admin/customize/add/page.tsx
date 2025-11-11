@@ -12,6 +12,7 @@ import BackButton from "@/components/back-button"
 import { TemplateDetailClientAPI } from "@/lib/client_api/template-detail.client"
 import { TemplateTypeClientAPI } from "@/lib/client_api/template-type.client"
 import { TemplateDetail, TemplateType } from "@/lib/types/types"
+import EmailEditor from "@/components/customize/email-editor"
 
 export default function CustomizeAddPage() {
   const router = useRouter()
@@ -26,7 +27,7 @@ export default function CustomizeAddPage() {
   const [error, setError] = React.useState<string | null>(null)
   const pageCustomizeRef = React.useRef<any>(null)
 
-  // 🧠 Load template types (once)
+  // 🧠 Load template types
   React.useEffect(() => {
     const fetchTemplateTypes = async () => {
       try {
@@ -34,7 +35,7 @@ export default function CustomizeAddPage() {
         const types = res || []
         if (types.length === 0) throw new Error("No template types found")
         setTemplateTypes(types)
-        setTemplateType(types[0]) // first as default
+        setTemplateType(types[0])
       } catch (err: any) {
         console.error("Error fetching template types:", err)
         toast.error(err.message || "Failed to load template types")
@@ -43,7 +44,7 @@ export default function CustomizeAddPage() {
     fetchTemplateTypes()
   }, [])
 
-  // 🧠 Fetch *all* default templates ONCE
+  // 🧠 Fetch all default templates
   React.useEffect(() => {
     const fetchAllDefaults = async () => {
       setLoading(true)
@@ -64,28 +65,23 @@ export default function CustomizeAddPage() {
     fetchAllDefaults()
   }, [])
 
-  // 🧠 Filter templates by selected type
+  // 🧠 Filter by type
   React.useEffect(() => {
     if (!templateType || allTemplates.length === 0) return
-
-    const filtered = allTemplates.filter(
-      (t) => t.templateType?.id === templateType.id
-    )
-
+    const filtered = allTemplates.filter((t) => t.templateType?.id === templateType.id)
     if (filtered.length === 0) {
       setTemplates([])
       setPageData(undefined)
       toast.warning(`No templates found for "${templateType.name}"`)
       return
     }
-
     setTemplates(filtered)
     const first = filtered[0]
     setSelectedDesign(first.id)
     setPageData(first)
   }, [templateType, allTemplates])
 
-  // 🧠 Load selected template
+  // 🧠 Update when selecting new design
   React.useEffect(() => {
     const template = templates.find((t) => t.id === selectedDesign)
     if (template) {
@@ -96,7 +92,7 @@ export default function CustomizeAddPage() {
     }
   }, [selectedDesign, templates])
 
-  // 🧠 Save new template
+  // 🧠 Save
   const handleSave = async (formData: any) => {
     if (!templateType) return
     try {
@@ -108,7 +104,7 @@ export default function CustomizeAddPage() {
         isActive: true,
         jsonConfig: restData,
       })
-      toast.success(`Saved new design "${name}" for ${templateType.name}`)
+      toast.success(`✅ Saved new design "${name}" for ${templateType.name}`)
       router.push("/admin/customize")
     } catch (err: any) {
       console.error("Save error:", err)
@@ -125,21 +121,20 @@ export default function CustomizeAddPage() {
 
   return (
     <AdminLayout>
-      <div className="flex flex-col gap-6 p-6">
+      <div className="flex flex-col gap-6 p-3 xs:p-6">
         <BackButton path={"/admin/customize"} />
 
-        {/* Tabs for template selection + Save button */}
+        {/* Tabs + Save */}
         <div className="flex items-center justify-between border-b border-gray-200 pb-2">
           <div className="flex space-x-2">
             {templateTypes.map((template) => (
               <button
                 key={template.id}
-                className={`px-4 py-2 -mb-px font-medium border-b-2 transition-colors
-                  ${
-                    templateType?.id === template.id
-                      ? "border-blue-500 text-blue-600"
-                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                  }`}
+                className={`px-1.5 xs:px-4 py-2 -mb-px font-medium border-b-2 transition-colors ${
+                  templateType?.id === template.id
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
                 onClick={() => setTemplateType(template)}
               >
                 <p className="capitalize">{template.name}</p>
@@ -150,7 +145,7 @@ export default function CustomizeAddPage() {
           <Button
             variant="default"
             size="lg"
-            className="h-9"
+            className=" w-20 xs:w-auto h-9"
             onClick={() => pageCustomizeRef.current?.handleSubmit(handleSave)()}
             disabled={onRequest || !templateType}
           >
@@ -161,15 +156,26 @@ export default function CustomizeAddPage() {
         <div>
           {loading && <SkeletonLoading />}
           {error && <p className="text-red-500">❌ {error}</p>}
+
           {!loading && pageData && (
-            <PageCustomize
-              pageName={templateType?.name || ""}
-              pageData={pageData}
-              selectedDesign={selectedDesign}
-              onDesignChange={setSelectedDesign}
-              templateOptions={templateOptions}
-              ref={pageCustomizeRef}
-            />
+            templateType?.name === "email" ? (
+              <EmailEditor
+                pageData={pageData}
+                selectedDesign={selectedDesign}
+                onDesignChange={setSelectedDesign}
+                templateOptions={templateOptions}
+                ref={pageCustomizeRef}
+              />
+            ) : (
+              <PageCustomize
+                pageName={templateType?.name || ""}
+                pageData={pageData}
+                selectedDesign={selectedDesign}
+                onDesignChange={setSelectedDesign}
+                templateOptions={templateOptions}
+                ref={pageCustomizeRef}
+              />
+            )
           )}
         </div>
       </div>

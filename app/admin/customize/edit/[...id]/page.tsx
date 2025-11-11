@@ -22,7 +22,7 @@ import {
 import { capitalizeFirstLetter } from "@/lib/utils"
 import { TemplateDetail } from "@/lib/types/types"
 import { TemplateDetailClientAPI } from "@/lib/client_api/template-detail.client"
-
+import EmailEditor from "@/components/customize/email-editor"
 
 export default function EditPage() {
   const params = useParams()
@@ -50,7 +50,6 @@ export default function EditPage() {
         const data = await TemplateDetailClientAPI.get(Number(designID))
 
         if (!data) throw new Error("Template not found")
-
         setPageData(data)
         setDesignName(data.name)
         toast.info(
@@ -158,10 +157,13 @@ export default function EditPage() {
                   </AlertDialogContent>
                 </AlertDialog>
 
-                {/* 💾 Save Button */}
+                {/* 💾 Save Button -> unified handleSubmit call */}
                 <Button
                   type="button"
-                  onClick={() => pageCustomizeRef.current?.handleSubmit(handleSave)()}
+                  onClick={() => {
+                    // both PageCustomize (via ref) and EmailEditor (via ref) expose handleSubmit(cb) -> () => Promise
+                    pageCustomizeRef.current?.handleSubmit(handleSave)();
+                  }}
                   disabled={onRequest}
                 >
                   {onRequest ? "Saving..." : "Save Changes"}
@@ -169,18 +171,28 @@ export default function EditPage() {
               </div>
             </div>
 
-            {/* Page Customizer */}
-            <PageCustomize
-              pageName={pageName}
-              pageData={pageData}
-              selectedDesign={designID}
-              onDesignChange={() => {}}
-              templateOptions={[]}
-              ref={pageCustomizeRef}
-            />
+            {/* Conditional Page Content */}
+            {pageName === "email" ? (
+              <EmailEditor
+                pageData={pageData}
+                templateOptions={[]}
+                selectedDesign={designID}
+                onDesignChange={() => { }}
+                ref={pageCustomizeRef}
+              />
+            ) : (
+              <PageCustomize
+                pageName={pageName}
+                pageData={pageData}
+                selectedDesign={designID}
+                onDesignChange={() => { }}
+                templateOptions={[]}
+                ref={pageCustomizeRef}
+              />
+            )}
           </>
         )}
       </div>
     </AdminLayout>
-  )
+  );
 }
