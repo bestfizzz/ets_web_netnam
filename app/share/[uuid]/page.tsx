@@ -2,7 +2,7 @@ import TemplateGenerator from "@/components/customize/template-generator"
 import { TemplateDetailServerAPI } from "@/lib/server_api/template-detail"
 
 import shareTemplate1 from "@/config/template-share-default-1.json"
-import { TemplateDetail } from "@/lib/types/types"
+import { TemplateDetail,TemplateJsonConfig } from "@/lib/types/types"
 import type { TypedObject } from "@portabletext/types"
 import { AssetsServerAPI } from "@/lib/server_api/assets"
 import { logger } from "@/lib/logger/logger"
@@ -51,12 +51,12 @@ export default async function SharePage({
   }
   logger.info(`Using template ${templateData.name} for uuid ${uuid}`, { context: LoggerContext.TemplateDetailServer })
   logger.debug(`Using template ${templateData.name} for uuid ${uuid} templateData:`, { context: LoggerContext.TemplateDetailServer, templateData })  
-  const content: TypedObject[] = (templateData.jsonConfig.content as TypedObject[]) || []
+  const content: TypedObject[] = ((templateData.jsonConfig as TemplateJsonConfig).content as TypedObject[]) || []
 
   return (
     <TemplateGenerator
       content={content}
-      settings={templateData.jsonConfig.settings}
+      settings={(templateData.jsonConfig as TemplateJsonConfig).settings}
       pageName={
         typeof templateData.templateType === "string"
           ? templateData.templateType
