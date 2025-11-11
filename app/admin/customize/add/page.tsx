@@ -158,7 +158,7 @@ export default function CustomizeAddPage() {
           {error && <p className="text-red-500">❌ {error}</p>}
 
           {!loading && pageData && (
-            templateType?.name === "email" ? (
+            templateType?.name.toLocaleLowerCase() === "email" ? (
               <EmailEditor
                 pageData={pageData}
                 selectedDesign={selectedDesign}

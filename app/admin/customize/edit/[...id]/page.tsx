@@ -172,7 +172,7 @@ export default function EditPage() {
             </div>
 
             {/* Conditional Page Content */}
-            {pageName === "email" ? (
+            {pageName.toLocaleLowerCase() === "email" ? (
               <EmailEditor
                 pageData={pageData}
                 templateOptions={[]}
