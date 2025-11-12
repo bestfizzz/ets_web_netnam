@@ -73,10 +73,10 @@ export default function EditPage() {
   const handleSave = async (formData: any) => {
     try {
       setOnRequest(true)
-      const { name, ...restData } = formData
+      const { name, isActive,...restData } = formData
       await TemplateDetailClientAPI.update(Number(designID), {
         name: name,
-        isActive: true,
+        isActive: isActive,
         jsonConfig: restData,
         templateTypeId: pageData?.templateType.id!,
       })
@@ -108,7 +108,7 @@ export default function EditPage() {
 
   return (
     <AdminLayout>
-      <div className="p-6 flex flex-col gap-4">
+      <div className="p-3 xs:p-5 flex flex-col gap-4">
         <BackButton path="/admin/customize" />
 
         {loading && <SkeletonLoading />}
@@ -120,7 +120,7 @@ export default function EditPage() {
               <h1 className="text-2xl font-bold capitalize hidden xs:block">
                 Editing {pageName} - {designName}
               </h1>
-              <h1 className="text-2xl font-bold capitalize xs:hidden mr-2">
+              <h1 className="text-xl font-bold capitalize xs:hidden mr-2">
                 {designName}
               </h1>
 
@@ -160,6 +160,7 @@ export default function EditPage() {
                 {/* 💾 Save Button -> unified handleSubmit call */}
                 <Button
                   type="button"
+                  className="w-25 xs:w-auto"
                   onClick={() => {
                     // both PageCustomize (via ref) and EmailEditor (via ref) expose handleSubmit(cb) -> () => Promise
                     pageCustomizeRef.current?.handleSubmit(handleSave)();

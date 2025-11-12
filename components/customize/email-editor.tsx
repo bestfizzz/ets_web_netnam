@@ -1,14 +1,15 @@
 'use client'
 import React, { useEffect, useRef, useImperativeHandle, forwardRef } from "react"
-import { TemplateDetail, EmailTemplateJsonConfig } from "@/lib/types/types"
+import { EmailTemplateJsonConfig, TemplateDetail } from "@/lib/types/types"
 import { useForm, Controller } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { Label } from "../ui/label"
+import { Switch } from "@/components/ui/switch" // ✅ make sure Switch is imported
 
 interface EmailEditorProps {
   pageData?: TemplateDetail
-  templateOptions?: { id: string, label: string }[]
+  templateOptions?: { id: string; label: string }[]
   selectedDesign: string
   onDesignChange: (design: string) => void
 }
@@ -18,10 +19,10 @@ export const EmailEditor = forwardRef<any, EmailEditorProps>(
     const editorRef = useRef<HTMLTextAreaElement | null>(null)
     const ckInstanceRef = useRef<any>(null)
     const pendingHtmlRef = useRef<string | null>(null)
-    const scriptAddedRef = useRef(false)
 
     const { control, handleSubmit, getValues, setValue, reset } = useForm({
       defaultValues: {
+        isActive: false,
         name: "",
         source_name: "",
         subject: "",
@@ -29,73 +30,52 @@ export const EmailEditor = forwardRef<any, EmailEditorProps>(
       },
     })
 
-    // initialize or create CKEditor instance
+    // Initialize CKEditor
     const initEditor = () => {
       const CK = (window as any).CKEDITOR
       if (!CK || !editorRef.current) return
 
-      // if instance exists destroy it first (safe)
       try {
         CK.instances?.[editorRef.current.id]?.destroy(true)
-      } catch (e) {
-        // ignore
-      }
+      } catch { }
 
-      // create instance and save ref
       const inst = CK.replace(editorRef.current, {
         height: 400,
         width: "100%",
         removePlugins: "uploadimage,uploadfile,pastebase64,pasteUploadFile",
-        pasteUploadFileApi: null,
       })
 
       ckInstanceRef.current = inst
 
       inst.on && inst.on("instanceReady", () => {
-        // prefer pendingHtmlRef (set when pageData changed before editor ready)
-        const pending = pendingHtmlRef.current
-        const htmlFromPage = (pageData?.jsonConfig as EmailTemplateJsonConfig)?.html_content || ""
-        const toSet = typeof pending === "string" && pending.length > 0 ? pending : htmlFromPage
-
-        if (toSet) {
-          try {
-            inst.setData(toSet)
-          } catch (e) {
-            // ignore setData errors
-          }
+        const html = pendingHtmlRef.current || (pageData?.jsonConfig as EmailTemplateJsonConfig)?.html_content || ""
+        if (html) {
+          try { inst.setData(html) } catch { }
         }
-        // clear pending since applied
         pendingHtmlRef.current = null
       })
     }
 
-    // Load CKEditor script once (if not already loaded)
+    // Load CKEditor script once
     useEffect(() => {
-      // ensure textarea has an id for CKEditor lookup
       if (editorRef.current && !editorRef.current.id) {
         editorRef.current.id = `ckeditor-${Math.random().toString(36).slice(2, 9)}`
       }
 
-      const existing = (window as any).CKEDITOR
-      if (existing) {
-        // CKEDITOR already present — just init instance
+      const CK = (window as any).CKEDITOR
+      if (CK) {
         initEditor()
         return
       }
 
-      // add script only once
       if (!document.getElementById("ck-script")) {
         const script = document.createElement("script")
         script.id = "ck-script"
         script.src = "/ckeditor/ckeditor.js"
         script.async = true
-        scriptAddedRef.current = true
-        script.onload = () => {
-          initEditor()
-        }
+        script.onload = () => initEditor()
         document.body.appendChild(script)
       } else {
-        // script tag exists but CKEDITOR not yet defined (waiting)
         const check = setInterval(() => {
           if ((window as any).CKEDITOR) {
             clearInterval(check)
@@ -106,75 +86,67 @@ export const EmailEditor = forwardRef<any, EmailEditorProps>(
       }
 
       return () => {
-        // do not forcibly remove global CKEditor script if other parts rely on it.
-        // But destroy instance
         const CK = (window as any).CKEDITOR
-        if (CK) {
-          try {
-            const inst = editorRef.current?.id && (window as any).CKEDITOR?.instances?.[editorRef.current.id]
-            if (inst) inst.destroy(true)
-          } catch (e) { }
+        if (CK && editorRef.current?.id) {
+          const inst = CK.instances[editorRef.current.id]
+          if (inst) inst.destroy(true)
         }
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []) // run once on mount
+    }, [])
 
-    // When pageData changes: reset form and either set editor data or stash it
+    // Update editor and form when pageData changes
     useEffect(() => {
       if (!pageData) return
       const jsonConfig = (pageData.jsonConfig as EmailTemplateJsonConfig) || {}
       const html = jsonConfig.html_content || ""
 
-      // reset inputs
       reset({
+        isActive: pageData.isActive || false,
         name: pageData.name || "",
         source_name: jsonConfig.source_name || "",
         subject: jsonConfig.subject || "",
         html_content: html,
       })
 
-      // if editor instance ready -> setData, else stash it
       const inst = ckInstanceRef.current
-      if (inst && typeof inst.setData === "function") {
-        try {
-          inst.setData(html)
-        } catch (e) {
-          // if setData fails for timing reasons, stash it
-          pendingHtmlRef.current = html
-        }
+      if (inst?.setData) {
+        try { inst.setData(html) } catch { pendingHtmlRef.current = html }
       } else {
-        // editor not ready yet, store pending html
         pendingHtmlRef.current = html
       }
     }, [pageData, reset])
 
-    // Imperative handle: sync html into form then return values / handleSubmit
-    useImperativeHandle(
-      ref,
-      () => ({
-        getFormData: () => {
-          const inst = ckInstanceRef.current
-          if (inst && typeof inst.getData === "function") {
-            setValue("html_content", inst.getData() || "")
-          }
-          return getValues()
-        },
-        handleSubmit: (cb: any) => {
-          return async () => {
-            const inst = ckInstanceRef.current
-            if (inst && typeof inst.getData === "function") {
-              setValue("html_content", inst.getData() || "")
-            }
-            return handleSubmit(cb)()
-          }
-        },
-      }),
-      [getValues, handleSubmit, setValue]
-    )
+    // Expose imperative API
+    useImperativeHandle(ref, () => ({
+      getFormData: () => {
+        const inst = ckInstanceRef.current
+        if (inst?.getData) setValue("html_content", inst.getData() || "")
+        return getValues()
+      },
+      handleSubmit: (cb: any) => async () => {
+        const inst = ckInstanceRef.current
+        if (inst?.getData) setValue("html_content", inst.getData() || "")
+        return handleSubmit(cb)()
+      },
+    }), [getValues, handleSubmit, setValue])
 
     return (
       <div className="flex flex-col gap-4">
-        {/* Name + Template Type Row */}
+        {/* Active Switch */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+          <Controller
+            name="isActive"
+            control={control}
+            render={({ field }) => (
+              <div className="flex items-center gap-3">
+                <Label className="text-sm font-medium">Active</Label>
+                <Switch name={field.name} checked={!!field.value} onCheckedChange={field.onChange} />
+              </div>
+            )}
+          />
+        </div>
+
+        {/* Name + Template Option */}
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
           <div className="flex-1 flex flex-col w-full">
             <Controller
@@ -203,10 +175,8 @@ export const EmailEditor = forwardRef<any, EmailEditorProps>(
                   <SelectValue placeholder="Select template" />
                 </SelectTrigger>
                 <SelectContent>
-                  {templateOptions.map((opt) => (
-                    <SelectItem key={opt.id} value={opt.id}>
-                      {opt.label}
-                    </SelectItem>
+                  {templateOptions.map(opt => (
+                    <SelectItem key={opt.id} value={opt.id}>{opt.label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -253,7 +223,6 @@ export const EmailEditor = forwardRef<any, EmailEditorProps>(
           )}
         />
       </div>
-
     )
   }
 )

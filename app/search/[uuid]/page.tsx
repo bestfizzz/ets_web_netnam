@@ -21,8 +21,8 @@ export default async function SearchPage({
   try {
     // ✅ Safely check URL validity
     isValid = await AssetsServerAPI.checkUrl(uuid)
-  } catch (err) {
-    logger.error("checkUrl failed:", {context: LoggerContext.AssetsServer,error:err})
+  } catch (err: any) {
+    logger.error("checkUrl failed:", { context: LoggerContext.AssetsServer, error: err instanceof Error ? err.message : String(err)})
     // Leave isValid = false to trigger Not Found
   }
 
@@ -46,9 +46,14 @@ export default async function SearchPage({
     }) as SearchTemplateDetail
     templateData = found || searchTemplate1
   } catch (err) {
-    logger.error(`getPageDetails failed: ${err} ... using default template`,{ context: LoggerContext.TemplateDetailServer})
+    logger.error(`getPageDetails failed: ${err} ... using default template`, { context: LoggerContext.TemplateDetailServer })
     templateData = searchTemplate1
   }
+
+  if (templateData.isActive === false) {
+    templateData = searchTemplate1
+  }
+
   logger.info(`Using template ${templateData.name} for uuid ${uuid}`, { context: LoggerContext.TemplateDetailServer })
   logger.debug(`Using template ${templateData.name} for uuid ${uuid} templateData:`, { context: LoggerContext.TemplateDetailServer, templateData })
   const content: TypedObject[] = ((templateData.jsonConfig as SearchTemplateJsonConfig).content as TypedObject[]) || []
@@ -61,7 +66,7 @@ export default async function SearchPage({
         typeof templateData.templateType === "string"
           ? templateData.templateType
           : templateData.templateType.name
-      } 
+      }
       uuid={uuid}
     />
   )

@@ -19,6 +19,14 @@ export default function SettingsPanel({ pageName, control, errors, layoutMap }: 
           <ChevronRight className="w-4 h-4 group-data-[state=open]:rotate-90" strokeWidth={3} />
         </CollapsibleTrigger>
         <CollapsibleContent className="mt-3 pt-2 flex flex-col gap-3 border-t-1">
+
+          <Controller name="isActive" control={control} render={({ field }) => (
+            <div className="flex items-center justify-between py-2">
+              <Label className="text-sm">Active</Label>
+              <Switch name={field.name} checked={!!field.value} onCheckedChange={field.onChange} />
+            </div>
+          )} />
+          
           {/* Layout select */}
           <Controller
             name="settings.layout"
@@ -89,30 +97,38 @@ export default function SettingsPanel({ pageName, control, errors, layoutMap }: 
             </div>
           )} />
 
-          <Controller name="settings.hasAds" control={control} render={({ field }) => (
-            <div className="flex items-center justify-between py-2">
-              <Label className="text-sm">Advertise Side Banners</Label>
-              <Switch name={field.name} checked={!!field.value} onCheckedChange={field.onChange} />
-            </div>
-          )} />
+          <Collapsible defaultOpen={false} className="border-b border-gray-200 pb-1">
+            <CollapsibleTrigger className="group flex justify-between w-full items-center text-md font-medium text-gray-700 hover:text-gray-900 py-2">
+              <span>Advertisement</span>
+              <ChevronRight className="w-4 h-4 group-data-[state=open]:rotate-90 transition-transform" strokeWidth={3} />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="flex flex-col gap-3 mt-1 p-2 border-t border-gray-200">
+              <Controller name="settings.hasAds" control={control} render={({ field }) => (
+                <div className="flex items-center justify-between py-1">
+                  <Label className="text-sm">Advertise Side Banners</Label>
+                  <Switch name={field.name} checked={!!field.value} onCheckedChange={field.onChange} />
+                </div>
+              )} />
 
-          <Controller name="settings.adbannerLeft" control={control} defaultValue="" render={({ field }) => (
-            <div className="flex flex-col gap-1">
-              <Label className="text-sm">Left Ad banner</Label>
-              <Input {...field} placeholder="https://placehold.co/160x900" />
-            </div>
-          )} />
+              <Controller name="settings.adbannerLeft" control={control} defaultValue="" render={({ field }) => (
+                <div className="flex flex-col gap-1">
+                  <Label className="text-sm">Left Ad banner</Label>
+                  <Input {...field} placeholder="https://placehold.co/160x900" />
+                </div>
+              )} />
 
-          <Controller name="settings.adbannerRight" control={control} defaultValue="" render={({ field }) => (
-            <div className="flex flex-col gap-1">
-              <Label className="text-sm">Right Ad banner</Label>
-              <Input {...field} placeholder="https://placehold.co/160x900" />
-            </div>
-          )} />
+              <Controller name="settings.adbannerRight" control={control} defaultValue="" render={({ field }) => (
+                <div className="flex flex-col gap-1">
+                  <Label className="text-sm">Right Ad banner</Label>
+                  <Input {...field} placeholder="https://placehold.co/160x900" />
+                </div>
+              )} />
+            </CollapsibleContent>
+          </Collapsible>
 
           {/* search custom */}
           {pageName === "search" && (
-            <Collapsible defaultOpen className="border-b border-gray-200 pb-1 mb-1">
+            <Collapsible defaultOpen={false} className="border-b border-gray-200 pb-1 mb-1">
               <CollapsibleTrigger className="group flex justify-between w-full items-center text-md font-medium text-gray-700 hover:text-gray-900 py-2">
                 <span>Share Fields</span>
                 <ChevronRight className="w-4 h-4 group-data-[state=open]:rotate-90 transition-transform" strokeWidth={3} />

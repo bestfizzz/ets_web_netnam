@@ -74,12 +74,30 @@ export async function http<T = any>(
   }
 
   const fetchFn = isServer ? globalThis.fetch : window.fetch
-  const res = await fetchFn(finalUrl, {
-    method,
-    headers: finalHeaders,
-    body: finalBody,
-    ...rest,
-  })
+  let res: Response
+
+  try {
+    res = await fetchFn(finalUrl, {
+      method,
+      headers: finalHeaders,
+      body: finalBody,
+      ...rest,
+    })
+  } catch (err: any) {
+    // Network or connection error
+    const cause = err.cause
+    if (throwOnError) { // true
+      throw new HttpError(
+        0,
+        "Network Error",
+        finalUrl,
+        cause ? cause.message : 'Fetch Failed, no cause provided',
+        undefined
+      )
+    } else {
+      return {} as T
+    }
+  }
 
   let rawText: string | undefined
   try {
@@ -98,10 +116,9 @@ export async function http<T = any>(
     }
   }
 
-  // --- Error Handling (preserve status) ---
+  // --- HTTP-level errors ---
   if (throwOnError && !res.ok) {
     const message = parsedJson?.message || parsedJson?.error || rawText || res.statusText
-
     throw new HttpError(res.status, res.statusText, finalUrl, message, rawText)
   }
 

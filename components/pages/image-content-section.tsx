@@ -4,7 +4,7 @@ import { useGalleryContext } from "@/hooks/gallery-context"
 import ImageComponentGrid from "@/components/pages/image-component-grid"
 import PaginationBar from "@/components/pages/search/pagination-bar"
 
-export default function ImageContentSection({layoutType="default"}: { layoutType?: "default" | "masonry"}) {
+export default function ImageContentSection({ promoImages }: { promoImages?: Record<string, string> }) {
   const { pageSize, page, total, mode, setPage, loading, nextPage } = useGalleryContext()
 
   const handleLoadMore = () => {
@@ -26,7 +26,7 @@ export default function ImageContentSection({layoutType="default"}: { layoutType
         </Label>
       )}
 
-      <ImageComponentGrid layoutType={layoutType} />
+      <ImageComponentGrid promoImages={promoImages} />
 
       {/* ✅ If keyword mode: show "Load more" instead of pagination */}
       {mode === "keyword" ? (

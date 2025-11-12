@@ -1,37 +1,19 @@
+/**
+ * @license Copyright (c) 2003-2025, CKSource Holding sp. z o.o. All rights reserved.
+ * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
+ */
+
 CKEDITOR.editorConfig = function (config) {
-  // Toolbar
-  config.toolbarGroups = [
-    { name: 'clipboard', groups: ['clipboard', 'undo'] },
-    { name: 'editing', groups: ['find', 'selection', 'spellchecker'] },
-    { name: 'links' },
-    { name: 'insert' },
-    { name: 'forms' },
-    { name: 'tools' },
-    { name: 'document', groups: ['mode', 'document', 'doctools'] },
-    { name: 'others' },
-    '/',
-    { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-    { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi'] },
-    { name: 'styles' },
-    { name: 'colors' }
-  ];
+	// Define changes to default configuration here. For example:
+	// config.language = 'fr';
+	// config.uiColor = '#AADC6E';
+	config.removePlugins = 'uploadimage,uploadfile,pastebase64,pasteUploadFile';
+	config.removeButtons = 'About'; // remove toolbar button if it appears
 
-  // Remove some buttons
-  config.removeButtons = 'Underline,Subscript,Superscript';
+	config.versionCheck = false;
+	config.pasteUploadFileApi = null;
 
-  // Common block elements
-  config.format_tags = 'p;h1;h2;h3;pre';
-
-  // Simplify dialogs
-  config.removeDialogTabs = 'image:advanced;link:advanced';
-
-  // Disable upload-related plugins to prevent pasteUploadFileApi error
-  config.removePlugins = 'uploadimage,uploadfile,pastebase64,pasteUploadFile';
-
-  config.versionCheck = false;
-  config.pasteUploadFileApi = null;
-
-  // Optional: other settings
-  config.height = 400;
-  config.width = '100%';
+	// Optional: other settings
+	config.height = 400;
+	config.width = '100%';
 };

@@ -40,6 +40,7 @@ export const PageCustomize = forwardRef(({
 }: any, ref: any) => {
   const defaultValues = {
     name: "",
+    isActive:true,
     content: [],
     settings: {
       themeColor: "#000000",
@@ -76,6 +77,7 @@ export const PageCustomize = forwardRef(({
     const resetData = {
       ...(pageData.jsonConfig ?? {}),
       name: pageData.name ?? "",
+      isActive : pageData.isActive ?? true,
       settings: {
         themeColor: pageData.jsonConfig?.settings?.themeColor ?? "#000000",
         pageTitle: pageData.jsonConfig?.settings?.pageTitle ?? "",
@@ -127,11 +129,11 @@ export const PageCustomize = forwardRef(({
 
   return (
     <div className="flex flex-col md:flex-row gap-6">
-      <div className="flex md:w-7/10 shadow-lg overflow-hidden">
+      <div className="flex md:w-7/10 shadow-lg overflow-hidden h-screen">
         <PreviewPane formData={formData} pageName={pageName} selectedDesign={selectedDesign} onDesignChange={onDesignChange} templateOptions={templateOptions} />
       </div>
 
-      <div className="flex md:w-3/10 flex-col">
+      <div className="flex md:w-3/10 flex-col h-screen overflow-y-scroll">
         <Card className="flex flex-col gap-2">
           {/* header: name + add */}
           <NameAndAdd setValue={setValue} editingName={editingName} setEditingName={setEditingName} control={control} errors={errors} nameInputRef={nameInputRef} onAddClick={onAddClick} />

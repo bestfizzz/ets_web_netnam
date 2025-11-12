@@ -23,7 +23,7 @@ export function DynamicBlockEditor({
     // 🧱 Special case: layoutType select for Gallery blocks
     if (
       key === "layoutType" &&
-      ["GallerySection", "GalleryContentSection"].includes(block._type)
+      ["GallerySection"].includes(block._type)
     ) {
       return (
         <>

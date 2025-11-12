@@ -97,11 +97,11 @@ export default function CustomizeAddPage() {
     if (!templateType) return
     try {
       setOnRequest(true)
-      const { name, ...restData } = formData
+      const { name, isActive,...restData } = formData
       await TemplateDetailClientAPI.create({
         templateTypeId: templateType.id,
         name: name || "Untitled",
-        isActive: true,
+        isActive: isActive,
         jsonConfig: restData,
       })
       toast.success(`✅ Saved new design "${name}" for ${templateType.name}`)
@@ -121,7 +121,7 @@ export default function CustomizeAddPage() {
 
   return (
     <AdminLayout>
-      <div className="flex flex-col gap-6 p-3 xs:p-6">
+      <div className="flex flex-col gap-6 p-3 xs:p-5">
         <BackButton path={"/admin/customize"} />
 
         {/* Tabs + Save */}

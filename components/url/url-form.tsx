@@ -255,8 +255,8 @@ export function UrlForm({
                           {capitalizeFirstLetter(t.name)}
                           <CheckCircle
                             className={`w-4 h-4 ${selected[fieldName] && selected[fieldName] !== "none"
-                                ? "text-green-500"
-                                : "text-gray-400"
+                              ? "text-green-500"
+                              : "text-gray-400"
                               }`}
                           />
                         </TabsTrigger>
@@ -293,8 +293,15 @@ export function UrlForm({
                               <SelectContent>
                                 <SelectItem value="none">None</SelectItem>
                                 {templates.map((tpl) => (
+
                                   <SelectItem key={tpl.id} value={String(tpl.id)}>
-                                    {tpl.name}
+                                    <div className="flex items-center justify-between gap-2">
+                                      <span
+                                        className={`h-2.5 w-2.5 rounded-full ${tpl.isActive ? "bg-green-500" : "bg-red-500"
+                                          }`}
+                                      ></span>
+                                      <span>{tpl.name}</span>
+                                    </div>
                                   </SelectItem>
                                 ))}
                               </SelectContent>

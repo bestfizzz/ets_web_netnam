@@ -115,8 +115,11 @@ export const scrollToGallery = () => {
 
 export const toTitle = (str: string) => {
   return str
-    .replace(/([A-Z])/g, " $1") // insert space before capitals
-    .replace(/^./, s => s.toUpperCase()); // capitalize first letter
+    // insert space before capitals or numbers
+    .replace(/([A-Z0-9])/g, " $1")
+    // capitalize first character
+    .replace(/^./, s => s.toUpperCase())
+    .trim()
 }
 
 export const nSpaceTrimmer = (str: string) => {

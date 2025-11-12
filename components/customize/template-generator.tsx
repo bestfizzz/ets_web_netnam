@@ -52,8 +52,17 @@ const types: Partial<PortableTextComponents["types"]> = {
       </div>
     </div>
   ),
-  GallerySection: ({value}:any) => <GallerySection layoutType={value.layoutType}/>,
-  GalleryContentSection: ({value}:any) => <GalleryContentSection layoutType={value.layoutType}/>,
+  GallerySection: ({ value }: any) => <GallerySection layoutType={value.layoutType} />,
+  GalleryContentSection: ({ value }: any) => (
+    <GalleryContentSection
+      promoImages={{
+        imagePromo: value.image1,
+        imageInfo: value.image2,
+        imageCTA: value.image3,
+        imageRow: value.image4,
+      }}
+    />
+  ),
 }
 
 const components: Partial<PortableTextComponents> = { block, types }
@@ -92,8 +101,8 @@ export default function TemplateGenerator({
     pageName === "search"
       ? SearchPageWrapper
       : pageName === "share"
-      ? SharePageWrapper
-      : ({ children }) => <>{children}</>
+        ? SharePageWrapper
+        : ({ children }) => <>{children}</>
 
   return (
     <GalleryProvider gallerySettings={settings}>
