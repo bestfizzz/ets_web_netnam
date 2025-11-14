@@ -3,19 +3,19 @@
 import { Button } from "@/components/ui/button"
 import { Download, X, Image, CheckSquare } from "lucide-react"
 import { downloadSelected } from "@/lib/utils"
-import { AssetMeta,useGalleryContext } from "@/hooks/gallery-context"
+import { AssetMeta, useGalleryContext } from "@/hooks/gallery-context"
 
 export default function ShareSelectionDrawer() {
   const {
-      selectMode,
-      setSelectMode,
-      selectedCount,
-      previewThumbnails,
-      selectedMap,
-      setSelectedMap,
-      images,
-      settings
-    } = useGalleryContext()
+    selectMode,
+    setSelectMode,
+    selectedCount,
+    previewThumbnails,
+    selectedMap,
+    setSelectedMap,
+    images,
+    settings
+  } = useGalleryContext()
   const toggleSelectAllVisible = () => {
     const allSelected = images.every((img: AssetMeta) => Boolean(selectedMap[img.id]))
     setSelectedMap((prev: Record<string, any>) => {
@@ -29,6 +29,12 @@ export default function ShareSelectionDrawer() {
       }
       return next
     })
+  }
+
+  const handleDownload = (selectedMap: Record<string, Omit<AssetMeta, "id">>) => {
+    setSelectMode(false)
+    setSelectedMap({})
+    downloadSelected(selectedMap, settings.pageTitle)
   }
 
   const allPageSelected = images.length > 0 && images.every((img: AssetMeta) => Boolean(selectedMap[img.id]))
@@ -82,7 +88,7 @@ export default function ShareSelectionDrawer() {
           </Button>
 
           <Button
-            onClick={() => downloadSelected(selectedMap,settings.pageTitle)}
+            onClick={() => handleDownload(selectedMap)}
             size="sm"
             disabled={selectedCount === 0}
             className="flex items-center gap-1 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"

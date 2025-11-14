@@ -1,5 +1,5 @@
 import { http } from "@/lib/http"
-import type { CreateSharePayload, ShareAuthPayload, ShareResponse } from "@/lib/types/share"
+import type { CreateSharePayload, ShareAuthPayload, ShareGuestCreateResponse, ShareResponse } from "@/lib/types/share"
 
 const BASE = process.env.NEXT_PUBLIC_BACKEND_URL!
 const SHARE_BASE = `${BASE}/share`
@@ -13,10 +13,9 @@ export const ShareActionsAPI = {
     }),
 
   /** Create a guest share */
-  createGuest: (uuid: string, data: CreateSharePayload) =>{
-    http<ShareResponse>(`${SHARE_BASE}/${uuid}`, {
+  createGuest: (uuid: string, data: CreateSharePayload) =>
+    http<ShareGuestCreateResponse>(`${SHARE_BASE}/${uuid}`, {
       method: "POST",
       body: data,
     })
-  }
 }

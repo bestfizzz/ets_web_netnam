@@ -69,7 +69,7 @@ export default function ImageGrid({ layoutType = "default" }: ImageGridProps) {
               <img
                 src={img.thumb}
                 alt={`Image ${img.id}`}
-                className="w-full h-[220px] object-cover rounded-lg group-hover:rounded-xl transition-all duration-200 group-hover:shadow-lg"
+                className="w-full h-[220px] 2xl:h-[15vw] object-cover rounded-lg group-hover:rounded-xl transition-all duration-200 group-hover:shadow-lg"
               />
 
               {selectMode && (

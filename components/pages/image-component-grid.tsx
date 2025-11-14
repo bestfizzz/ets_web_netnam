@@ -11,7 +11,7 @@ const PromoImage = ({ src }: { src: string }) => (
   <img
     src={src}
     alt="Promo"
-    className="min-h-[220px] col-span-1 row-span-1 xs:col-span-2 xs:col-start-1 sm:row-span-2 w-full h-full object-cover rounded-xl shadow-lg"
+    className="min-h-[220px] 2xl:max-h-[31vw] col-span-1 row-span-1 xs:col-span-2 xs:col-start-1 sm:row-span-2 w-full h-full object-cover rounded-xl shadow-lg"
   />
 )
 
@@ -19,7 +19,7 @@ const InfoImage = ({ src }: { src: string }) => (
   <img
     src={src}
     alt="Insight"
-    className="min-h-[220px] col-span-1 xs:col-span-2 xs:row-span-2 xs:col-end-[-1] w-full h-full object-cover rounded-xl shadow-lg"
+    className="min-h-[220px] 2xl:max-h-[31vw] col-span-1 xs:col-span-2 xs:row-span-2 xs:col-end-[-1] w-full h-full object-cover rounded-xl shadow-lg"
   />
 )
 
@@ -27,7 +27,7 @@ const CTAImage = ({ src }: { src: string }) => (
   <img
     src={src}
     alt="Download"
-    className="min-h-[220px] col-span-1 row-span-1 xs:col-span-2 xs:col-start-1 sm:row-span-2 w-full h-full object-cover rounded-xl shadow-lg"
+    className="min-h-[220px] 2xl:max-h-[31vw] col-span-1 row-span-1 xs:col-span-2 xs:col-start-1 sm:row-span-2 w-full h-full object-cover rounded-xl shadow-lg"
   />
 )
 
@@ -145,7 +145,7 @@ export default function InlineComponentGrid({
           <img
             src={img.thumb}
             alt={img.filename}
-            className="w-full h-[220px] object-cover rounded-lg group-hover:rounded-xl transition-all duration-200 group-hover:shadow-lg"
+            className="w-full h-[220px] 2xl:h-[15vw] object-cover rounded-lg group-hover:rounded-xl transition-all duration-200 group-hover:shadow-lg"
           />
           {selectMode && (
             <div

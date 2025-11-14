@@ -19,3 +19,19 @@ export interface ShareResponse {
   assetIds: string[]
 }
 
+export interface ShareGuestCreateResponse {
+  status: number
+  message: string
+  data: {
+    profileGuestId: number
+    contacts: {
+      phone: string
+      email: string
+    }
+    notificationResponses: {
+      platform: string
+      status: "unsupported" | "failed" | "success"
+      message: string
+    }[]
+  }
+}

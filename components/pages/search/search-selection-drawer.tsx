@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Input } from "@/components/ui/input"
 import { Download, X, ImageIcon, Share2, CheckSquare, SquareX } from "lucide-react"
 import { downloadSelected, formatVietnamesePhone } from "@/lib/utils"
-import { useGalleryContext } from "@/hooks/gallery-context"
+import { AssetMeta, useGalleryContext } from "@/hooks/gallery-context"
 import { toast } from "sonner"
 import { ShareActionsAPI } from "@/lib/server_api/share-actions"
 
@@ -68,6 +68,13 @@ export default function SearchSelectionDrawer({
     })
   }
 
+  const handleDownload = (selectedMap: Record<string, Omit<AssetMeta, "id">>) => {
+    setSelectMode(false)
+    setSelectedMap({})
+    downloadSelected(selectedMap, settings.pageTitle)
+  }
+
+
   const handleShareSubmit = async () => {
     const assetIds = Object.keys(selectedMap)
     if (assetIds.length === 0) {
@@ -107,7 +114,8 @@ export default function SearchSelectionDrawer({
       toast.error("Telegram ID must be numeric")
       return
     }
-
+    setSelectMode(false)
+    setSelectedMap({})
     setIsSubmitting(true)
     try {
       const toastId = toast.loading("Creating share link...")
@@ -117,11 +125,27 @@ export default function SearchSelectionDrawer({
       if (visibleFields.email && trimmedEmail) contacts.email = trimmedEmail
       if (visibleFields.telegramId && trimmedTelegram) contacts.telegramId = trimmedTelegram
 
-      await ShareActionsAPI.createGuest(uuid, { contacts, assetIds })
+      const res = await ShareActionsAPI.createGuest(uuid, { contacts, assetIds })
 
       toast.dismiss(toastId)
       setDialogOpen(false)
-      toast.success("Guest share created successfully!")
+
+      // Show main success
+      toast.success(res.message || "Guest share created successfully!")
+
+      // Show per-platform notification results
+      if (res.data?.notificationResponses?.length) {
+        res.data.notificationResponses.forEach((notif: any) => {
+          if (notif.status === "unsupported" || notif.status === "skipped") {
+            toast.warning(`${notif.platform}: ${notif.message}`)
+          } else if (notif.status === "failed") {
+            toast.error(`${notif.platform}: ${notif.message}`)
+          } else {
+            toast.success(`${notif.platform}: ${notif.message}`)
+          }
+        })
+      }
+
     } catch (err) {
       console.error("Share error:", err)
       toast.dismiss()
@@ -273,7 +297,7 @@ export default function SearchSelectionDrawer({
             </Button>
 
             <Button
-              onClick={() => downloadSelected(selectedMap, settings.pageTitle)}
+              onClick={() => handleDownload(selectedMap)}
               size="sm"
               disabled={selectedCount === 0}
               className="hidden md:flex items-center gap-1 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"

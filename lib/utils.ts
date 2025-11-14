@@ -34,8 +34,10 @@ export const performDownload = async (url?: string | null, filename?: string) =>
 
 export const downloadSelected = async (
   selectedMap: Record<string, { download: string; filename?: string }>,
-  pageTitle: string
+  pageTitle?: string
 ) => {
+  const title = pageTitle?.trim() ? pageTitle : "Event" 
+
   const ids = Object.keys(selectedMap)
   if (ids.length === 0) return toast.error("Không có ảnh nào được chọn")
 
@@ -69,7 +71,7 @@ export const downloadSelected = async (
 
       const blob = await res.blob()
       const ext = blob.type.split("/")[1] || "jpeg"
-      const filename = `${meta.filename}.${ext}` || `Image_${i + 1}.${ext}`
+      const filename = meta.filename ? `${meta.filename}.${ext}` : `Image_${i + 1}.${ext}`
 
       zip.file(filename, blob, { binary: true })
       successCount++
@@ -86,7 +88,7 @@ export const downloadSelected = async (
 
   try {
     const zipBlob = await zip.generateAsync({ type: "blob", compression: "DEFLATE" })
-    saveAs(zipBlob, `${pageTitle}_${Date.now()}.zip`)
+    saveAs(zipBlob, `${title}_${Date.now()}.zip`) 
     toast.success(`✅ Hoàn tất tải ${successCount}/${total} ảnh`, { id: toastId })
   } catch (err) {
     console.error(err)
