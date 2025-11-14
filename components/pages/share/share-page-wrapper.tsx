@@ -101,12 +101,12 @@ export default function SharePageWrapper({
 
   // ✅ Authenticate and load full asset list
   const handleAccess = async () => {
-    if (!contactID.trim() || accessCode === "") {
+    if (!contactID.trim() || !accessCode.trim()) {
       return toast.error("Please enter credentials")
     }
 
     try {
-      const data = await ShareActionsAPI.authenticate(uuid, contactID, accessCode)
+      const data = await ShareActionsAPI.authenticate(uuid, contactID.trim(), accessCode.trim())
       if (!data?.assetIds?.length) {
         return toast.error("No assets found for this access code")
       }
@@ -135,7 +135,7 @@ export default function SharePageWrapper({
           </p>
           <Input
             placeholder="Enter ID"
-            value={contactID}
+            value={contactID.trim()}
             onChange={(e) => setContactID(e.target.value)}
             className="mb-3"
             type="text"
@@ -143,7 +143,7 @@ export default function SharePageWrapper({
           <Input
             type="text"
             placeholder="Enter access code"
-            value={accessCode}
+            value={accessCode.trim()}
             onChange={(e) => setAccessCode(e.target.value)}
             className="mb-3"
           />
