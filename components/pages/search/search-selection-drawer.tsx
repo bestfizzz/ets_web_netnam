@@ -114,6 +114,7 @@ export default function SearchSelectionDrawer({
       toast.error("Telegram ID must be numeric")
       return
     }
+
     setSelectMode(false)
     setSelectedMap({})
     setIsSubmitting(true)
@@ -129,7 +130,9 @@ export default function SearchSelectionDrawer({
 
       toast.dismiss(toastId)
       setDialogOpen(false)
-
+      setPhone("")
+      setEmail("")
+      setTelegramId("")
       // Show main success
       toast.success(res.message || "Guest share created successfully!")
 
