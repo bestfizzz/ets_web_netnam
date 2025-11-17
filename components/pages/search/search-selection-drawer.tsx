@@ -118,9 +118,8 @@ export default function SearchSelectionDrawer({
     setSelectMode(false)
     setSelectedMap({})
     setIsSubmitting(true)
+    const toastID = toast.loading("Creating share link...")
     try {
-      const toastId = toast.loading("Creating share link...")
-
       const contacts: Record<string, string> = {}
       if (visibleFields.phone && trimmedPhone) contacts.phone = formatVietnamesePhone(trimmedPhone)
       if (visibleFields.email && trimmedEmail) contacts.email = trimmedEmail
@@ -128,13 +127,14 @@ export default function SearchSelectionDrawer({
 
       const res = await ShareActionsAPI.createGuest(uuid, { contacts, assetIds })
 
-      toast.dismiss(toastId)
       setDialogOpen(false)
       setPhone("")
       setEmail("")
       setTelegramId("")
       // Show main success
-      toast.success(res.message || "Guest share created successfully!")
+      toast.success(res.message || "Guest share created successfully!",{
+        id:toastID
+      })
 
       // Show per-platform notification results
       if (res.data?.notificationResponses?.length) {
@@ -151,8 +151,9 @@ export default function SearchSelectionDrawer({
 
     } catch (err) {
       console.error("Share error:", err)
-      toast.dismiss()
-      toast.error("Failed to create share link")
+      toast.error("Failed to create share link",{
+        id:toastID
+      })
     } finally {
       setIsSubmitting(false)
     }

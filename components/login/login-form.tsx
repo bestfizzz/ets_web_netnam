@@ -29,7 +29,7 @@ export function LoginForm({
     e.preventDefault()
     setError(null)
     setLoading(true)
-
+    const toastID = toast.loading("Logging in ...")
     const formData = new FormData(e.currentTarget)
     const email = formData.get("email")?.toString() || ""
     const password = formData.get("password")?.toString() || ""
@@ -40,16 +40,22 @@ export function LoginForm({
       if (!res.ok) {
         const message = res.message || "Login failed"
         setError(message)
-        toast.error(message)
+        toast.error(message,{
+          id:toastID
+        })
         return
       }
 
-      toast.success("Logged in successfully ✅")
+      toast.success("Logged in successfully, redirecting ...",{
+        id:toastID
+      })
       router.push("/admin/url")
     } catch (err: any) {
       const message = err?.message || "Network or internal error"
       setError(message)
-      toast.error(message)
+      toast.error(message,{
+        id:toastID
+      })
     } finally {
       setLoading(false)
     }

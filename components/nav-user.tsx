@@ -42,13 +42,17 @@ export function NavUser({
   const router = useRouter()
 
   const handleLogout = async () => {
+    const toastID = toast.loading("Logging out")
     try {
       await AuthClientAPI.logout() // 🔹 use shared client helper
-      toast.success("Logged out successfully ✅")
+      toast.success("Logged out successfully",{
+        id:toastID
+      })
       router.push("/login")
     } catch (err) {
-      console.error("Logout failed:", err)
-      toast.error("Logout failed ❌")
+      toast.error("Logout failed ❌",{
+        id:toastID
+      })
     }
   }
 

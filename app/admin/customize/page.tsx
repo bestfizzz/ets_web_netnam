@@ -47,7 +47,6 @@ export default function Page() {
 
         setTemplates(grouped)
       } catch (err: any) {
-        console.error("Fetch error:", err)
         setError(err.message || "Failed to load templates")
       } finally {
         setLoading(false)

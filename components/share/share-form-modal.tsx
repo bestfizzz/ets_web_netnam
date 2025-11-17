@@ -128,20 +128,24 @@ export function AddShareDetailModal({ platforms }: AddShareDetailModalProps) {
       return acc
     }, {} as Record<string, any>)
     data.settings = settingsObj
-
+    const toastID = toast.loading("Creating share detail...")
     try {
       setLoading(true)
       await ShareDetailClientAPI.create(data)
       setLoading(false)
 
-      toast.success(`New detail "${data.name}" added.`)
+      toast.success(`New detail "${data.name}" added.`,{
+        id:toastID
+      })
       form.reset()
       setKeyValues([])
       setOpen(false)
       router.refresh()
     } catch (err: any) {
       setLoading(false)
-      toast.error(err.message || "Request failed ❌")
+      toast.error(err.message || "Request failed ❌",{
+        id:toastID
+      })
     }
   }
 
@@ -286,18 +290,22 @@ export function EditShareDetailModal({
       return acc
     }, {} as Record<string, any>)
     data.settings = settingsObj
-
+    const toastID = toast.loading("Updating share detail...")
     try {
       setLoading(true)
       await ShareDetailClientAPI.update(detail.id, data)
       setLoading(false)
 
-      toast.success(`ShareDetail "${data.name}" updated.`)
+      toast.success(`ShareDetail "${data.name}" updated.`,{
+        id:toastID
+      })
       onOpenChange(false)
       router.refresh()
     } catch (err: any) {
       setLoading(false)
-      toast.error(err.message || "Update failed ❌")
+      toast.error(err.message || "Update failed ❌",{
+        id:toastID
+      })
     }
   }
 
@@ -404,17 +412,22 @@ export function DeleteShareDetailModal({
 
   const handleDelete = async () => {
     if (!detail?.id) return
+    const toastID = toast.loading("Deleting photo...")
     try {
       setLoading(true)
       await ShareDetailClientAPI.delete(detail.id)
       setLoading(false)
 
-      toast.success(`Deleted "${detail.name}" from ${platformName}`)
+      toast.success(`Deleted "${detail.name}" from ${platformName}`,{
+        id:toastID
+      })
       onOpenChange(false)
       router.refresh()
     } catch (err: any) {
       setLoading(false)
-      toast.error(err.message || "Delete failed ❌")
+      toast.error(err.message || "Delete failed ❌",{
+        id:toastID
+      })
     }
   }
 

@@ -37,7 +37,6 @@ export default function CustomizeAddPage() {
         setTemplateTypes(types)
         setTemplateType(types[0])
       } catch (err: any) {
-        console.error("Error fetching template types:", err)
         toast.error(err.message || "Failed to load template types")
       }
     }
@@ -55,7 +54,6 @@ export default function CustomizeAddPage() {
         if (all.length === 0) throw new Error("No default templates found")
         setAllTemplates(all)
       } catch (err: any) {
-        console.error("Error fetching defaults:", err)
         setError(err.message || "Failed to load templates")
         toast.error(err.message || "Failed to load templates")
       } finally {
@@ -95,6 +93,7 @@ export default function CustomizeAddPage() {
   // 🧠 Save
   const handleSave = async (formData: any) => {
     if (!templateType) return
+    const toastID = toast.loading("Creating new template ...")
     try {
       setOnRequest(true)
       const { name, isActive,...restData } = formData
@@ -104,11 +103,14 @@ export default function CustomizeAddPage() {
         isActive: isActive,
         jsonConfig: restData,
       })
-      toast.success(`✅ Saved new design "${name}" for ${templateType.name}`)
+      toast.success(`Saved new design "${name}" for ${templateType.name}`,{
+        id:toastID
+      })
       router.push("/admin/customize")
     } catch (err: any) {
-      console.error("Save error:", err)
-      toast.error(`Error saving template: ${err.message || err}`)
+      toast.error(`Error saving template: ${err.message || err}`,{
+        id:toastID
+      })
     } finally {
       setOnRequest(false)
     }

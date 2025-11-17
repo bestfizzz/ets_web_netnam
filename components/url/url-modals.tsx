@@ -67,7 +67,6 @@ export function UrlEditModal({
         const freshUrl = await UrlManagerClientAPI.get(url.uuid)
         setCurrentUrl(freshUrl)
       } catch (err) {
-        console.error("Failed to fetch URL detail:", err)
         toast.error("Failed to fetch URL detail ❌")
       } finally {
         setLoading(false)
@@ -79,6 +78,7 @@ export function UrlEditModal({
   if (!currentUrl) return null
 
   const handleSubmit = async (payload: any) => {
+    const toastID = toast.loading("Saving URL changes ...")
     try {
       // Usage
       const shareDetailIds = extractIdsByPrefix(payload, "platform_")
@@ -91,12 +91,15 @@ export function UrlEditModal({
       }
 
       await UrlManagerClientAPI.update(currentUrl.uuid, data)
-      toast.success("Updated ✅")
+      toast.success("URL changes are saved", {
+        id: toastID
+      })
       onOpenChange(false)
       router.refresh()
     } catch (err: any) {
-      console.error("Update error:", err)
-      toast.error(err.message || "Update failed ❌")
+      toast.error(err.message || "Update failed ❌", {
+        id: toastID
+      })
     }
   }
 
@@ -143,8 +146,8 @@ export function UrlAddModal({
   const formId = "url-add-form"
 
   const handleSubmit = async (payload: any) => {
+    const toastID = toast.loading("Creating new URL ...")
     try {
-
       const shareDetailIds = extractIdsByPrefix(payload, "platform_")
       const templateDetailIds = extractIdsByPrefix(payload, "template_")
 
@@ -155,12 +158,15 @@ export function UrlAddModal({
       }
 
       await UrlManagerClientAPI.create(data)
-      toast.success("Added ✅")
+      toast.success("Added new URL",{
+        id:toastID
+      })
       setOpen(false)
       router.refresh()
     } catch (err: any) {
-      console.error("Add error:", err)
-      toast.error(err.message || "Failed ❌")
+      toast.error(err.message || "Failed to create URL",{
+        id:toastID
+      })
     }
   }
 
@@ -200,14 +206,18 @@ export function UrlAddModal({
 export function UrlDeleteModal({ url, open, onOpenChange }: any) {
   const router = useRouter()
   const handleDelete = async () => {
+        const toastID = toast.loading("Deleting URL ...")
     try {
       await UrlManagerClientAPI.delete(url.uuid)
-      toast.success(`Deleted "${url.name}"`)
+      toast.success(`Deleted "${url.name}"`,{
+        id:toastID
+      })
       onOpenChange(false)
       router.refresh()
     } catch (err: any) {
-      console.error("Delete error:", err)
-      toast.error(err.message || "Failed to delete ❌")
+      toast.error(err.message || "Failed to delete URL",{
+        id:toastID
+      })
     }
   }
   if (!url) return null

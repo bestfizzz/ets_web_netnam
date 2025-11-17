@@ -56,7 +56,6 @@ export default function EditPage() {
           `Loaded ${capitalizeFirstLetter(data.templateType.name)} template "${data.name}"`
         )
       } catch (err: any) {
-        console.error("Error fetching template:", err)
         toast.error(err.message || "Failed to load template")
         setNotFoundState(true)
       } finally {
@@ -71,20 +70,24 @@ export default function EditPage() {
 
   // 🧠 Save updated template
   const handleSave = async (formData: any) => {
+    const toastID = toast.loading("Saving template changes ...")
     try {
       setOnRequest(true)
-      const { name, isActive,...restData } = formData
+      const { name, isActive, ...restData } = formData
       await TemplateDetailClientAPI.update(Number(designID), {
         name: name,
         isActive: isActive,
         jsonConfig: restData,
         templateTypeId: pageData?.templateType.id!,
       })
-      toast.success(`✅ Saved ${pageName} (${name})`)
+      toast.success(`Saved template ${pageName} (${name})`, {
+        id: toastID
+      })
       router.push("/admin/customize")
     } catch (err: any) {
-      console.error("Error saving:", err)
-      toast.error(err.message || "Error saving template")
+      toast.error(err.message || "Error saving template", {
+        id: toastID
+      })
     } finally {
       setOnRequest(false)
     }
@@ -92,14 +95,18 @@ export default function EditPage() {
 
   // 🧠 Delete template
   const handleDelete = async () => {
+    const toastID = toast.loading(`Deleting template ${designName} ...`)
     try {
       setOnRequest(true)
       await TemplateDetailClientAPI.delete(Number(designID))
-      toast.success(`✅ Deleted ${pageName} (${designName})`)
+      toast.success(`Deleted ${pageName} (${designName})`,{
+        id:toastID
+      })
       router.push("/admin/customize")
     } catch (err: any) {
-      console.error("Error deleting:", err)
-      toast.error(err.message || "Error deleting template")
+      toast.error(err.message || "Error deleting template",{
+        id:toastID
+      })
     } finally {
       setDeleteDialogOpen(false)
       setOnRequest(false)

@@ -21,19 +21,21 @@ export default function SearchHeader({ themeColor = '#ffffff', pageTitle = 'Sear
     setPersonId,
     setNoResults,
   } = useGalleryContext()
-  const { uuid } = useParams<{ uuid: string }>() || {uuid:null}
+  const { uuid } = useParams<{ uuid: string }>() || { uuid: null }
   const [uploadOpen, setUploadOpen] = useState(false)
 
   const handleUpload = async (file: File, uuid: string) => {
+    const toastID = toast.info("Uploading photo...")
     try {
-      if (!uuid || !file) throw new Error
-      toast.info("Uploading photo...")
+      if (!uuid || !file) throw new Error()
       const result = await uploadAsset(file, uuid)
-
-      toast.success("Uploaded successfully!")
-
+      toast.success("Uploaded successfully!", {
+        id: toastID
+      })
       if (!result.person_id) {
-        toast.warning("No face recognized.")
+        toast.warning("No face recognized.", {
+          id: toastID
+        })
         scrollToGallery()
         setNoResults(true)
         setQuery("")
@@ -41,21 +43,23 @@ export default function SearchHeader({ themeColor = '#ffffff', pageTitle = 'Sear
         return
       }
 
-      toast.success("Face recognized!")
+      toast.success("Face recognized!", {
+        id: toastID
+      })
       setPersonId(result.person_id)
       setMode("person")
-
     } catch (err: any) {
-      console.error("Upload or fetch error:", err)
-
       if (err.code === "FILE_TOO_LARGE") {
         // ✅ Handle size error gracefully, no screen change
-        toast.error(err.message)
+        toast.error(err.message, {
+          id: toastID
+        })
         return
       }
-
-      // ✅ Only treat other errors as actual failures
-      toast.error(err?.message || "Upload or person fetch failed.")
+      console.error(err)
+      toast.error(err?.message || "Upload or person fetch failed.", {
+        id: toastID
+      })
       setNoResults(true)
     }
   }

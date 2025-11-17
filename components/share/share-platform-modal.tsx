@@ -40,15 +40,19 @@ export function AddPlatformModal() {
     }
 
     setLoading(true)
+    const toastID = toast.loading("Creating share platform...")
     try {
       await SharePlatformClientAPI.create({ name })
-      toast.success(`Platform "${name}" added.`)
+      toast.success(`Platform "${name}" added.`,{
+        id:toastID
+      })
       setName("")
       setOpen(false)
       router.refresh()
     } catch (err) {
-      console.error(err)
-      toast.error("Failed to add platform")
+      toast.error("Failed to add platform",{
+        id:toastID
+      })
     } finally {
       setLoading(false)
     }
@@ -108,16 +112,19 @@ export function EditPlatformModal({ id, name }: EditPlatformModalProps) {
       toast.error("Platform name cannot be empty")
       return
     }
-
+    const toastID = toast.loading("Updating share platform...")
     setLoading(true)
     try {
       await SharePlatformClientAPI.update(id, { name: platformName })
-      toast.success(`Platform renamed to "${platformName}".`)
+      toast.success(`Platform renamed to "${platformName}".`,{
+        id:toastID
+      })
       setOpen(false)
       router.refresh()
     } catch (err) {
-      console.error(err)
-      toast.error("Failed to update platform")
+      toast.error("Failed to update platform",{
+        id:toastID
+      })
     } finally {
       setLoading(false)
     }
@@ -168,14 +175,18 @@ export function DeletePlatformModal({ id, name }: DeletePlatformModalProps) {
 
   const handleDelete = async () => {
     setLoading(true)
+    const toastID = toast.loading("Deleting share platform...")
     try {
       await SharePlatformClientAPI.delete(id)
-      toast.success(`Platform "${name}" deleted.`)
+      toast.success(`Platform "${name}" deleted.`,{
+        id:toastID
+      })
       setOpen(false)
       router.refresh()
     } catch (err) {
-      console.error(err)
-      toast.error("Failed to delete platform")
+      toast.error("Failed to delete platform",{
+        id:toastID
+      })
     } finally {
       setLoading(false)
     }
