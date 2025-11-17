@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useParams } from "next/navigation"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
-import { Upload, Check, EllipsisVertical } from "lucide-react"
+import { Upload, Check, SquareMousePointer } from "lucide-react"
 import { UploadModal } from "@/components/pages/search/upload-modal"
 import uploadAsset from "@/lib/uploadAsset"
 import { useGalleryContext } from "@/hooks/gallery-context"
@@ -83,7 +83,7 @@ export default function SearchHeader({ themeColor = '#ffffff', pageTitle = 'Sear
 
   return (
     <header className="sticky shadow-sm top-0 z-50" style={{ backgroundColor: themeColor }}>
-      <div className="max-w-7xl mx-auto w-full px-3 sm:px-4">
+      <div className="mx-auto w-full px-3 sm:px-4 lg:px-8">
         <div className="flex items-center justify-between gap-2 sm:gap-3 py-2.5 sm:py-3">
           <div className="flex items-center gap-2 sm:gap-3">
             {pageLogo ?
@@ -106,9 +106,10 @@ export default function SearchHeader({ themeColor = '#ffffff', pageTitle = 'Sear
               onClick={toggleSelectMode}
               className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-3"
             >
-              {selectMode ? <Check className="w-3 h-3 sm:w-4 sm:h-4" /> : <EllipsisVertical className="w-3 h-3 sm:w-4 sm:h-4" />}
-              <span className="hidden xs:inline">{selectMode ? `Selected (${selectedCount})` : "Select"}</span>
-              <span className="xs:hidden">{selectMode ? selectedCount : "Select"}</span>
+              {selectMode ? <Check className="w-3 h-3 sm:w-4 sm:h-4" /> : <SquareMousePointer className="w-3 h-3 sm:w-4 sm:h-4" />}
+              <span className="hidden sm:inline">
+                {selectMode ? `Selected (${selectedCount})` : "Select"}
+              </span>
             </Button>
 
             <Button

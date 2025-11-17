@@ -244,7 +244,7 @@ export default function SearchSelectionDrawer({
         className={`fixed left-1/2 transform -translate-x-1/2 bottom-4 sm:bottom-6 z-50 w-[calc(100%-1rem)] sm:w-[min(960px,calc(100%-2rem))] transition-all duration-300 ease-out
         ${selectMode ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0 pointer-events-none"}`}
       >
-        <div className="bg-white border shadow-lg rounded-xl sm:rounded-2xl px-3 sm:px-4 py-2.5 sm:py-4 flex flex-col gap-3">
+        <div className="bg-white border shadow-lg rounded-xl sm:rounded-2xl px-2.5 sm:px-4 py-2.5 sm:py-4 flex flex-col gap-3">
           <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
             <div className="hidden sm:flex items-center justify-center rounded-xl w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-indigo-500 to-violet-500 text-white shadow shrink-0">
               <ImageIcon className="w-4 h-4 sm:w-5 sm:h-5" />

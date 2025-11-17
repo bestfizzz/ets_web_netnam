@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useParams } from "next/navigation"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
-import { Upload, Check, EllipsisVertical } from "lucide-react"
+import { Upload, Check, SquareMousePointer } from "lucide-react"
 import { ImageSearchDialog } from "@/components/pages/search/components/image-search-dialog"
 import uploadAsset from "@/lib/uploadAsset"
 import { useGalleryContext } from "@/hooks/gallery-context"
@@ -89,7 +89,7 @@ export default function SearchHeader1({
 
     return (
         <header className="sticky shadow-sm top-0 z-50" style={{ backgroundColor: themeColor }}>
-            <div className="max-w-7xl mx-auto w-full px-3 sm:px-4 py-3">
+            <div className="mx-auto w-full px-3 sm:px-4 lg:px-8 py-3">
                 {/* ✅ Responsive layout */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     {/* Left — Logo + Page Name */}
@@ -114,7 +114,7 @@ export default function SearchHeader1({
                     {/* ✅ Search + Buttons row */}
                     <div className="flex flex-1 w-full sm:w-auto items-center justify-between gap-2">
                         {/* Search bar (centered, stretches) */}
-                        <div className="flex-1 max-w-md mx-auto">
+                        <div className="flex-1 max-w-md xl:max-w-2xl mx-auto">
                             <TextSearchBar initialQuery={query} onSearch={handleSearchText} />
                         </div>
 
@@ -137,7 +137,7 @@ export default function SearchHeader1({
                                 {selectMode ? (
                                     <Check className="w-4 h-4" />
                                 ) : (
-                                    <EllipsisVertical className="w-4 h-4" />
+                                    <SquareMousePointer className="w-4 h-4" />
                                 )}
                                 <span className="hidden sm:inline">
                                     {selectMode ? `Selected (${selectedCount})` : "Select"}

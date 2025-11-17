@@ -22,7 +22,7 @@ export function TextSearchBar({ initialQuery = "", onSearch }: TextSearchBarProp
   }
 
   return (
-    <div className="relative w-full max-w-md">
+    <div className="relative w-full">
       <Input
         value={query}
         onChange={(e) => setQuery(e.target.value)}

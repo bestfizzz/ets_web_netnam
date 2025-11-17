@@ -2,7 +2,7 @@ import { z } from "zod"
 
 // types/auth
 export const AuthSigninSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(6),
 })
 

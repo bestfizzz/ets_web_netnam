@@ -82,12 +82,12 @@ export function useGalleryContext() {
   return context
 }
 
-export function GalleryProvider({ children, gallerySettings }: { children: ReactNode, gallerySettings?: GallerySettings }) {
+export function GalleryProvider({ children, gallerySettings }: { children: ReactNode, gallerySettings: GallerySettings }) {
   const [valid, setValid] = useState<boolean | null>(null)
   const [query, setQuery] = useState("")
   const [images, setImages] = useState<AssetMeta[]>([])
   const [loading, setLoading] = useState(false)
-  const [showFullLoading, setShowFullLoading] = useState(gallerySettings?.privateGallery !== true)
+  const [showFullLoading, setShowFullLoading] = useState(gallerySettings.privateGallery !== true)
   const [progress, setProgress] = useState(0)
   const [selectMode, setSelectMode] = useState(false)
   const [selectedMap, setSelectedMap] = useState<Record<string, Omit<AssetMeta, "id">>>({})
@@ -95,7 +95,7 @@ export function GalleryProvider({ children, gallerySettings }: { children: React
   const [page, setPage] = useState(1)
   const [nextPage, setNextPage] = useState<string | null>(null)
   const [total, setTotal] = useState(0)
-  const [pageSize, setPageSize] = useState(60)
+  const [pageSize, setPageSize] = useState(gallerySettings.pageSize)
   const [mode, setMode] = useState<"all" | "person" | "keyword">("all")
   const [personId, setPersonId] = useState<string | null>(null)
   const [privateGallery, setPrivateGallery] = useState(!!gallerySettings?.privateGallery)
@@ -127,22 +127,19 @@ export function GalleryProvider({ children, gallerySettings }: { children: React
     if (gallerySettings) {
       setSettings(gallerySettings)
     }
-    if (gallerySettings?.pageSize) {
-      setPageSize(gallerySettings.pageSize)
-    }
   }, [gallerySettings])
 
   useEffect(() => {
-    if (typeof gallerySettings?.privateGallery === "boolean") {
+    if (typeof gallerySettings.privateGallery === "boolean") {
       setPrivateGallery(gallerySettings.privateGallery)
     }
   }, [gallerySettings?.privateGallery])
 
   useEffect(() => {
-    if (gallerySettings?.pageSize) {
+    if (gallerySettings.pageSize) {
       setPageSize(gallerySettings.pageSize)
     }
-  }, [gallerySettings?.pageSize])
+  }, [gallerySettings.pageSize])
 
   const value: GalleryContextType = {
     valid,

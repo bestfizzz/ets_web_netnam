@@ -25,7 +25,7 @@ export default function ShareHeader({
       className="sticky top-0 z-50 shadow-sm"
       style={{ backgroundColor: themeColor }}
     >
-      <div className="max-w-7xl mx-auto w-full px-3 sm:px-4">
+      <div className="mx-auto w-full px-3 sm:px-4 lg:px-8">
         <div className="flex items-center justify-between gap-2 sm:gap-3 py-2.5 sm:py-3">
           {/* --- Logo + Title --- */}
           <div className="flex items-center gap-2 sm:gap-3">
