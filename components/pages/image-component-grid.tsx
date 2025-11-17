@@ -125,7 +125,7 @@ export default function InlineComponentGrid({
     combinedList.push(
       <div
         key={img.id}
-        className={`relative overflow-hidden rounded-lg group transition-all duration-200 ${
+        className={`relative rounded-lg group transition-all duration-200 ${
           selectMode && selectedMap[img.id] ? "ring-2 ring-indigo-500" : ""
         }`}
       >
