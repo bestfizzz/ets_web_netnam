@@ -3,7 +3,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toTitle } from "@/lib/utils"
-
+// generate setting based on block data
+//  such as { _type:component1, image1:"url", title1:"some string"} => regex match image, title => 1 image field, 1 title field
+//  function match the ojectkey to generate suitable field, some block has their own specialized fields
 export function DynamicBlockEditor({
   block,
   idx,
