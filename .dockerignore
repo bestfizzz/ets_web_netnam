@@ -1,3 +1,4 @@
 .env
 .env.*
 docker_build.sh
+docker-compose.yaml

@@ -32,7 +32,7 @@ RUN npm run build
 FROM base AS runner
 WORKDIR /app
 
-ARG NODE_ENV=production
+ENV NODE_ENV=production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs

@@ -1,0 +1,38 @@
+services:
+  ai-search-client:
+    image: ai-search-client
+    container_name: ai-search-client
+    restart: unless-stopped
+    environment:
+      - VIRTUAL_HOST=ai-search-client.local
+      - VIRTUAL_PORT=3000
+      - JWT_SECRET=4d1e55029cbb1894511dd69c1d823b4ad4ccb8c7b93b908c4c55c9f989573ad2
+    expose:
+      - "3000"
+    networks:
+      - web
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+      # Mount your cert + key from host
+      - /etc/ssl/certs/ai-search-client.local.crt:/etc/nginx/certs/ai-search-client.local.crt:ro
+      - /etc/ssl/private/ai-search-client.local.key:/etc/nginx/certs/ai-search-client.local.key:ro
+
+      - ./vhost.d:/etc/nginx/vhost.d:rw
+      - ./html:/usr/share/nginx/html:rw
+    environment:
+      - HTTPS_METHOD=noredirect
+    networks:
+      - web
+
+networks:
+  web:
+    external: false
