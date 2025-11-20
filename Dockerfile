@@ -33,8 +33,6 @@ FROM base AS runner
 WORKDIR /app
 
 ARG NODE_ENV=production
-ENV NODE_ENV=$NODE_ENV
-ENV JWT_SECRET=$JWT_SECRET
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
