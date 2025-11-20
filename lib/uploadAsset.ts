@@ -1,4 +1,4 @@
-import { http } from "@/lib/http"
+import { AssetsServerAPI } from "@/lib/server_api/assets"
 
 export default async function uploadAsset(file: File, uuid: string) {
   const MAX_SIZE_MB = 2
@@ -12,10 +12,5 @@ export default async function uploadAsset(file: File, uuid: string) {
   formData.append("assetData", file)
   formData.append("uuid", uuid)
 
-  return await http(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets`, {
-    method: "POST",
-    body: formData,
-    parseJson: true,
-    throwOnError: true,
-  })
+  return await AssetsServerAPI.uploadAsset(formData)
 }

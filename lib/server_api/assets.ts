@@ -39,5 +39,12 @@ export const AssetsServerAPI = {
     http<{ active: boolean }>(`${ASSET_BASE}/check-url/${uuid}`, {
       method: "GET",
     }),
-    
+  
+  uploadAsset: (formData:FormData) => 
+    http(`${ASSET_BASE}`, {
+    method: "POST",
+    body: formData,
+    parseJson: true,
+    throwOnError: true,
+  })
 }
