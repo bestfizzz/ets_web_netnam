@@ -29,7 +29,8 @@ export default function EditPage() {
   const router = useRouter()
   const pageCustomizeRef = React.useRef<any>(null)
 
-  const [pageName, designID] = params.id as string[]
+  const [rawPageName, designID] = params.id as string[];
+  const pageName = rawPageName.toLowerCase();
   const [pageData, setPageData] = React.useState<TemplateDetail | null>(null)
   const [designName, setDesignName] = React.useState("")
   const [loading, setLoading] = React.useState(true)
@@ -180,7 +181,7 @@ export default function EditPage() {
             </div>
 
             {/* Conditional Page Content */}
-            {pageName.toLocaleLowerCase() === "email" ? (
+            {pageName === "email" ? (
               <EmailEditor
                 pageData={pageData}
                 templateOptions={[]}

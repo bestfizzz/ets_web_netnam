@@ -56,7 +56,8 @@ export const PageCustomize = forwardRef(({
     },
   }
 
-  const layoutMap = pageName === 'search' ? SearchLayoutMap : ShareLayoutMap
+  const normalizedPageName = pageName.toLowerCase();
+  const layoutMap = normalizedPageName === 'search' ? SearchLayoutMap : ShareLayoutMap
   const { control, watch, setValue, reset, getValues, formState: { errors }, handleSubmit } = useForm<any>({ defaultValues })
 
   const [formData, setFormData] = useState(defaultValues)
@@ -90,11 +91,11 @@ export const PageCustomize = forwardRef(({
         adbannerLeft: pageData.jsonConfig?.settings?.adbannerLeft ?? "",
         adbannerRight: pageData.jsonConfig?.settings?.adbannerRight ?? "",
 
-        ...(pageName === "search" && {
+        ...(normalizedPageName === "search" && {
           shareFields: pageData.jsonConfig?.settings?.shareFields ?? { phone: true, email: false, telegramId: false },
         }),
 
-        ...(pageName === "share" && {
+        ...(normalizedPageName === "share" && {
         }),
       },
       content: pageData.jsonConfig?.content ?? [],
@@ -130,7 +131,7 @@ export const PageCustomize = forwardRef(({
   return (
     <div className="flex flex-col md:flex-row gap-6">
       <div className="flex md:w-7/10 shadow-lg overflow-hidden h-screen">
-        <PreviewPane formData={formData} pageName={pageName} selectedDesign={selectedDesign} onDesignChange={onDesignChange} templateOptions={templateOptions} />
+        <PreviewPane formData={formData} pageName={normalizedPageName} selectedDesign={selectedDesign} onDesignChange={onDesignChange} templateOptions={templateOptions} />
       </div>
 
       <div className="flex md:w-3/10 flex-col h-screen overflow-y-scroll">
@@ -139,7 +140,7 @@ export const PageCustomize = forwardRef(({
           <NameAndAdd setValue={setValue} editingName={editingName} setEditingName={setEditingName} control={control} errors={errors} nameInputRef={nameInputRef} onAddClick={onAddClick} />
 
           {/* settings */}
-          <SettingsPanel pageName={pageName} control={control} errors={errors} layoutMap={layoutMap} />
+          <SettingsPanel pageName={normalizedPageName} control={control} errors={errors} layoutMap={layoutMap} />
 
           {/* Content blocks + add dialog + DnD */}
           <div>

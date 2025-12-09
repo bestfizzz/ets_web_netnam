@@ -170,7 +170,7 @@ export default function CustomizeAddPage() {
               />
             ) : (
               <PageCustomize
-                pageName={templateType?.name || ""}
+                pageName={templateType?.name.toLocaleLowerCase() || ""}
                 pageData={pageData}
                 selectedDesign={selectedDesign}
                 onDesignChange={setSelectedDesign}

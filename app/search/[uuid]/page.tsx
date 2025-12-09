@@ -42,7 +42,7 @@ export default async function SearchPage({
     const found = templates.find((t) => {
       const typeName =
         typeof t.templateType === "string" ? t.templateType : t.templateType.name
-      return typeName === "search"
+      return typeName.toLowerCase() === "search"
     }) as SearchTemplateDetail
     templateData = found || searchTemplate1
   } catch (err) {

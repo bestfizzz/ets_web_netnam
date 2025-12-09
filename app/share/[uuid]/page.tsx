@@ -42,7 +42,7 @@ export default async function SharePage({
     const found = templates.find((t) => {
       const typeName =
         typeof t.templateType === "string" ? t.templateType : t.templateType.name
-      return typeName === "share"
+      return typeName.toLowerCase() === "share"
     }) as ShareTemplateDetail
     templateData = found || shareTemplate1
   } catch (err) {

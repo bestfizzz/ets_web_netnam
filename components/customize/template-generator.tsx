@@ -96,11 +96,14 @@ export default function TemplateGenerator({
   preview = false,
   uuid = "",
 }: TemplateGeneratorProps) {
+
+  const normalizedPageName = pageName.toLowerCase();
+
   // Always FC with required uuid, settings, preview
   const Wrapper: FC<WrapperProps> =
-    pageName === "search"
+    normalizedPageName === "search"
       ? SearchPageWrapper
-      : pageName === "share"
+      : normalizedPageName === "share"
         ? SharePageWrapper
         : ({ children }) => <>{children}</>
 
