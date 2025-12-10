@@ -19,11 +19,11 @@ export default function MasonryGrid({
   return (
     <div
       className="
-        columns-1
-        xs:columns-2
+        columns-2
         sm:columns-3
         md:columns-4
-        xl:columns-5
+        lg:columns-5
+        xl:columns-6
         gap-4
         w-full
         mt-4
@@ -53,7 +53,7 @@ export default function MasonryGrid({
               <img
                 src={img.thumb}
                 alt={`Image ${img.id}`}
-                className="w-full min-h-[220px] max-h-[500px] object-cover rounded-lg group-hover:rounded-xl transition-all duration-200 group-hover:shadow-lg"
+                className="w-full xs:min-h-[220px] max-h-[500px] object-cover rounded-lg group-hover:rounded-xl transition-all duration-200 group-hover:shadow-lg"
                 loading="lazy"
               />
 

@@ -11,7 +11,7 @@ export default function GallerySection({layoutType="default"}:{layoutType?: "def
   if (shouldHideGallery && !noResults) return null
 
   return (
-    <div id="gallery-section" className="flex-1 overflow-y-auto px-6 sm:px-8 pb-40">
+    <div id="gallery-section" className="flex-1 overflow-y-auto px-3 xs:px-6 sm:px-8 pb-40">
       {noResults ? <NoResults /> : <ImageSection layoutType={layoutType} />}
     </div>
   )

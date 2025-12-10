@@ -14,20 +14,44 @@ export function capitalizeFirstLetter(string: string) {
 
 export const performDownload = async (url?: string | null, filename?: string) => {
   if (!url) return toast.error("Không tìm thấy URL tải xuống")
-  const id = toast.loading("Đang tải xuống ảnh của bạn...")
+
+  const id = toast.loading("Đang xử lý...")
+
   try {
     const res = await fetch(url)
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
+
     const blob = await res.blob()
-    const ext = blob.type.split("/")[1] || "jpeg"
+    const type = blob.type || "image/jpeg"
+    const ext = type.split("/")[1]
+    const name = `${filename || "image"}_${Date.now()}.${ext}`
+    const file = new File([blob], name, { type })
+
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+
+    // 📱 Prefer Share Sheet on Mobile
+    if (isMobile && navigator.canShare?.({ files: [file] }) && navigator.share) {
+      toast.info("phone detected")
+      await navigator.share({
+        files: [file],
+        title: "Save Image",
+        text: "Save to Photos"
+      })
+      toast.success("👆 Chọn “Lưu Hình” trong menu 🌟", { id })
+      return
+    }
+
+    // 🖥 Desktop fallback - direct download
     const objUrl = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = objUrl
-    a.download = `${filename}.${ext}` || `Image_${Date.now()}.jpeg`
+    a.download = name
     a.click()
     URL.revokeObjectURL(objUrl)
-    toast.success("Tải xuống hoàn tất", { id })
-  } catch {
+
+    toast.success("📥 Đã tải xuống!", { id })
+  } catch (err) {
+    console.error(err)
     toast.error("❌ Tải xuống thất bại", { id })
   }
 }

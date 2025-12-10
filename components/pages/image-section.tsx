@@ -15,7 +15,7 @@ export default function ImageSection({layoutType="default"}: { layoutType?: "def
     <>
       {/* ✅ Hide total label if keyword mode */}
       {mode !== "keyword" && (
-        <Label className="mt-6 text-sm text-muted-foreground">
+        <Label className="my-3 text-sm text-muted-foreground">
           Showing{" "}
           <span className="font-medium">{pageSize * (page - 1) + 1}</span>–
           <span className="font-medium">

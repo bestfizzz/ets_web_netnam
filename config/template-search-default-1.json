@@ -8,7 +8,7 @@
   "isActive": true,
   "jsonConfig": {
     "settings": {
-      "themeColor": "#e49a9a",
+      "themeColor": "#ffffff",
       "pageTitle": "",
       "pageLogo": "",
       "pageSize": 10,
@@ -38,21 +38,6 @@
       {
         "_type": "GallerySection",
         "layoutType": "default"
-      },
-      {
-        "_type": "searchBar",
-        "placeholder": "Search..."
-      },
-      {
-        "_type": "block",
-        "style": "normal",
-        "children": [
-          {
-            "_type": "span",
-            "text": "asdadasdasda"
-          }
-        ],
-        "markDefs": []
       }
     ]
   }

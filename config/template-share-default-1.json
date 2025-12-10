@@ -8,7 +8,7 @@
   "isActive": true,
   "jsonConfig": {
     "settings": {
-      "themeColor": "#3490dc",
+      "themeColor": "#ffffff",
       "pageTitle": "",
       "pageLogo": "",
       "pageSize": 20,
@@ -47,34 +47,6 @@
       {
         "_type": "GallerySection",
         "layoutType": "default"
-      },
-      {
-        "_type": "shareButtons",
-        "buttons": [
-          "Facebook",
-          "Twitter",
-          "LinkedIn",
-          "Email"
-        ]
-      },
-      {
-        "_type": "feature",
-        "title": "Easy Sharing",
-        "description": "Quickly share content with just one click."
-      },
-      {
-        "_type": "feature",
-        "title": "Custom Messages",
-        "description": "Add a personal note to your shared links."
-      },
-      {
-        "_type": "feature",
-        "title": "Track Engagement",
-        "description": "See how many people engage with your shares."
-      },
-      {
-        "_type": "footer",
-        "text": "© 2025 Share Page. All rights reserved."
       }
     ]
   }

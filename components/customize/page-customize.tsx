@@ -20,16 +20,7 @@ import { ShareLayoutMap } from "@/lib/layoutMap/share-map"
 import NameAndAdd from "@/components/customize/setting_blocks/name-and-add"
 import SettingsPanel from "@/components/customize/setting_blocks/settings-panel"
 import BlocksPanel from "@/components/customize/setting_blocks/blocks-panel"
-
-// ----- default blocks -----
-const defaultBlocks: Record<string, any> = {
-  block: { _type: "block", style: "normal", children: [{ _type: "span", text: "" }], markDefs: [] },
-  feature: { _type: "feature", title: "", description: "" },
-  footer: { _type: "footer", text: "" },
-  searchBar: { _type: "searchBar", placeholder: "Search..." },
-  logoBlock: { _type: "logoBlock", leftLogo: "", rightLogo: "" },
-}
-
+import defaultBlocks from "@/components/customize/portable_text_block/default-blocks"
 // ----- Main component (refactored) -----
 export const PageCustomize = forwardRef(({
   pageName,

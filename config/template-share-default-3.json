@@ -8,7 +8,7 @@
   "isActive": true,
   "jsonConfig": {
     "settings": {
-      "themeColor": "#355E3B",
+      "themeColor": "#ffffff",
       "pageTitle": "",
       "pageLogo": "",
       "pageSize": 20,
@@ -33,25 +33,6 @@
       {
         "_type": "GallerySection",
         "layoutType": "default"
-      },
-      
-      {
-        "_type": "searchBar",
-        "placeholder": "Search here..."
-      },
-      {
-        "_type": "feature",
-        "title": "Fast and Reliable",
-        "description": "Get results instantly with our optimized search engine."
-      },
-      {
-        "_type": "feature",
-        "title": "Easy to Use",
-        "description": "Designed with simplicity and usability in mind."
-      },
-      {
-        "_type": "footer",
-        "text": "© 2025 Your Company. All rights reserved."
       }
     ]
   }
