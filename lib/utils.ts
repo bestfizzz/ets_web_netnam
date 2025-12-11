@@ -27,10 +27,10 @@ export const performDownload = async (url?: string | null, filename?: string) =>
     const name = `${filename || "image"}_${Date.now()}.${ext}`
     const file = new File([blob], name, { type })
 
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent)
 
     // 📱 Prefer Share Sheet on Mobile
-    if (isMobile && navigator.canShare?.({ files: [file] }) && navigator.share) {
+    if (isIOS && navigator.canShare?.({ files: [file] }) && navigator.share) {
       toast.info("phone detected")
       await navigator.share({
         files: [file],

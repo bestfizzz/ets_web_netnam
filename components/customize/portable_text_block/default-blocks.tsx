@@ -5,7 +5,7 @@ const defaultBlocks: Record<string, any> = {
   // feature: { _type: "feature", title: "", description: "" },
   footer: { _type: "footer", text: "" },
   // searchBar: { _type: "searchBar", placeholder: "Search..." },
-  logoBlock: { _type: "logoBlock", leftLogo: "", rightLogo: "" },
+  // logoBlock: { _type: "logoBlock", leftLogo: "", rightLogo: "" },
 }
 
 export default defaultBlocks 

@@ -8,8 +8,10 @@
   "isActive": true,
   "jsonConfig": {
     "settings": {
+      "metaTitle":"NetNam AI Search",
+      "metaDescription":"NETNAM CORPORATION - Your Net, We Care!",
       "themeColor": "#ffffff",
-      "pageTitle": "",
+      "pageTitle": "NetNam AI Search",
       "pageLogo": "",
       "pageSize": 20,
       "customCSS": "",
@@ -31,7 +33,7 @@
         "children": [
           {
             "_type": "span",
-            "text": "Welcome to Search Default 3"
+            "text": "NETNAM CORPORATION - Your Net, We Care!"
           }
         ]
       },

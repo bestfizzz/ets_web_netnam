@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useParams } from "next/navigation"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
-import { Upload, Check, SquareMousePointer } from "lucide-react"
+import { ScanSearch, Check, SquareMousePointer } from "lucide-react"
 import { ImageSearchDialog } from "@/components/pages/search/components/image-search-dialog"
 import uploadAsset from "@/lib/uploadAsset"
 import { useGalleryContext } from "@/hooks/gallery-context"
@@ -61,8 +61,8 @@ export default function SearchHeader1({
         } catch (err: any) {
             if (err.code === "FILE_TOO_LARGE") {
                 // ✅ Handle size error gracefully, no screen change
-                toast.error(err.message,{
-                    id:toastID
+                toast.error(err.message, {
+                    id: toastID
                 })
                 return
             }
@@ -125,8 +125,8 @@ export default function SearchHeader1({
                                 onClick={() => setUploadOpen(true)}
                                 className="flex items-center gap-2 text-sm h-9 px-3"
                             >
-                                <Upload className="w-4 h-4" />
-                                <span className="hidden sm:inline">Upload</span>
+                                <ScanSearch className="w-3! h-3! sm:w-6! sm:h-6!" strokeWidth={1.25} />
+                                <span className="hidden sm:inline">Search</span>
                             </Button>
 
                             <Button

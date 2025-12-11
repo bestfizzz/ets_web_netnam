@@ -1,5 +1,6 @@
 import { http } from "@/lib/http"
 import type { PaginatedAssets } from "@/lib/types/types"
+import { cache } from "react"
 
 const BASE = process.env.NEXT_PUBLIC_BACKEND_URL!
 const ASSET_BASE = `${BASE}/assets`
@@ -35,10 +36,10 @@ export const AssetsServerAPI = {
     }),
 
   /** ✅ Check if a gallery URL is active */
-  checkUrl: (uuid: string) =>
+  checkUrl: cache((uuid: string) =>
     http<{ active: boolean }>(`${ASSET_BASE}/check-url/${uuid}`, {
       method: "GET",
-    }),
+    })),
   
   uploadAsset: (formData:FormData) => 
     http(`${ASSET_BASE}`, {

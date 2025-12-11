@@ -52,6 +52,8 @@ export interface TemplateType {
 
 /* Base settings shared by all templates */
 export interface BaseTemplateSettings {
+  metaTitle: string
+  metaDescription: string
   themeColor: string
   pageTitle: string
   pageSize: number

@@ -7,6 +7,7 @@ import type {
     TemplateDetailUpdateResponse,
     TemplateDetailDeleteResponse,
 } from "@/lib/types/template-detail"
+import { cache } from "react"
 
 const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL!
 
@@ -25,10 +26,10 @@ export const TemplateDetailServerAPI = {
             headers: { Authorization: `Bearer ${accessToken ?? ""}` },
     }),
 
-    getPageDetails: (uuid: string) =>
+    getPageDetails: cache((uuid: string) =>
         http<TemplateDetailListResponse>(`${BACKEND}/template/detail/uuid/${uuid}`, {
             method: "GET",
-        }),
+        })),
 
     /** POST /template/detail */
     create: (data: TemplateDetailPayloadRequest, accessToken?: string) =>

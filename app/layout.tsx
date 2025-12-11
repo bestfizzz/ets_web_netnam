@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NETN@M™ AI Search",
+  title: "NETN@M™ AI Image Admin",
   description: "Event image search platform by NETN@M",
   icons: {
     icon: "/logo/icon.png",          // this is your favicon

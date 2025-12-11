@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useParams } from "next/navigation"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
-import { Upload, Check, SquareMousePointer } from "lucide-react"
+import { ScanSearch, Check, SquareMousePointer } from "lucide-react"
 import { UploadModal } from "@/components/pages/search/upload-modal"
 import uploadAsset from "@/lib/uploadAsset"
 import { useGalleryContext } from "@/hooks/gallery-context"
@@ -117,8 +117,8 @@ export default function SearchHeader({ themeColor = '#ffffff', pageTitle = 'Sear
               onClick={() => setUploadOpen(true)}
               className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-3"
             >
-              <Upload className="w-3 h-3 sm:w-4 sm:h-4" />
-              <span className="hidden sm:inline">Upload</span>
+              <ScanSearch className="w-3! h-3! sm:w-6! sm:h-6!" strokeWidth={1.25}/>
+              <span className="hidden sm:inline">Search</span>
             </Button>
 
             <UploadModal

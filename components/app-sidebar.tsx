@@ -3,7 +3,6 @@ import * as React from "react"
 import {
   Link,
   Settings,
-  GalleryVerticalEnd,
   Share2,
   Columns3CogIcon,
 } from "lucide-react"
@@ -58,7 +57,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   className="h-9 sm:h-10 w-auto object-contain"
                 />
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <h1 className="font-medium text-sm sm:text-base">Netnam ETS</h1>
+                  <h1 className="font-medium text-sm sm:text-base">Netnam AIIA</h1>
                   <span className="text-xs text-muted-foreground">v1.0.0</span>
                 </div>
               </a>

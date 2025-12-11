@@ -23,7 +23,7 @@ export async function middleware(req: NextRequest) {
 
   // 🔥 CRITICAL: Don't run middleware on API auth routes at all
   // Let them set cookies without interference
-  if (pathname.startsWith("/api/auth/") || pathname.startsWith("/api/customize/get-template") || pathname.startsWith("/search/") || pathname.startsWith("/share/")) {
+  if (pathname.startsWith("/api/auth/") ||  pathname.startsWith("/search/") || pathname.startsWith("/share/")) {
     return NextResponse.next();
   }
 

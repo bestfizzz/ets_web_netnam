@@ -25,16 +25,16 @@ export function useFancybox(
         Toolbar: {
           display: {
             left: ["counter"],
-            middle: [
-              "zoomIn",
-              "zoomOut",
-              "toggle1to1",
-              "rotateCCW",
-              "rotateCW",
-              "flipX",
-              "flipY",
-              "reset",
-            ],
+            // middle: [
+            //   "zoomIn",
+            //   "zoomOut",
+            //   "toggle1to1",
+            //   "rotateCCW",
+            //   "rotateCW",
+            //   "flipX",
+            //   "flipY",
+            //   "reset",
+            // ],
             right: ["autoplay", "myDownload", "thumbs", "close"],
           },
           items: {

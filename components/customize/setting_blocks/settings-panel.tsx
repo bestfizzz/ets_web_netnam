@@ -97,6 +97,30 @@ export default function SettingsPanel({ pageName, control, errors, layoutMap }: 
             </div>
           )} />
 
+          {/* Metadata setting */}
+          <Collapsible defaultOpen={false} className="border-b border-gray-200 pb-1">
+            <CollapsibleTrigger className="group flex justify-between w-full items-center text-md font-medium text-gray-700 hover:text-gray-900 py-2">
+              <span>Metadata (SEO)</span>
+              <ChevronRight className="w-4 h-4 group-data-[state=open]:rotate-90 transition-transform" strokeWidth={3} />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="flex flex-col gap-3 mt-1 p-2 border-t border-gray-200">
+              <Controller name="settings.metaTitle" control={control} defaultValue="" render={({ field }) => (
+                <div className="flex flex-col gap-1">
+                  <Label className="text-sm">Page Title</Label>
+                  <Input {...field} placeholder="NetNam AI Search" />
+                </div>
+              )} />
+
+              <Controller name="settings.metaDescription" control={control} defaultValue="" render={({ field }) => (
+                <div className="flex flex-col gap-1">
+                  <Label className="text-sm">Page Description</Label>
+                  <Input {...field} placeholder="NETNAM CORPORATION - Your Net, We Care!" />
+                </div>
+              )} />
+            </CollapsibleContent>
+          </Collapsible>
+
+          {/* Advertisement setting */}
           <Collapsible defaultOpen={false} className="border-b border-gray-200 pb-1">
             <CollapsibleTrigger className="group flex justify-between w-full items-center text-md font-medium text-gray-700 hover:text-gray-900 py-2">
               <span>Advertisement</span>

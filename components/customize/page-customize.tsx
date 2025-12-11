@@ -34,6 +34,8 @@ export const PageCustomize = forwardRef(({
     isActive:true,
     content: [],
     settings: {
+      metaTitle:"",
+      metaDescription:"",
       themeColor: "#000000",
       pageTitle: "",
       pageLogo: "",
@@ -71,6 +73,8 @@ export const PageCustomize = forwardRef(({
       name: pageData.name ?? "",
       isActive : pageData.isActive ?? true,
       settings: {
+        metaTitle: pageData.jsonConfig?.settings?.metaTitle ?? "",
+        metaDescription: pageData.jsonConfig?.settings?.metaDescription ?? "",
         themeColor: pageData.jsonConfig?.settings?.themeColor ?? "#000000",
         pageTitle: pageData.jsonConfig?.settings?.pageTitle ?? "",
         pageLogo: pageData.jsonConfig?.settings?.pageLogo ?? "",

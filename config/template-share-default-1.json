@@ -8,8 +8,10 @@
   "isActive": true,
   "jsonConfig": {
     "settings": {
+      "metaTitle":"NetNam AI Search",
+      "metaDescription":"NETNAM CORPORATION - Your Net, We Care!",
       "themeColor": "#ffffff",
-      "pageTitle": "",
+      "pageTitle": "NetNam AI Search",
       "pageLogo": "",
       "pageSize": 20,
       "customCSS": "",
@@ -26,19 +28,7 @@
         "children": [
           {
             "_type": "span",
-            "text": "Share With Friends defualt 1",
-            "marks": []
-          }
-        ],
-        "markDefs": []
-      },
-      {
-        "_type": "block",
-        "style": "normal",
-        "children": [
-          {
-            "_type": "span",
-            "text": "Spread the word and let others know!",
+            "text": "NETNAM CORPORATION - Your Net, We Care!",
             "marks": []
           }
         ],
