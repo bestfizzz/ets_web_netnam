@@ -100,6 +100,8 @@ export function GalleryProvider({ children, gallerySettings }: { children: React
   const [personId, setPersonId] = useState<string | null>(null)
   const [privateGallery, setPrivateGallery] = useState(!!gallerySettings?.privateGallery)
   const [settings, setSettings] = useState<GallerySettings>({
+    metaTitle:"",
+    metaDescription:"",
     themeColor: "#ffffff",
     pageTitle: "Gallery",
     pageSize: 36,
